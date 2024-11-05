@@ -1,0 +1,375 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Samuel Stucki</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+        <link rel="Stylesheet" href="/dist/style.css">
+        <link rel="Stylesheet" href="/resources/css/project.css">
+        <link rel="stylesheet" href="/resources/css/style.css">
+        <script src="/resources/js/main.js" async=""></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    </head>
+    <body class="bg-neutral-200 dark:bg-neutral-900 min-h-screen" dir="ltr">
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Function to update theme
+                function updateTheme(theme) {
+                    var d = document.documentElement;
+                    var c = d.classList;
+
+                    if (theme === 'light') {
+                        c.remove('dark');
+                        c.add('light');
+                        d.style.colorScheme = 'light';
+                        localStorage.setItem('theme', 'light');
+                        console.log('Switched to light mode');
+                    } else if (theme === 'dark') {
+                        c.remove('light');
+                        c.add('dark');
+                        d.style.colorScheme = 'dark';
+                        localStorage.setItem('theme', 'dark');
+                        console.log('Switched to dark mode');
+                    }
+                }
+
+                // Initial theme setup
+                (function() {
+                    var storedTheme = localStorage.getItem('theme');
+                    if (storedTheme) {
+                        updateTheme(storedTheme);
+                    } else {
+                        // Default to dark if no theme is set
+                        updateTheme('dark');
+                    }
+                })();
+
+                // Event listener for the button
+                document.getElementById('themeToggleBtn').addEventListener('click', function() {
+                    var currentTheme = localStorage.getItem('theme');
+                    if (currentTheme === 'light') {
+                        updateTheme('dark');
+                    } else {
+                        updateTheme('light');
+                    }
+                });
+            });
+        </script>
+        <style jsx="1" global="1">
+            #nprogress {
+                pointer-events: none;
+            }
+
+            #nprogress .bar {
+                background: #14b8a6;
+                position: fixed;
+                z-index: 9999;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 3px;
+            }
+
+            #nprogress .peg {
+                display: block;
+                position: absolute;
+                right: 0px;
+                width: 100px;
+                height: 100%;
+                box-shadow: 0 0 10px #14b8a6, 0 0 5px #14b8a6;
+                opacity: 1;
+                -webkit-transform: rotate(3deg) translate(0px, -4px);
+                -ms-transform: rotate(3deg) translate(0px, -4px);
+                transform: rotate(3deg) translate(0px, -4px);
+            }
+
+            #nprogress .spinner {
+                display: block;
+                position: fixed;
+                z-index: 1031;
+                top: 15px;
+                right: 15px;
+            }
+
+            #nprogress .spinner-icon {
+                width: 18px;
+                height: 18px;
+                box-sizing: border-box;
+                border: solid 2px transparent;
+                border-top-color: #14b8a6;
+                border-left-color: #14b8a6;
+                border-radius: 50%;
+                -webkit-animation: nprogresss-spinner 400ms linear infinite;
+                animation: nprogress-spinner 400ms linear infinite;
+            }
+
+            .nprogress-custom-parent {
+                overflow: hidden;
+                position: relative;
+            }
+
+            .nprogress-custom-parent #nprogress .spinner, .nprogress-custom-parent #nprogress .bar {
+                position: absolute;
+            }
+
+            @-webkit-keyframes nprogress-spinner {
+                0% {
+                    -webkit-transform: rotate(0deg);
+                }
+
+                100% {
+                    -webkit-transform: rotate(360deg);
+                }
+            }
+
+            @keyframes nprogress-spinner {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+        
+        <nav class="fixed z-[3] w-full top-0 ease-in-out bg-neutral-200 dark:bg-neutral-900">
+            <div class="py-2 px-2 md:px-4 grid grid-cols-[1fr_auto_1fr] w-full">
+                <div class="w-max">
+                    <a href="/pages/projects/projects.html">
+                        <div class="hidden md:grid grid-cols-[max-content_max-content] gap-1 text-blue-500 hover:text-blue-700 duration-300 ease-in-out place-items-center cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left w-4 h-4">
+                                <path d="m15 18-6-6 6-6"></path>
+                            </svg>
+                            <span>Projects</span>
+                        </div>
+                        <div class="grid md:hidden text-blue-500 hover:text-blue-700 duration-300 ease-in-out place-items-center cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left w-4 h-4">
+                                <path d="m15 18-6-6 6-6"></path>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid grid-cols-[repeat(3,max-content)] place-items-center font-semibold">
+                    <span class="text-sky-500">~</span>
+                    <span class="text-orange-500">/</span>
+                    <p class="text-orange-500 max-w-40 md:max-w-none truncate overflow-hidden">Temp2</p>
+                </div>
+                    <div class="ml-selected">
+                        <div>
+                            <div class="text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white duration-200 ease-in-out cursor-pointer" 
+                                type="button" 
+                                id="themeToggleBtn" 
+                                aria-haspopup="menu" 
+                                aria-expanded="false" 
+                                data-state="closed">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun-moon w-6 h-6">
+                                    <path d="M12 8a2.83 2.83 0 0 0 4 4 4 4 0 1 1-4-4"></path>
+                                    <path d="M12 2v2"></path>
+                                    <path d="M12 20v2"></path>
+                                    <path d="m4.9 4.9 1.4 1.4"></path>
+                                    <path d="m17.7 17.7 1.4 1.4"></path>
+                                    <path d="M2 12h2"></path>
+                                    <path d="M20 12h2"></path>
+                                    <path d="m6.3 17.7-1.4 1.4"></path>
+                                    <path d="m19.1 4.9-1.4 1.4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="bg-zinc-300 dark:bg-border rounded-xl w-full h-[1px] transition-all duration-500 mx-auto">
+            </div>
+        </nav>
+
+
+
+        <div class="content-wrapper p-4 mt-16">
+            <div class=" mt-16">
+                <a href="#Library" id="Library">
+                    <span class="font-semibold text-lg">TEMP 2</span>
+                </a>
+                <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px mb-2"></div>
+                <div class="grid sm:grid-cols-[auto_max-content] gap-2">
+                    <div>
+                        <div class="grid grid-flow-col w-max gap-1">
+                            <div class="h-6 relative aspect-square" data-state="closed">
+                                <img alt="html" loading="lazy" decoding="async" data-nimg="fill" src="/assets/java.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
+                            </div>
+                            <div class="h-6 relative aspect-square" data-state="closed">
+                                <img alt="css" loading="lazy" decoding="async" data-nimg="fill" src="/assets/java.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
+                            </div>
+                            <div class="h-6 relative aspect-square" data-state="closed">
+                                <img alt="php" loading="lazy" decoding="async" data-nimg="fill" src="/assets/java.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-auto grid grid-flow-col gap-4 w-max">
+                        <a href="https://github.com/melodingo" target="_blank" class="z-[2]">
+                            <div class="grid grid-cols-[max-content_max-content] place-items-center gap-1 text-blue-500 hover:text-blue-600 duration-300 ease-in-out">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-paperclip w-4 h-4">
+                                    <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                                </svg>
+                                <span>View demo</span>
+                            </div>
+                        </a>
+                        <a href="https://github.com/melodingo" target="_blank" class="z-[2]">
+                            <div class="grid grid-cols-[max-content_max-content] place-items-center gap-1 text-blue-500 hover:text-blue-600 duration-300 ease-in-out">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-code-xml w-4 h-4">
+                                    <path d="m18 16 4-4-4-4"></path>
+                                    <path d="m6 8-4 4 4 4"></path>
+                                    <path d="m14.5 4-5 16"></path>
+                                </svg>
+                                <span>View code</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!-- Divider -->
+               <div class="w-full py-4 grid place-items-center animate__animated animate__fadeIn"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-slash w-6 h-6 text-gray-300 dark:text-neutral-800 animate__animated animate__rotateIn">
+                        <path d="M22 2 2 22"></path>
+                    </svg>
+                </div>
+                 <!-- Divider -->
+            </div>
+
+    
+            <section class="mb-4 flex flex-col md:flex-row items-center animate__animated animate__fadeInUp">
+                <div class="md:w-1/2 p-4 order-2 md:order-1">
+                    <h2 class="text-2xl font-semibold animate__animated animate__zoomIn">Features</h2> 
+                    <!-- Terminal container with navigation bar -->
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 animate__animated animate__fadeIn">
+                            <div class="text-lg space-y-2">
+                                <p>Add a Book</p>
+                                <p>Edit a Book</p>
+                                <p>Delete a Book</p>
+                                <p>Search a Book</p>
+                                <p>View Book Details</p>
+                                <p>User Accounts</p>
+                                <p>Admin Accounts with Admin Dashboard</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 md:mt-0 md:ml-4 order-1 md:order-2 img-container mt-4 animate__animated animate__fadeIn">
+                    <img src="https://via.placeholder.com/400x300" alt="Features Image" class="rounded-lg shadow-lg">
+                </div>
+            </section>
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+            
+
+            <section class="mb-12 flex flex-col md:flex-row items-center mt-20 animate__animated animate__fadeInUp">
+                <div class="md:w-1/2 mt-4 md:mt-0 md:mr-4 img-container animate__animated animate__fadeIn">
+                    <img src="https://via.placeholder.com/400x300" alt="Architecture Image" class="rounded-lg shadow-lg">
+                </div>
+                <div class="md:w-1/2 p-4 animate__animated animate__fadeIn">
+                    <h2 class="text-2xl font-semibold animate__animated animate__zoomIn">Architecture</h2>
+                    
+                    <!-- Terminal container with navigation bar -->
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 bg-black text-white rounded-lg shadow-lg">
+                            <p class="text-lg">Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+                                Numquam nobis iure, sunt at id dolorem atque enim neque natus reprehenderit 
+                                in molestias accusamus, deleniti tempora quaerat blanditiis quod dolore tenetur!
+                            </p>
+                            <p class="text-lg">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                Obcaecati voluptatibus sunt cum provident odio soluta tempore magnam earum, 
+                                aliquam illum commodi quo quasi nobis deleniti inventore laboriosam harum! Consequatur, neque.
+                            </p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </section> 
+            
+            
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+            
+            
+            <section class="mb-12 flex flex-col md:flex-row items-center mt-20">
+                <div class="md:w-1/2 p-4 order-2 md:order-1 animate__animated animate__fadeIn">
+                    <h2 class="text-2xl font-semibold animate__animated animate__zoomIn">Usage Instructions</h2>
+                    
+                    <!-- Terminal container with navigation bar -->
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 bg-black text-white rounded-lg shadow-lg">
+                            <div class="text-lg list-decimal list-inside space-y-2">
+                                <p>Navigate to the homepage.</p>
+                                <p>Log in with your credentials.</p>
+                                <p>Use the navigation menu to access different sections of the system.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="md:w-1/2 mt-4 md:mt-0 md:ml-4 order-1 md:order-2 img-container animate__animated animate__fadeIn">
+                    <img src="https://via.placeholder.com/400x300" alt="Usage Instructions Image" class="rounded-lg shadow-lg">
+                </div>
+            </section>
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+            
+
+            <section class="mb-12 flex flex-col md:flex-row items-center mt-20">
+                <div class="md:w-1/2 mt-4 md:mt-0 md:mr-4 img-container animate__animated animate__fadeIn">
+                    <img src="https://via.placeholder.com/400x300" alt="Conclusion Image" class="rounded-lg shadow-lg">
+                </div>
+                <div class="md:w-1/2 p-4 animate__animated animate__fadeIn">
+                    <h2 class="text-2xl font-semibold animate__animated animate__zoomIn">Conclusion</h2>
+                    
+                    <!-- Terminal container with navigation bar -->
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 bg-black text-white rounded-lg shadow-lg animate__animated animate__fadeIn">
+                            <p class="text-lg">This documentation provides a high-level overview of the Library Management System. For more detailed information, please refer to the user manual and technical documentation.</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </section>
+            <div class="w-full py-4 grid place-items-center animate__animated animate__fadeIn"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-slash w-6 h-6 text-gray-300 dark:text-neutral-800 animate__animated animate__rotateIn">
+                    <path d="M22 2 2 22"></path>
+                </svg>
+            </div>
+        </div>
+    </body>
+</html>

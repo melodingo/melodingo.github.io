@@ -1,0 +1,498 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Samuel Stucki</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+        <link rel="Stylesheet" href="/dist/style.css">
+        <link rel="Stylesheet" href="/resources/css/project.css">
+        <link rel="stylesheet" href="/resources/css/style.css">
+        <script src="/resources/js/main.js" async=""></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    </head>
+    <body class="bg-neutral-200 dark:bg-neutral-900 min-h-screen" dir="ltr">
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Function to update theme
+                function updateTheme(theme) {
+                    var d = document.documentElement;
+                    var c = d.classList;
+
+                    if (theme === 'light') {
+                        c.remove('dark');
+                        c.add('light');
+                        d.style.colorScheme = 'light';
+                        localStorage.setItem('theme', 'light');
+                        console.log('Switched to light mode');
+                    } else if (theme === 'dark') {
+                        c.remove('light');
+                        c.add('dark');
+                        d.style.colorScheme = 'dark';
+                        localStorage.setItem('theme', 'dark');
+                        console.log('Switched to dark mode');
+                    }
+                }
+
+                // Initial theme setup
+                (function() {
+                    var storedTheme = localStorage.getItem('theme');
+                    if (storedTheme) {
+                        updateTheme(storedTheme);
+                    } else {
+                        // Default to dark if no theme is set
+                        updateTheme('dark');
+                    }
+                })();
+
+                // Event listener for the button
+                document.getElementById('themeToggleBtn').addEventListener('click', function() {
+                    var currentTheme = localStorage.getItem('theme');
+                    if (currentTheme === 'light') {
+                        updateTheme('dark');
+                    } else {
+                        updateTheme('light');
+                    }
+                });
+
+                let currentSlide = 0;
+                const slides = document.querySelectorAll('.carousel-image');
+                const slideIndicator = document.getElementById('slideIndicator'); // Get the slide indicator element
+
+                function showSlide(index) {
+                    slides.forEach((slide, i) => {
+                        slide.classList.toggle('active', i === index);
+                    });
+                    updateSlideIndicator(); // Update the slide indicator when showing a slide
+                }
+
+                function changeSlide(direction) {
+                    currentSlide = (currentSlide + direction + slides.length) % slides.length;
+                    showSlide(currentSlide);
+                }
+
+                function updateSlideIndicator() {
+                    // Update the slide indicator with current and total slide count
+                    slideIndicator.textContent = `Slide ${currentSlide + 1} of ${slides.length}`;
+                }
+
+                showSlide(currentSlide); // Initialize the first slide as active
+                updateSlideIndicator(); // Initialize the slide indicator
+
+                // Event listeners for buttons
+                document.querySelector('.prev').addEventListener('click', () => changeSlide(-1));
+                document.querySelector('.next').addEventListener('click', () => changeSlide(1));
+            });
+            
+        </script>
+        <style jsx="1" global="1">
+            #nprogress {
+                pointer-events: none;
+            }
+
+            #nprogress .bar {
+                background: #14b8a6;
+                position: fixed;
+                z-index: 9999;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 3px;
+            }
+
+            #nprogress .peg {
+                display: block;
+                position: absolute;
+                right: 0px;
+                width: 100px;
+                height: 100%;
+                box-shadow: 0 0 10px #14b8a6, 0 0 5px #14b8a6;
+                opacity: 1;
+                -webkit-transform: rotate(3deg) translate(0px, -4px);
+                -ms-transform: rotate(3deg) translate(0px, -4px);
+                transform: rotate(3deg) translate(0px, -4px);
+            }
+
+            #nprogress .spinner {
+                display: block;
+                position: fixed;
+                z-index: 1031;
+                top: 15px;
+                right: 15px;
+            }
+
+            #nprogress .spinner-icon {
+                width: 18px;
+                height: 18px;
+                box-sizing: border-box;
+                border: solid 2px transparent;
+                border-top-color: #14b8a6;
+                border-left-color: #14b8a6;
+                border-radius: 50%;
+                -webkit-animation: nprogresss-spinner 400ms linear infinite;
+                animation: nprogress-spinner 400ms linear infinite;
+            }
+
+            .nprogress-custom-parent {
+                overflow: hidden;
+                position: relative;
+            }
+
+            .nprogress-custom-parent #nprogress .spinner, .nprogress-custom-parent #nprogress .bar {
+                position: absolute;
+            }
+
+            @-webkit-keyframes nprogress-spinner {
+                0% {
+                    -webkit-transform: rotate(0deg);
+                }
+
+                100% {
+                    -webkit-transform: rotate(360deg);
+                }
+            }
+
+            @keyframes nprogress-spinner {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+        
+        <nav class="fixed z-[3] w-full top-0 ease-in-out bg-neutral-200 dark:bg-neutral-900">
+            <div class="py-2 px-2 md:px-4 flex justify-between items-center w-full">
+                
+                <!-- Left Section: "Projects" Link -->
+                <div class="w-max flex items-center">
+                    <a href="/pages/projects/projects.html" class="flex items-center gap-1 text-blue-500 hover:text-blue-700 duration-300 ease-in-out cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left w-4 h-4">
+                            <path d="m15 18-6-6 6-6"></path>
+                        </svg>
+                        <span>Projects</span>
+                    </a>
+                </div>
+                
+                <!-- Center Section: Text -->
+                <div class="flex items-center gap-1 font-semibold text-center">
+                    <span class="text-sky-500">~</span>
+                    <span class="text-orange-500">/</span>
+                    <p class="text-orange-500 max-w-40 md:max-w-none truncate overflow-hidden">Library Management</p>
+                </div>
+                
+                <!-- Right Section: Theme Toggle Button -->
+                <div class="flex justify-end">
+                    <div class="text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white duration-200 ease-in-out cursor-pointer" 
+                         id="themeToggleBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun-moon w-6 h-6">
+                            <path d="M12 8a2.83 2.83 0 0 0 4 4 4 4 0 1 1-4-4"></path>
+                            <path d="M12 2v2"></path>
+                            <path d="M12 20v2"></path>
+                            <path d="m4.9 4.9 1.4 1.4"></path>
+                            <path d="m17.7 17.7 1.4 1.4"></path>
+                            <path d="M2 12h2"></path>
+                            <path d="M20 12h2"></path>
+                            <path d="m6.3 17.7-1.4 1.4"></path>
+                            <path d="m19.1 4.9-1.4 1.4"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-zinc-300 dark:bg-border rounded-xl w-full h-[1px] transition-all duration-500 mx-auto"></div>
+        </nav>
+        
+
+
+        <div class="content-wrapper p-4 mt-16">
+            <div class=" mt-16">
+                <a href="#Library" id="Library">
+                    <span class="font-semibold text-lg">Library Management</span>
+                </a>
+                <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px mb-2"></div>
+                <div class="grid sm:grid-cols-[auto_max-content] gap-2">
+                    <div>
+                        <div class="grid grid-flow-col w-max gap-1">
+                            <div class="h-6 relative aspect-square" data-state="closed">
+                                <img alt="html" loading="lazy" decoding="async" data-nimg="fill" src="/assets/html.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
+                            </div>
+                            <div class="h-6 relative aspect-square" data-state="closed">
+                                <img alt="css" loading="lazy" decoding="async" data-nimg="fill" src="/assets/css.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
+                            </div>
+                            <div class="h-6 relative aspect-square" data-state="closed">
+                                <img alt="php" loading="lazy" decoding="async" data-nimg="fill" src="/assets/php.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-auto grid grid-flow-col gap-4 w-max">
+                        <a href="https://github.com/melodingo" target="_blank" class="z-[2]">
+                            <div class="grid grid-cols-[max-content_max-content] place-items-center gap-1 text-blue-500 hover:text-blue-600 duration-300 ease-in-out">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-paperclip w-4 h-4">
+                                    <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                                </svg>
+                                <span>View demo</span>
+                            </div>
+                        </a>
+                        <a href="https://github.com/melodingo" target="_blank" class="z-[2]">
+                            <div class="grid grid-cols-[max-content_max-content] place-items-center gap-1 text-blue-500 hover:text-blue-600 duration-300 ease-in-out">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-code-xml w-4 h-4">
+                                    <path d="m18 16 4-4-4-4"></path>
+                                    <path d="m6 8-4 4 4 4"></path>
+                                    <path d="m14.5 4-5 16"></path>
+                                </svg>
+                                <span>View code</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!-- Divider -->
+               <div class="w-full py-4 grid place-items-center animate__animated animate__fadeIn"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-slash w-6 h-6 text-gray-300 dark:text-neutral-800 animate__animated animate__rotateIn">
+                        <path d="M22 2 2 22"></path>
+                    </svg>
+                </div>
+                 <!-- Divider -->
+            </div>
+
+            <section class="mb-4 flex flex-col md:flex-row items-center animate__animated animate__fadeInUp">
+                <div class="md:w-1/2 p-4 order-2 md:order-1">
+                    <h2 class="text-2xl font-semibold animate__animated animate__zoomIn">Introduction</h2> 
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 animate__animated animate__fadeIn text-white">
+                            <div class="terminal-prompt">
+                                Introduction@<span style="color: #33CCFF;">Project</span>:~$ 
+                                <span class="cursor">|</span>
+                            </div>
+                            <div class="text-lg space-y-2">
+                                <p>
+                                    The Library Management System (LMS) is designed to simplify and streamline the process of managing a library’s inventory, users,
+                                    and transactions. With this system, librarians can efficiently handle book cataloging, user registrations, 
+                                    and lending activities, reducing manual effort and enhancing user experience. It also allowes users to effortlesly search for any 
+                                    Book within the Library.
+                                </p> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+
+            
+            <section class="mb-4 flex flex-col md:flex-row items-center animate__animated animate__fadeInUp">
+                <div class="md:w-1/2 p-4 order-2 md:order-1">
+                    <h2 class="text-2xl font-semibold animate__animated animate__zoomIn">Features</h2> 
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 animate__animated animate__fadeIn bg-black text-white">
+                            <div class="terminal-prompt">
+                                Features@<span style="color: #33CCFF;">Library</span>:~$ 
+                                <span class="cursor">|</span>
+                            </div>
+                            <div class="text-lg">
+                                <p>Add a Book</p>
+                                <p>Edit a Book</p>
+                                <p>Delete a Book</p>
+                                <p>Search a Book</p>
+                                <p>View Book Details</p>
+                                <p>User Accounts</p>
+                                <p>Admin Accounts with Admin Dashboard &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 md:mt-0 md:ml-4 order-1 md:order-2 img-container mt-4 animate__animated animate__fadeIn">
+                    <img src="/assets/Home Page.png" alt="Features Image" class="rounded-lg shadow-lg">
+                </div>
+            </section>
+        
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+        
+
+            <section class="mb-12 flex flex-col md:flex-row items-center animate__animated animate__fadeInUp">
+                <div class="md:w-1/2 mt-4 md:mt-0 md:mr-4 img-container animate__animated animate__fadeIn">
+                    <img src="/assets/Architecture Diagramm2.png" alt="Architecture Image" class="rounded-lg shadow-lg">
+                </div>
+                <div class="md:w-1/2 p-4 animate__animated animate__fadeIn">
+                    <h2 class="text-2xl font-semibold animate__animated animate__zoomIn">Architecture</h2>
+                    
+                    <!-- Terminal container with navigation bar -->
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 text-white rounded-lg shadow-lg">
+                            <div class="terminal-prompt">
+                                Architecture@<span style="color: #33CCFF;">Terminal</span>:~$ 
+                                <span class="cursor">|</span>
+                            </div>
+                            <p class="text-lg">The LMS is designed with a modular architecture to ensure flexibility and scalability. It consists of:</p>
+                            <p class="text-lg">Front-End - A user-friendly interface developed using HTML, CSS, and JavaScript, allowing for easy interaction.</p>
+                            <p class="text-lg">Back-End - A Client setup, handling database operations, built using MySql.</p>
+                            <p class="text-lg">Database - A robust database system for storing books, users, and transaction records.</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </section> 
+            
+            
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+            
+            
+            <section class="mb-12 flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 p-4 order-2 md:order-1 animate__animated animate__fadeIn">
+                    <h2 class="text-2xl font-semibold animate__animated animate__zoomIn">Getting Started</h2>
+                    
+                    <!-- Terminal container with navigation bar -->
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 text-white rounded-lg shadow-lg">
+                            <div class="terminal-prompt">
+                                Instructions@<span style="color: #33CCFF;">User</span>:~$ 
+                                <span class="cursor">|</span>
+                            </div>
+                            <div class="text-lg space-y-2">
+                                <p>Navigate to the homepage.</p>
+                                <p>Log in with your credentials.</p>
+                                <p>Use the navigation menu to access different sections of the system.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="md:w-1/2 mt-4 md:mt-0 md:ml-4 order-1 md:order-2 img-container animate__animated animate__fadeIn">
+                    <img src="/assets/Home Page.png" alt="Usage Instructions Image" class="rounded-lg shadow-lg">
+                </div>
+            </section>
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+            
+
+            <section class="mb-12 flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mt-4 md:mt-0 md:mr-4 img-container animate__animated animate__fadeIn relative">
+                    <!-- Carousel for cool display lol -->
+                    <div class="carousel">
+                        <div class="carousel-image active">
+                            <img src="/assets/Admin Dashboard.png" alt="Image 1" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="carousel-image">
+                            <img src="/assets/Add Book.png" alt="Image 2" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="carousel-image">
+                            <img src="/assets/Sign up.png" alt="Image 3" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="carousel-image">
+                            <img src="/assets/Search Book.png" alt="Image 4" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="carousel-image">
+                            <img src="/assets/Search Book2.png" alt="Image 5" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="carousel-image">
+                            <img src="/assets/Book Info.png" alt="Image 6" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="carousel-image">
+                            <img src="/assets/Borrowed Books.png" alt="Image 7" class="rounded-lg shadow-lg">
+                        </div>
+                        <button class="prev absolute top-1/2 left-2 transform -translate-y-1/2 z-20" onclick="changeSlide(-1)">&#10094;</button>
+                        <button class="next absolute top-1/2 right-2 transform -translate-y-1/2 z-20" onclick="changeSlide(1)">&#10095;</button>
+                        <div id="slideIndicator" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20"></div>
+                    </div>
+                </div>
+                
+
+                <div class="md:w-1/2 p-4 animate__animated animate__fadeIn">
+                    <h2 class="text-2xl font-semibold animate__animated animate__zoomIn">Detailed Usage</h2>
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 text-white rounded-lg shadow-lg animate__animated animate__fadeIn">
+                            <div class="terminal-prompt">
+                                Usage@<span style="color: #33CCFF;">Admin</span>:~$
+                                <span class="cursor">|</span>
+                            </div>
+                            <p class="text-lg">Here’s how to perform specific tasks within the LMS:</p>
+                            <p class="text-lg">Adding a New Book - Navigate to the Admin Dashboard page, click “Add a Book,” and enter the details. (Slide 1-2)</p>
+                            <p class="text-lg">Registering a New User - Go to the User Sign up page, enter user information, and save. (Slide 3)</p>
+                            <p class="text-lg">Borrowing and Returning Books - Search for a Book and Click on it for additional Information. Then if the book is not already Booked you can Book it with the Button on the bottom. When Returning an Admin can Return the Book over the Borrowed Books page. (Slide 4-7)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+            
+
+            <section class="mb-4 flex flex-col md:flex-row items-center animate__animated animate__fadeInUp">
+                <div class="md:w-1/2 p-4 order-2 md:order-1">
+                    <h2 class="text-2xl font-semibold animate__animated animate__zoomIn">Conclusion</h2> 
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 animate__animated animate__fadeIn text-white">
+                            <div class="terminal-prompt">
+                                Conclusion@<span style="color: #33CCFF;">Project</span>:~$ 
+                                <span class="cursor">|</span>
+                            </div>
+
+                            <p class="text-lg">
+                                In conclusion, the Library Management System provides a practical solution for library management, 
+                                improving operational efficiency and user satisfaction. Looking forward, potential enhancements include:
+                            </p>
+                            <p class="text-lg">Enhanced Search Capabilities - Adding advanced filters and sorting options.</p>
+                            <p class="text-lg">Mobile App Integration - Extending access to mobile devices.</p>
+                            <p class="text-lg">Enhanced Reporting - Introducing more customizable reporting options for in-depth analytics.</p>    
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <div class="w-full py-4 grid place-items-center animate__animated animate__fadeIn"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-slash w-6 h-6 text-gray-300 dark:text-neutral-800 animate__animated animate__rotateIn">
+                    <path d="M22 2 2 22"></path>
+                </svg>
+            </div>
+        </div>
+    </body>
+</html>

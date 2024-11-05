@@ -1,0 +1,254 @@
+/*body {
+    background-color: #100e17;
+    font-family: 'Open Sans', sans-serif;
+  }*/
+  
+.container_card {
+    position: absolute;
+    height: 18.75rem;
+    width: 56.25rem;
+    top: 6.25rem;
+    /*left: calc(50% - 300px);*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping of cards */
+}
+
+.card {
+    display: flex;
+    height: 18.75rem;
+    width: 13.75rem;
+    background-color: rgb(38, 38, 38);
+    border-radius: 10px;
+    box-shadow: -1rem 0 3rem #000000;
+/*   margin-left: -50px; */
+    transition: 0.4s ease-out;
+    position: relative;
+    left: 0px;
+}
+
+.card:not(:first-child) {
+    margin-left: -50px;
+}
+
+.card:hover {
+    transform: translateY(-20px);
+    transition: 0.4s ease-out;
+}
+
+.card:hover ~ .card {
+    position: relative;
+    left: 50px;
+    transition: 0.4s ease-out;
+}
+/* Terminal container styling */
+.terminal-container {
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #1e1e1e;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 1200px;
+    transition: transform 0.3s ease;
+}
+
+/* Terminal navigation bar */
+.terminal-bar {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background-color: #333;
+    border-bottom: 1px solid #444;
+}
+
+/* Navigation bar circles */
+.terminal-bar .circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.terminal-bar .red {
+    background-color: #ff5f56;
+}
+
+.terminal-bar .yellow {
+    background-color: #ffbd2e;
+}
+
+.terminal-bar .green {
+    background-color: #27c93f;
+}
+
+/*TEMP */
+.cursor {
+    display: inline-block;
+    animation: blink 1s step-end infinite; /* Blinking effect */
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0; /* Blinking effect */
+    }
+}
+/*TEMP */
+
+
+/* Terminal prompt styling */
+.terminal-prompt {
+    font-family: 'Courier New', Courier, monospace; /* Monospace font */
+    color: #00ff00; /* Green color for the username */
+    font-size: 1rem; /* Font size for the prompt */
+    line-height: 1.4; /* Spacing between lines */
+    padding-bottom: 8px; /* Space below the prompt */
+    margin-bottom: 10px; /* Space below the prompt to separate from command list */
+}
+/* Command prompt styling */
+.cmd-prompt {
+    padding: 16px;
+    font-family: 'Courier New', Courier, monospace;
+    background: linear-gradient(145deg, #1e1e1e, #2e2e2e);
+    color: #d4d4d4;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+/* Command prompt list */
+.cmd-prompt p {
+    position: relative;
+    padding-left: 20px;
+    margin: 0 0 0.5rem;
+}
+
+.cmd-prompt p::before {
+    content: "> ";
+    position: absolute;
+    left: 0;
+    color: #00ff00; /* Green color for prompt symbol */
+    font-weight: bold;
+}
+
+/* Style adjustments for lists in the command prompt */
+.cmd-prompt ol, .cmd-prompt ul {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.cmd-prompt li {
+    margin-bottom: 0.3rem;
+}
+
+/*
+.cmd-prompt::before {
+    content: "Samuel@Terminal:~$"; /* Lunix Symbol :O /
+    color: #00ff00; /* Cool Color to match it /
+    font-weight: bold;
+    margin-right: 0.5rem;
+} */
+
+
+.content-wrapper {
+    padding: 0 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.img-container {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    max-height: 400px;
+    overflow: hidden;
+}
+
+.img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.content-wrapper {
+    padding: 16px;
+    margin-top: 64px;
+}
+
+
+/* Style for horizontal line */
+.bg-gray-300 {
+    background-color: #D1D5DB; /* Tailwind gray-300 */
+}
+
+.rounded-xl {
+    border-radius: 0.75rem; /* Tailwind rounded-xl */
+}
+
+.w-full {
+    width: 100%;
+}
+
+.h-px {
+    height: 1px;
+}
+
+.mb-2 {
+    margin-bottom: 8px; /* Equivalent to mb-2 */
+}
+
+body {
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px; /* Wider horizontally to create diagonal effect */
+    background-position: 0 0;
+    background-repeat: repeat;
+}
+
+.carousel {
+    position: relative; /* Keep the carousel relative */
+    overflow: hidden; /* Hide overflow */
+}
+
+.carousel-image {
+    width: 100%; /* Full width for images */
+    display: none; /* Hide all images by default */
+}
+
+.carousel-image.active {
+    display: block; /* Only display the active image */
+}
+
+.prev, .next {
+    background-color: rgba(0, 0, 0, 0.7); /* Dark background for buttons */
+    color: white;
+    border: none;
+    border-radius: 20%;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    cursor: pointer;
+    position: absolute;
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust for centering */
+    z-index: 30; /* Higher z-index to ensure they're above images */
+}
+
+.prev {
+    left: 10px; /* Position on the left */
+}
+
+.next {
+    right: 10px; /* Position on the right */
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.9); /* Darker background on hover */
+}
+
+#slideIndicator {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgb(0, 0, 0); /* Adjust color for visibility */
+    z-index: 20; /* Ensure it's above other content */
+}
