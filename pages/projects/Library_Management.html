@@ -165,46 +165,57 @@
         </style>
         
         <nav class="fixed z-[3] w-full top-0 ease-in-out bg-neutral-200 dark:bg-neutral-900">
-            <div class="py-2 px-2 md:px-4 flex justify-between items-center w-full">
-                
-                <!-- Left Section: "Projects" Link -->
-                <div class="w-max flex items-center">
-                    <a href="/pages/projects/projects.html" class="flex items-center gap-1 text-blue-500 hover:text-blue-700 duration-300 ease-in-out cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left w-4 h-4">
-                            <path d="m15 18-6-6 6-6"></path>
-                        </svg>
-                        <span>Projects</span>
+            <div class="py-2 px-2 md:px-4 grid grid-cols-[1fr_auto_1fr] w-full">
+                <div class="w-max">
+                    <a href="/pages/projects/projects.html">
+                        <div class="hidden md:grid grid-cols-[max-content_max-content] gap-1 text-blue-500 hover:text-blue-700 duration-300 ease-in-out place-items-center cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left w-4 h-4">
+                                <path d="m15 18-6-6 6-6"></path>
+                            </svg>
+                            <span>Projects</span>
+                        </div>
+                        <div class="grid md:hidden text-blue-500 hover:text-blue-700 duration-300 ease-in-out place-items-center cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left w-4 h-4">
+                                <path d="m15 18-6-6 6-6"></path>
+                            </svg>
+                        </div>
                     </a>
                 </div>
                 
                 <!-- Center Section: Text -->
-                <div class="flex items-center gap-1 font-semibold text-center">
+                <div class="grid grid-cols-[repeat(3,max-content)] place-items-center font-semibold">
                     <span class="text-sky-500">~</span>
                     <span class="text-orange-500">/</span>
                     <p class="text-orange-500 max-w-40 md:max-w-none truncate overflow-hidden">Library Management</p>
                 </div>
-                
-                <!-- Right Section: Theme Toggle Button -->
-                <div class="flex justify-end">
-                    <div class="text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white duration-200 ease-in-out cursor-pointer" 
-                         id="themeToggleBtn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun-moon w-6 h-6">
-                            <path d="M12 8a2.83 2.83 0 0 0 4 4 4 4 0 1 1-4-4"></path>
-                            <path d="M12 2v2"></path>
-                            <path d="M12 20v2"></path>
-                            <path d="m4.9 4.9 1.4 1.4"></path>
-                            <path d="m17.7 17.7 1.4 1.4"></path>
-                            <path d="M2 12h2"></path>
-                            <path d="M20 12h2"></path>
-                            <path d="m6.3 17.7-1.4 1.4"></path>
-                            <path d="m19.1 4.9-1.4 1.4"></path>
-                        </svg>
+                <div class="container3 mx-auto">
+                    <div class="ml-selected">
+                        <div>
+                            <div class="text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white duration-200 ease-in-out cursor-pointer" 
+                                 type="button" 
+                                 id="themeToggleBtn" 
+                                 aria-haspopup="menu" 
+                                 aria-expanded="false" 
+                                 data-state="closed">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun-moon w-6 h-6">
+                                    <path d="M12 8a2.83 2.83 0 0 0 4 4 4 4 0 1 1-4-4"></path>
+                                    <path d="M12 2v2"></path>
+                                    <path d="M12 20v2"></path>
+                                    <path d="m4.9 4.9 1.4 1.4"></path>
+                                    <path d="m17.7 17.7 1.4 1.4"></path>
+                                    <path d="M2 12h2"></path>
+                                    <path d="M20 12h2"></path>
+                                    <path d="m6.3 17.7-1.4 1.4"></path>
+                                    <path d="m19.1 4.9-1.4 1.4"></path>
+                                </svg>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="bg-zinc-300 dark:bg-border rounded-xl w-full h-[1px] transition-all duration-500 mx-auto"></div>
+            <div class="bg-zinc-300 dark:bg-border rounded-xl w-full h-[1px] transition-all duration-500 mx-auto">
+        </div>
         </nav>
-        
 
 
         <div class="content-wrapper p-4 mt-16">
