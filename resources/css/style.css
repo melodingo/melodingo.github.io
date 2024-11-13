@@ -1148,8 +1148,9 @@ body,html {
 }
 
 ::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    background: #10b981
+    border-radius: 6px;
+    background: #10b981;
+    border: 1px solid transparent;
 }
 
 ::-moz-selection {
