@@ -55,6 +55,14 @@
                     }
                 });
             });
+
+            // Select the element
+            const typingElement = document.getElementById('contact-method');
+
+            // When the animation ends, add the 'finished' class to stop blinking
+            typingElement.addEventListener('animationend', () => {
+                typingElement.classList.add('finished');
+            });
         </script>
         <style jsx="1" global="1">
             #nprogress {
@@ -194,12 +202,11 @@
                 <div class="cmd-prompt p-4 animate__animated animate__fadeIn text-white">
                     <div class="terminal-prompt">
                         Contact@<span style="color: #33CCFF;">User</span>:~$ 
-                        <span class="cursor">|</span>
                     </div>
                     <div class="text-lg space-y-2">
-                        <p>
+                        <p id="contact-method" class="typing-animation">
                             Choose a contact method:
-                        </p>
+                        </p>                       
                         <!-- Button Container -->
                         <div class="terminal-button-container">
                             <!-- Email button without SVG -->

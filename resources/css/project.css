@@ -312,3 +312,38 @@ body {
     transition: transform 0.3s ease;
 }
 
+@keyframes typing {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 50%;
+    }
+}
+
+.typing-animation {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 0; /* Set initial width to 0 */
+    border-right: 2px solid; /* Cursor effect */
+    animation: typing 3s steps(30) 1s 1 normal both, blink 0.75s step-end infinite;
+    max-width: 100%; /* Prevent text from overflowing */
+    box-sizing: border-box; /* Ensure padding/margin does not affect width */
+}
+
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
+
+/* Stop cursor after typing */
+.typing-animation.finished {
+    border-right: none;
+    animation: none;
+}
+
+.finished {
+    animation: none; /* Stops the blinking cursor */
+}
