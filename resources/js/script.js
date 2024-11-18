@@ -43,8 +43,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add click event for the red circle to close the terminal
     terminal.querySelector('.circle.red').addEventListener('click', closeTerminal);
 
-    // Add click event for the red circle to close the terminal
-    terminal.querySelector('.circle.yellow').addEventListener('click', closeTerminal);
+    // Add click event for the yellow circle to minimize the terminal
+    terminal.querySelector('.circle.yellow').addEventListener('click', function() {
+        terminal.style.display = 'none';
+    });
+
+    // Add click event for the green circle to maximize/minimize the terminal
+    terminal.querySelector('.circle.green').addEventListener('click', function() {
+        if (terminal.style.width !== '100%') {
+            terminal.style.top = '0';
+            terminal.style.left = '0';
+            terminal.style.width = '100%';
+            terminal.style.height = '100%';
+        } else {
+            terminal.style.top = '20%';
+            terminal.style.left = '20%';
+            terminal.style.width = '600px';
+            terminal.style.height = '400px';
+        }
+    });
 
     // Process commands typed in the terminal
     document.getElementById('terminalInput').addEventListener('keypress', function(e) {
