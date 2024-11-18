@@ -1,12 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Hide terminal on load
+    const terminal = document.getElementById('terminal');
+    terminal.style.display = 'none';
+
     // Open terminal when button is clicked
     document.querySelector('.easter-egg').addEventListener('click', function(e) {
         e.preventDefault(); // Prevent default action of the link
-        document.getElementById('terminal').style.display = 'block'; // Show the terminal
+        terminal.style.display = 'block'; // Show the terminal
     });
 
     // Make the terminal draggable
-    const terminal = document.getElementById('terminal');
     const header = terminal.querySelector('.terminal-header');
 
     let isDragging = false;
@@ -37,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Close the terminal
     function closeTerminal() {
-        document.getElementById('terminal').style.display = 'none';
+        terminal.style.display = 'none';
     }
 
     // Add click event for the red circle to close the terminal
@@ -64,21 +67,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Process commands typed in the terminal
-    document.getElementById('terminalInput').addEventListener('keypress', function(e) {
+    const terminalInput = document.getElementById('terminalInput');
+    terminalInput.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
-            const input = e.target.value.trim();
+            const input = e.target.innerText.trim(); // Get the text from the content-editable div
             const outputDiv = document.getElementById('terminalOutput');
 
             // Example of some simple commands
             if (input === 'hello') {
-                outputDiv.innerHTML += '<div>Terminal says: Hello, World!</div>';
+                outputDiv.innerHTML += '<div>Terminal says: Wassup!</div>';
             } else if (input === 'clear') {
+                outputDiv.innerHTML = '';
+            } else if (input === 'cls') {
                 outputDiv.innerHTML = '';
             } else {
                 outputDiv.innerHTML += `<div>Unknown command: ${input}</div>`;
             }
 
-            e.target.value = ''; // Clear input after command
+            e.target.innerText = ''; // Clear input after command
+            outputDiv.scrollTop = outputDiv.scrollHeight; // Scroll to the bottom of the output
         }
     });
 });

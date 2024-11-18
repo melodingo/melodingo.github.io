@@ -373,7 +373,7 @@ body {
 }
 
 .terminal-window {
-    display: none;
+    display: none; /* Start hidden */
     position: fixed;
     top: 20%;
     left: 20%;
@@ -384,10 +384,11 @@ body {
     border-radius: 6px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     z-index: 9999;
-    overflow: hidden;
     font-family: 'Courier New', Courier, monospace;
     resize: both;
-    overflow: auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .terminal-header {
@@ -426,17 +427,10 @@ body {
 }
 
 .terminal-body {
+    display: flex;
+    flex-direction: column; /* Normal column layout, input above output */
     padding: 15px;
-}
-
-#terminalInput {
-    width: 100%;
-    background-color: #1e1e1e;
-    border: none;
-    color: #fff;
-    padding: 8px;
-    font-family: 'Courier New', Courier, monospace;
-    outline: none;
+    flex-grow: 1;
 }
 
 #terminalOutput {
@@ -447,6 +441,35 @@ body {
     border: 1px solid #3e3e3e;
     font-size: 14px;
     white-space: pre-wrap;
-    display: flex;
-    flex-direction: column-reverse;
+    flex-grow: 1;
+    overflow-y: auto; /* Make output scrollable */
+}
+
+#terminalInput {
+    width: 100%;
+    background-color: #1e1e1e;
+    border: none;
+    color: #fff;
+    padding-left: 30px; /* Space for the prompt */
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    outline: none;
+    white-space: nowrap;
+    word-wrap: normal;
+    font-size: 14px;
+    line-height: 20px;
+    min-height: 30px;
+    resize: none;
+    position: relative;
+}
+
+#terminalInput::before {
+    content: "~$ ";
+    color: #00ca4e; /* Green color for the prompt */
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-weight: bold;
 }
