@@ -1,9 +1,3 @@
-@font-face {
-    font-family: "Monaco";
-    font-display: swap;
-    src: url("fonts/monaco.woff");
-}
-
 :root {
     --terminal-font-color: #b0b2b6;
     --terminal-output-color: #f6f6f6;
@@ -17,7 +11,7 @@ body {
 .terminal {
     border-radius: 10px;
     overflow: hidden;
-    font-family: "Monaco", Consolas, Lucida Console, monospace;
+    font-family: Jetbrains Mono,monospace!important
 }
 
 .terminal-bar {
