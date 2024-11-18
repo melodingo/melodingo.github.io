@@ -156,17 +156,17 @@
 
 .img-container {
     width: 100%;
-    max-width: 600px;
+    max-width: 37.5rem;
     height: auto;
-    max-height: 400px;
+    max-height: 25rem;
     overflow: hidden;
 }
 
 .img-container2 {
     width: 100%;
-    max-width: 400px;
+    max-width: 25rem;
     height: auto;
-    max-height: 600px;
+    max-height: 37.5rem;
     overflow: hidden;
 }
 
