@@ -9,6 +9,7 @@
         <link rel="Stylesheet" href="/resources/css/style.css">
         <link rel="stylesheet" href="/resources/css/project.css">
         <script src="/resources/js/main.js" async=""></script>
+        <script src="/resources/js/script.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     </head>
     <body class="bg-neutral-200 dark:bg-neutral-900 min-h-screen" dir="ltr">
@@ -234,8 +235,25 @@
                         <div class="terminal-bar">
                             <span class="circle red"></span>
                             <span class="circle yellow"></span>
-                            <span class="circle green"></span>
+                            <!-- Button to open the terminal -->
+                            <a href="#" class="easter-egg">
+                                <span class="circle green"></span>
+                            </a>
                         </div>
+
+                        <!-- Terminal Window -->
+                        <div id="terminal" class="terminal-window">
+                            <div class="terminal-header">
+                            <span>Custom Terminal</span>
+                            <button class="close-btn" onclick="closeTerminal()">X</button>
+                            </div>
+                            <div class="terminal-body">
+                            <input type="text" id="terminalInput" placeholder="Type your command...">
+                            <div id="terminalOutput"></div>
+                            </div>
+                        </div>
+                        <!-- End Terminal Window -->
+
                         <div class="cmd-prompt p-4 animate__animated animate__fadeIn bg-black text-white">
                             <div class="terminal-prompt">
                                 Skills@<span style="color: #33CCFF;">AboutMe</span>:~$ 

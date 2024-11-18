@@ -68,6 +68,15 @@
     height: 12px;
     border-radius: 50%;
     margin-right: 8px;
+    display: inline-block; /* Ensures span behaves like an inline element */
+}
+
+/* Styling the link */
+.terminal-bar .easter-egg {
+    text-decoration: none;  /* Removes the underline */
+    display: inline-block;  /* Keeps it inline but allows for box model adjustments */
+    width: 12px;
+    height: 12px;  /* Ensure the link has the same size as the circle */
 }
 
 .terminal-bar .red {
@@ -362,3 +371,77 @@ body {
 .finished {
     animation: none; /* Stops the blinking cursor */
 }
+
+/* Terminal Window Styles */
+.terminal-window {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 20%;
+    left: 20%;
+    width: 400px;
+    height: 300px;
+    background-color: #1e1e1e;
+    color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    overflow: hidden;
+    resize: both;
+    overflow: auto;
+  }
+  
+  .terminal-header {
+    background-color: #333;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: move;
+  }
+  
+  .terminal-header span {
+    font-size: 16px;
+  }
+  
+  .close-btn {
+    background: none;
+    color: #fff;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
+  .terminal-body {
+    padding: 10px;
+  }
+  
+  #terminalInput {
+    width: 100%;
+    background-color: #333;
+    border: 1px solid #555;
+    color: #fff;
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+  
+  #terminalOutput {
+    background-color: #333;
+    padding: 10px;
+    border-radius: 4px;
+    min-height: 100px;
+    border: 1px solid #555;
+  }
+  
+  /* Button Circle Styles (as before) */
+  .terminal-bar .circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    display: inline-block;
+  }
+  
+  .terminal-bar .green {
+    background-color: #27c93f;
+  }
+  
