@@ -251,3 +251,64 @@ body {
     color: rgb(0, 0, 0); /* Adjust color for visibility */
     z-index: 20; /* Ensure it's above other content */
 }
+
+/* Button Container */
+.terminal-button-container {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+/* Individual Buttons */
+.terminal-email-button, .terminal-other-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+/* Email button styles */
+.terminal-email-button {
+    background-color: #3b82f6; /* Blue color for email button */
+    color: white;
+}
+
+.terminal-email-button:hover {
+    background-color: #2563eb; /* Darker blue on hover */
+    transform: scale(1.05);
+}
+
+/* Other button styles */
+.terminal-other-button {
+    background-color: #6b7280; /* Gray color for other button */
+    color: white;
+}
+
+.terminal-other-button:hover {
+    background-color: #4b5563; /* Darker gray on hover */
+    transform: scale(1.05);
+}
+
+/* SVG icon styles inside the buttons */
+.terminal-email-button svg, .terminal-other-button svg {
+    width: 20px;  /* Set a specific size */
+    height: 20px; /* Ensure it's visible */
+    margin-right: 0.5rem; /* Space between icon and text */
+}
+/* Custom terminal container for the Contact section */
+.contact-terminal-container {
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #1e1e1e;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    width: 50%; /* Set to 50% width */
+    max-width: 600px; /* Ensure it doesn't get too wide */
+    margin: 0 auto; /* Center the container horizontally */
+    transition: transform 0.3s ease;
+}
+
