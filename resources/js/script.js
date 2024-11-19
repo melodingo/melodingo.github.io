@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             e.target.innerText = ''; // Clear input after command
-            outputDiv.scrollTop = outputDiv.scrollHeight; // Scroll to the bottom of the output
+            outputDiv.scrollTop = outputDiv.scrollHeight; // Scroll to the bottom of the output.
         }
     });
 });
