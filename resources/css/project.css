@@ -94,14 +94,18 @@
 /*TEMP */
 .cursor {
     display: inline-block;
-    animation: blink 1s step-end infinite; /* Blinking effect */
+    animation: blink 1s step-end infinite;
 }
 
 @keyframes blink {
+    0%, 100% {
+        opacity: 1; /* Fully visible */
+    }
     50% {
-        opacity: 0; /* Blinking effect */
+        opacity: 0; /* Hidden */
     }
 }
+
 /*TEMP */
 
 
@@ -351,12 +355,12 @@ body {
     white-space: nowrap;
     width: 0; /* Set initial width to 0 */
     border-right: 2px solid; /* Cursor effect */
-    animation: typing 3s steps(30) 1s 1 normal both, blink 0.75s step-end infinite;
+    animation: typing 3s steps(30) 1s 1 normal both, blink2 0.75s step-end infinite;
     max-width: 100%; /* Prevent text from overflowing */
     box-sizing: border-box; /* Ensure padding/margin does not affect width */
 }
 
-@keyframes blink {
+@keyframes blink2 {
     50% {
         border-color: transparent;
     }
