@@ -308,6 +308,24 @@
             <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
 
             <section class="mb-4 flex flex-col md:flex-row items-center animate__animated animate__fadeInUp">
+                <div class="md:w-1/2 mt-4 md:mt-0 md:mr-4 img-container animate__animated animate__fadeIn relative">
+                    <!-- Carousel -->
+                    <div class="carousel relative">
+                        <div class="carousel-image active">
+                            <img src="https://placehold.co/600x400" alt="Image 1" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="carousel-image">
+                            <img src="https://placehold.co/600x400" alt="Image 2" class="rounded-lg shadow-lg">
+                        </div>
+                        <button class="prev absolute top-1/2 left-2 transform -translate-y-1/2 z-20" onclick="changeSlide(-1)">&#10094;</button>
+                        <button class="next absolute top-1/2 right-2 transform -translate-y-1/2 z-20" onclick="changeSlide(1)">&#10095;</button>
+                        <div id="slideIndicator" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20">
+                            <!-- Slide Indicators -->
+                            <span class="indicator active"></span>
+                            <span class="indicator"></span>
+                        </div>
+                    </div>
+                </div>
                 <div class="md:w-1/2 p-4 order-2 md:order-1">
                     <h2 class="text-2xl font-semibold animate__animated animate__fadeInUp">Learning Journey</h2>
                     <div class="terminal-container">
@@ -328,24 +346,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="md:w-1/2 mt-4 md:mt-0 md:mr-4 img-container animate__animated animate__fadeIn relative">
-                    <!-- Carousel -->
-                    <div class="carousel relative">
-                        <div class="carousel-image active">
-                            <img src="https://placehold.co/600x400" alt="Image 1" class="rounded-lg shadow-lg">
-                        </div>
-                        <div class="carousel-image">
-                            <img src="https://placehold.co/600x400" alt="Image 2" class="rounded-lg shadow-lg">
-                        </div>
-                        <button class="prev absolute top-1/2 left-2 transform -translate-y-1/2 z-20" onclick="changeSlide(-1)">&#10094;</button>
-                        <button class="next absolute top-1/2 right-2 transform -translate-y-1/2 z-20" onclick="changeSlide(1)">&#10095;</button>
-                        <div id="slideIndicator" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20">
-                            <!-- Slide Indicators -->
-                            <span class="indicator active"></span>
-                            <span class="indicator"></span>
-                        </div>
-                    </div>
-                </div>
+                
             </section>            
 
             <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
@@ -371,9 +372,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="md:w-1/2 md:mt-0 md:ml-4 order-1 md:order-2 img-container mt-4 animate__animated animate__fadeIn">
-                    <img src="https://placehold.co/600x400" alt="Hobbies Image" class="rounded-lg shadow-lg">
-                </div>
+                
             </section>
 
             <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
@@ -393,14 +392,11 @@
                                 <span class="cursor">|</span>
                             </div>
                             <div class="text-lg space-y-2">
-                                <p>I’m working towards... </p>
-                                <p>In the near future, I’d like to... </p>
+                                <p>I’m working on... <i>(Currently improving LMS)</i></p> 
+                                <p>In the near future, I’d like to... <i>(no plans at the moment)</i></p>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="md:w-1/2 md:mt-0 md:ml-4 order-1 md:order-2 img-container mt-4 animate__animated animate__fadeIn">
-                    <img src="https://placehold.co/600x400" alt="Future Goals Image" class="rounded-lg shadow-lg">
                 </div>
             </section>
 
