@@ -70,22 +70,63 @@ document.addEventListener('DOMContentLoaded', function() {
     const terminalInput = document.getElementById('terminalInput');
     terminalInput.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
-            const input = e.target.innerText.trim(); // Get the text from the content-editable div
-            const outputDiv = document.getElementById('terminalOutput');
+        const input = e.target.innerText.trim().toLowerCase(); // normalize input
+        const outputDiv = document.getElementById('terminalOutput');
+        let response = '';
 
-            // Example of some simple commands
-            if (input === 'hello') {
-                outputDiv.innerHTML += '<div>Terminal says: Wassup!</div>';
-            } else if (input === 'clear') {
-                outputDiv.innerHTML = '';
-            } else if (input === 'cls') {
-                outputDiv.innerHTML = '';
-            } else {
-                outputDiv.innerHTML += `<div>Unknown command: ${input}</div>`;
+            switch (input) {
+                case 'hello':
+                    response = 'Terminal says: Wassup!';
+                    break;
+                case 'clear':
+                case 'cls':
+                    outputDiv.innerHTML = '';
+                    e.target.innerText = '';
+                    return;
+                case 'help':
+                    response = `Available commands:
+                    - hello        👉 Terminal greets you
+                    - clear / cls  👉 Clears the screen
+                    - joke         👉 Tells a bad joke
+                    - hack         👉 Simulates hacking animation
+                    - fortune      👉 Gives a deep thought
+                    - dance        👉 💃 Terminal boogies
+                    - beep         👉 (Imagine a loud beep!)
+                    - sudo         👉 You’re not root, but okay...
+                    - ascii        👉 Shows some ASCII art`;
+                    break;
+                case 'joke':
+                    response = "Why do programmers hate nature? Too many bugs.";
+                    break;
+                case 'hack':
+                    response = "Accessing mainframe...\nBypassing firewall...\nDownloading cookies 🍪...\nJust kidding.";
+                    break;
+                case 'fortune':
+                    response = "“Talk is cheap. Show me the code.” – Linus Torvalds";
+                    break;
+                case 'dance':
+                    response = "♪┏(・o･)┛♪┗ ( ･o･) ┓♪ Terminal is dancing!";
+                    break;
+                case 'beep':
+                    response = "*BEEP* (Use your imagination)";
+                    break;
+                case 'sudo':
+                    response = "Nice try. You still don't have permissions 😎";
+                    break;
+                case 'ascii':
+                    response = `
+                        (\\__/)
+                        (•ㅅ•)
+                        / 　 づ
+                        Cute terminal bunny says hi!`;
+                        break;
+                        default:
+                            response = `Unknown command: ${input}. Try typing 'help'.`;
             }
 
-            e.target.innerText = ''; // Clear input after command
-            outputDiv.scrollTop = outputDiv.scrollHeight; // Scroll to the bottom of the output.
+            outputDiv.innerHTML += `<div>> ${input}</div><div>${response}</div>`;
+            e.target.innerText = ''; // Clear input
+            outputDiv.scrollTop = outputDiv.scrollHeight; // Auto scroll
         }
     });
 });
