@@ -28,7 +28,7 @@ body.projects-page {
     place-items: start center;
     overflow-x: clip;
     box-sizing: border-box;
-    padding: 6rem 0.5rem 0;
+    padding: calc(6rem + env(safe-area-inset-top, 0px)) 0.5rem 0;
 }
 
 .card {
@@ -50,7 +50,7 @@ body.projects-page {
 
 @media (max-width: 1023px) {
     .projects-main {
-        padding: 6rem 0.5rem 1rem;
+        padding: calc(8rem + env(safe-area-inset-top, 0px)) 0.5rem 1rem;
     }
 
     .container_card {
@@ -69,7 +69,7 @@ body.projects-page {
 
 @media (max-width: 640px) {
     .projects-main {
-        padding-top: 7.25rem;
+        padding-top: calc(8.75rem + env(safe-area-inset-top, 0px));
     }
 
     .container_card {
