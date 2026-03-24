@@ -5,80 +5,85 @@
   
 .container_card {
     position: relative;
-    width: min(100%, 64rem);
+    width: min(100%, 72rem);
     min-height: 18.75rem;
     margin: 0 auto;
     padding: 0 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16.5rem, 1fr));
+    align-items: stretch;
+    gap: 1rem;
+}
+
+body.projects-page {
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.projects-main {
+    width: 100%;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    overflow-x: clip;
+    box-sizing: border-box;
+    padding: 6rem 0.5rem 0;
 }
 
 .card {
     display: flex;
     height: 18.75rem;
-    width: 13.75rem;
-    min-width: 13.75rem;
+    width: 100%;
+    min-width: 0;
     background-color: rgb(23, 23, 23);
     border-radius: 10px;
-    box-shadow: -1rem 0 3rem #000000;
-/*   margin-left: -50px; */
+    box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.45);
     transition: 0.4s ease-out;
     position: relative;
-    left: 0px;
-}
-
-.card:not(:first-child) {
-    margin-left: -50px;
 }
 
 .card:hover {
-    transform: translateY(-20px);
-    transition: 0.4s ease-out;
-}
-
-.card:hover ~ .card {
-    position: relative;
-    left: 50px;
+    transform: translateY(-10px);
     transition: 0.4s ease-out;
 }
 
 @media (max-width: 1023px) {
+    .projects-main {
+        padding: 6rem 0.5rem 1rem;
+    }
+
     .container_card {
-        justify-content: center;
-        align-items: stretch;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1rem;
     }
 
     .card {
-        width: min(100%, 22rem);
-        min-width: 16rem;
-        box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.45);
-    }
-
-    .card:not(:first-child) {
-        margin-left: 0;
+        height: 18.25rem;
     }
 
     .card:hover {
         transform: translateY(-8px);
     }
-
-    .card:hover ~ .card {
-        left: 0;
-    }
 }
 
 @media (max-width: 640px) {
     .container_card {
+        grid-template-columns: 1fr;
         padding: 0 0.75rem;
     }
 
     .card {
-        width: 100%;
-        min-width: 0;
+        height: 18rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .projects-main {
+        height: 100vh;
+        min-height: 0;
+        overflow-y: hidden;
+        padding-top: 5.5rem;
     }
 }
 /* Terminal container styling */
