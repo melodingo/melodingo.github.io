@@ -4,21 +4,23 @@
   }*/
   
 .container_card {
-    position: absolute;
-    height: 18.75rem;
-    width: 56.25rem;
-    top: 6.25rem;
-    /*left: calc(50% - 300px);*/
+    position: relative;
+    width: min(100%, 64rem);
+    min-height: 18.75rem;
+    margin: 0 auto;
+    padding: 0 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap; /* Allow wrapping of cards */
+    flex-wrap: wrap;
+    gap: 0;
 }
 
 .card {
     display: flex;
     height: 18.75rem;
     width: 13.75rem;
+    min-width: 13.75rem;
     background-color: rgb(23, 23, 23);
     border-radius: 10px;
     box-shadow: -1rem 0 3rem #000000;
@@ -41,6 +43,43 @@
     position: relative;
     left: 50px;
     transition: 0.4s ease-out;
+}
+
+@media (max-width: 1023px) {
+    .container_card {
+        justify-content: center;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .card {
+        width: min(100%, 22rem);
+        min-width: 16rem;
+        box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.45);
+    }
+
+    .card:not(:first-child) {
+        margin-left: 0;
+    }
+
+    .card:hover {
+        transform: translateY(-8px);
+    }
+
+    .card:hover ~ .card {
+        left: 0;
+    }
+}
+
+@media (max-width: 640px) {
+    .container_card {
+        padding: 0 0.75rem;
+    }
+
+    .card {
+        width: 100%;
+        min-width: 0;
+    }
 }
 /* Terminal container styling */
 .terminal-container {
