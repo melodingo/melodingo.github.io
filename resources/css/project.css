@@ -68,6 +68,10 @@ body.projects-page {
 }
 
 @media (max-width: 640px) {
+    .projects-main {
+        padding-top: 7.25rem;
+    }
+
     .container_card {
         grid-template-columns: 1fr;
         padding: 0 0.75rem;
