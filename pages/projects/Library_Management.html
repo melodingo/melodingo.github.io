@@ -83,6 +83,80 @@
                 // Event listeners for buttons
                 document.querySelector('.prev').addEventListener('click', () => changeSlide(-1));
                 document.querySelector('.next').addEventListener('click', () => changeSlide(1));
+
+                // Click-to-zoom gallery for project screenshots.
+                const zoomableImages = Array.from(document.querySelectorAll('.img-container img, .img-container2 img, .carousel-image img'));
+                const lightbox = document.getElementById('imageLightbox');
+                const lightboxImage = document.getElementById('lightboxImage');
+                const lightboxClose = document.getElementById('lightboxClose');
+                const lightboxPrev = document.getElementById('lightboxPrev');
+                const lightboxNext = document.getElementById('lightboxNext');
+                let activeImageIndex = -1;
+
+                function openLightboxAt(index) {
+                    if (index < 0 || index >= zoomableImages.length) {
+                        return;
+                    }
+
+                    activeImageIndex = index;
+                    const selectedImage = zoomableImages[activeImageIndex];
+                    lightboxImage.src = selectedImage.src;
+                    lightboxImage.alt = selectedImage.alt || 'Enlarged project image';
+                    lightbox.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                }
+
+                function showNextImage(step) {
+                    if (zoomableImages.length === 0) {
+                        return;
+                    }
+
+                    const nextIndex = (activeImageIndex + step + zoomableImages.length) % zoomableImages.length;
+                    openLightboxAt(nextIndex);
+                }
+
+                zoomableImages.forEach((img, index) => {
+                    img.classList.add('zoomable-image');
+                    img.addEventListener('click', () => {
+                        openLightboxAt(index);
+                    });
+                });
+
+                function closeLightbox() {
+                    lightbox.classList.add('hidden');
+                    lightboxImage.src = '';
+                    activeImageIndex = -1;
+                    document.body.style.overflow = '';
+                }
+
+                lightboxClose.addEventListener('click', closeLightbox);
+                lightboxPrev.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    showNextImage(-1);
+                });
+                lightboxNext.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    showNextImage(1);
+                });
+                lightbox.addEventListener('click', (event) => {
+                    if (event.target === lightbox) {
+                        closeLightbox();
+                    }
+                });
+
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+                        closeLightbox();
+                    }
+
+                    if (!lightbox.classList.contains('hidden') && event.key === 'ArrowLeft') {
+                        showNextImage(-1);
+                    }
+
+                    if (!lightbox.classList.contains('hidden') && event.key === 'ArrowRight') {
+                        showNextImage(1);
+                    }
+                });
             });
 
             window.addEventListener('load', function() {
@@ -510,6 +584,13 @@
                     <path d="M22 2 2 22"></path>
                 </svg>
             </div>
+        </div>
+
+        <div id="imageLightbox" class="lightbox-overlay hidden" role="dialog" aria-modal="true" aria-label="Image preview">
+            <button id="lightboxPrev" class="lightbox-nav lightbox-nav-prev" aria-label="Previous image">&#10094;</button>
+            <button id="lightboxNext" class="lightbox-nav lightbox-nav-next" aria-label="Next image">&#10095;</button>
+            <button id="lightboxClose" class="lightbox-close" aria-label="Close image preview">&times;</button>
+            <img id="lightboxImage" class="lightbox-image" src="" alt="">
         </div>
     </body>
 </html>
