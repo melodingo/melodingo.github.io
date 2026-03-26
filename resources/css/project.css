@@ -219,7 +219,7 @@ body.projects-page {
 .img-container {
     width: 100%;
     max-width: 37.5rem;
-    height: auto;
+    aspect-ratio: 3 / 2;
     max-height: 25rem;
     overflow: hidden;
 }
@@ -227,7 +227,7 @@ body.projects-page {
 .img-container2 {
     width: 100%;
     max-width: 25rem;
-    height: auto;
+    aspect-ratio: 2 / 3;
     max-height: 37.5rem;
     overflow: hidden;
 }
@@ -363,16 +363,25 @@ body {
 
 .carousel {
     position: relative; /* Keep the carousel relative */
+    width: 100%;
+    height: 100%;
     overflow: hidden; /* Hide overflow */
 }
 
 .carousel-image {
     width: 100%; /* Full width for images */
+    height: 100%;
     display: none; /* Hide all images by default */
 }
 
 .carousel-image.active {
     display: block; /* Only display the active image */
+}
+
+.carousel-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .prev, .next {
