@@ -2189,6 +2189,16 @@ body,html {
   text-align: center;
 }
 
+.about-toolstack-list > :not(:last-child) {
+    margin-bottom: 1.25rem;
+}
+
+.about-journey-image {
+    max-width: 31rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* About page: add space between Skills and right column, and align right cards */
 @media (min-width: 768px) {
     .about-skills-section {
@@ -2196,7 +2206,7 @@ body,html {
     }
 
     .about-right-column {
-        margin-left: 10rem;
+          margin-left: 7rem;
     }
 
     .about-right-card {
