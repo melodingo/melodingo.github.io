@@ -2188,3 +2188,19 @@ body,html {
 .text-center {
   text-align: center;
 }
+
+/* About page: add space between Skills and right column, and align right cards */
+@media (min-width: 768px) {
+    .about-skills-section {
+        align-items: stretch;
+    }
+
+    .about-right-column {
+        margin-left: 10rem;
+    }
+
+    .about-right-card {
+        max-width: 34rem;
+        margin-left: auto;
+    }
+}
