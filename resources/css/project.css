@@ -219,29 +219,27 @@ body.projects-page {
 .img-container {
     width: 100%;
     max-width: 37.5rem;
-    aspect-ratio: 3 / 2;
-    max-height: 25rem;
-    overflow: hidden;
+    height: auto;
+    overflow: visible;
 }
 
 .img-container2 {
     width: 100%;
     max-width: 25rem;
-    aspect-ratio: 2 / 3;
-    max-height: 37.5rem;
-    overflow: hidden;
+    height: auto;
+    overflow: visible;
 }
 
 .img-container img {
     width: 100%;
-    height: 100%;
-    object-fit:cover;
+    height: auto;
+    object-fit: contain;
 }
 
 .img-container2 img {
     width: 100%;
-    height: 100%; 
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
     border-radius: 8px; 
 }
 
@@ -364,13 +362,13 @@ body {
 .carousel {
     position: relative; /* Keep the carousel relative */
     width: 100%;
-    height: 100%;
-    overflow: hidden; /* Hide overflow */
+    height: auto;
+    overflow: visible;
 }
 
 .carousel-image {
     width: 100%; /* Full width for images */
-    height: 100%;
+    height: auto;
     display: none; /* Hide all images by default */
 }
 
@@ -380,8 +378,8 @@ body {
 
 .carousel-image img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
 }
 
 .prev, .next {
