@@ -1,0 +1,469 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Samuel Stucki</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+        <link rel="Stylesheet" href="/dist/style.css">
+        <link rel="Stylesheet" href="/resources/css/project.css">
+        <link rel="stylesheet" href="/resources/css/style.css">
+        <script src="/resources/js/main.js" async=""></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    </head>
+    <body class="bg-neutral-200 dark:bg-neutral-900 min-h-screen" dir="ltr">
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Function to update theme
+                function updateTheme(theme) {
+                    var d = document.documentElement;
+                    var c = d.classList;
+
+                    if (theme === 'light') {
+                        c.remove('dark');
+                        c.add('light');
+                        d.style.colorScheme = 'light';
+                        localStorage.setItem('theme', 'light');
+                        console.log('Switched to light mode');
+                    } else if (theme === 'dark') {
+                        c.remove('light');
+                        c.add('dark');
+                        d.style.colorScheme = 'dark';
+                        localStorage.setItem('theme', 'dark');
+                        console.log('Switched to dark mode');
+                    }
+                }
+
+                // Initial theme setup
+                (function() {
+                    var storedTheme = localStorage.getItem('theme');
+                    if (storedTheme) {
+                        updateTheme(storedTheme);
+                    } else {
+                        // Default to dark if no theme is set
+                        updateTheme('dark');
+                    }
+                })();
+
+                // Event listener for the button
+                document.getElementById('themeToggleBtn').addEventListener('click', function() {
+                    var currentTheme = localStorage.getItem('theme');
+                    if (currentTheme === 'light') {
+                        updateTheme('dark');
+                    } else {
+                        updateTheme('light');
+                    }
+                });
+
+                // Click-to-zoom gallery for project screenshots.
+                const zoomableImages = Array.from(document.querySelectorAll('.img-container img, .img-container2 img'));
+                const lightbox = document.getElementById('imageLightbox');
+                const lightboxImage = document.getElementById('lightboxImage');
+                const lightboxClose = document.getElementById('lightboxClose');
+                const lightboxPrev = document.getElementById('lightboxPrev');
+                const lightboxNext = document.getElementById('lightboxNext');
+                let activeImageIndex = -1;
+
+                function openLightboxAt(index) {
+                    if (index < 0 || index >= zoomableImages.length) {
+                        return;
+                    }
+
+                    activeImageIndex = index;
+                    const selectedImage = zoomableImages[activeImageIndex];
+                    lightboxImage.src = selectedImage.src;
+                    lightboxImage.alt = selectedImage.alt || 'Enlarged project image';
+                    lightbox.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                }
+
+                function showNextImage(step) {
+                    if (zoomableImages.length === 0) {
+                        return;
+                    }
+
+                    const nextIndex = (activeImageIndex + step + zoomableImages.length) % zoomableImages.length;
+                    openLightboxAt(nextIndex);
+                }
+
+                zoomableImages.forEach((img, index) => {
+                    img.classList.add('zoomable-image');
+                    img.addEventListener('click', () => {
+                        openLightboxAt(index);
+                    });
+                });
+
+                function closeLightbox() {
+                    lightbox.classList.add('hidden');
+                    lightboxImage.src = '';
+                    activeImageIndex = -1;
+                    document.body.style.overflow = '';
+                }
+
+                lightboxClose.addEventListener('click', closeLightbox);
+                lightboxPrev.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    showNextImage(-1);
+                });
+                lightboxNext.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    showNextImage(1);
+                });
+                lightbox.addEventListener('click', (event) => {
+                    if (event.target === lightbox) {
+                        closeLightbox();
+                    }
+                });
+
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+                        closeLightbox();
+                    }
+
+                    if (!lightbox.classList.contains('hidden') && event.key === 'ArrowLeft') {
+                        showNextImage(-1);
+                    }
+
+                    if (!lightbox.classList.contains('hidden') && event.key === 'ArrowRight') {
+                        showNextImage(1);
+                    }
+                });
+            });
+
+            window.addEventListener('load', function() {
+                window.scrollTo(0, 0);
+            });
+        </script>
+        <style jsx="1" global="1">
+            #nprogress {
+                pointer-events: none;
+            }
+
+            #nprogress .bar {
+                background: #14b8a6;
+                position: fixed;
+                z-index: 9999;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 3px;
+            }
+
+            #nprogress .peg {
+                display: block;
+                position: absolute;
+                right: 0px;
+                width: 100px;
+                height: 100%;
+                box-shadow: 0 0 10px #14b8a6, 0 0 5px #14b8a6;
+                opacity: 1;
+                -webkit-transform: rotate(3deg) translate(0px, -4px);
+                -ms-transform: rotate(3deg) translate(0px, -4px);
+                transform: rotate(3deg) translate(0px, -4px);
+            }
+
+            #nprogress .spinner {
+                display: block;
+                position: fixed;
+                z-index: 1031;
+                top: 15px;
+                right: 15px;
+            }
+
+            #nprogress .spinner-icon {
+                width: 18px;
+                height: 18px;
+                box-sizing: border-box;
+                border: solid 2px transparent;
+                border-top-color: #14b8a6;
+                border-left-color: #14b8a6;
+                border-radius: 50%;
+                -webkit-animation: nprogresss-spinner 400ms linear infinite;
+                animation: nprogress-spinner 400ms linear infinite;
+            }
+
+            .nprogress-custom-parent {
+                overflow: hidden;
+                position: relative;
+            }
+
+            .nprogress-custom-parent #nprogress .spinner, .nprogress-custom-parent #nprogress .bar {
+                position: absolute;
+            }
+
+            @-webkit-keyframes nprogress-spinner {
+                0% {
+                    -webkit-transform: rotate(0deg);
+                }
+
+                100% {
+                    -webkit-transform: rotate(360deg);
+                }
+            }
+
+            @keyframes nprogress-spinner {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+
+        <nav class="fixed z-[3] w-full top-0 ease-in-out bg-neutral-200 dark:bg-neutral-900">
+            <div class="py-2 px-2 md:px-4 grid grid-cols-[1fr_auto_1fr] w-full">
+                <div class="w-max">
+                    <a href="/pages/projects/projects.html">
+                        <div class="hidden md:grid grid-cols-[max-content_max-content] gap-1 text-blue-500 hover:text-blue-700 duration-300 ease-in-out place-items-center cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left w-4 h-4">
+                                <path d="m15 18-6-6 6-6"></path>
+                            </svg>
+                            <span>Projects</span>
+                        </div>
+                        <div class="grid md:hidden text-blue-500 hover:text-blue-700 duration-300 ease-in-out place-items-center cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left w-4 h-4">
+                                <path d="m15 18-6-6 6-6"></path>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Center Section: Text -->
+                <div class="grid grid-cols-[repeat(3,max-content)] place-items-center font-semibold">
+                    <span class="text-sky-500">~</span>
+                    <span class="text-orange-500">/</span>
+                    <p class="text-orange-500 max-w-40 md:max-w-none truncate overflow-hidden">Trackmania RL</p>
+                </div>
+                <div class="container3 mx-auto">
+                    <div class="ml-selected">
+                        <div>
+                            <div class="text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white duration-200 ease-in-out cursor-pointer"
+                                 type="button"
+                                 id="themeToggleBtn"
+                                 aria-haspopup="menu"
+                                 aria-expanded="false"
+                                 data-state="closed">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun-moon w-6 h-6">
+                                    <path d="M12 8a2.83 2.83 0 0 0 4 4 4 4 0 1 1-4-4"></path>
+                                    <path d="M12 2v2"></path>
+                                    <path d="M12 20v2"></path>
+                                    <path d="m4.9 4.9 1.4 1.4"></path>
+                                    <path d="m17.7 17.7 1.4 1.4"></path>
+                                    <path d="M2 12h2"></path>
+                                    <path d="M20 12h2"></path>
+                                    <path d="m6.3 17.7-1.4 1.4"></path>
+                                    <path d="m19.1 4.9-1.4 1.4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-zinc-300 dark:bg-border rounded-xl w-full h-[1px] transition-all duration-500 mx-auto">
+            </div>
+        </nav>
+
+        <div class="content-wrapper p-4 mt-16">
+            <div class="mt-16">
+                <a href="#TrackmaniaRL" id="TrackmaniaRL">
+                    <span class="font-semibold text-lg">Trackmania Reinforcement Learning</span>
+                </a>
+                <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px mb-2"></div>
+                <div class="grid sm:grid-cols-[auto_max-content] gap-2">
+                    <div>
+                        <div class="grid grid-flow-col w-max gap-1">
+                            <div class="h-6 relative aspect-square" data-state="closed">
+                                <img alt="python" loading="lazy" decoding="async" data-nimg="fill" src="/assets/python.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-auto grid grid-flow-col gap-4 w-max">
+                        <a href="https://github.com/melodingo/Trackmania-RL" target="_blank" class="z-[2]">
+                            <div class="grid grid-cols-[max-content_max-content] place-items-center gap-1 text-blue-500 hover:text-blue-600 duration-300 ease-in-out">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-code-xml w-4 h-4">
+                                    <path d="m18 16 4-4-4-4"></path>
+                                    <path d="m6 8-4 4 4 4"></path>
+                                    <path d="m14.5 4-5 16"></path>
+                                </svg>
+                                <span>View code</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!-- Divider -->
+                <div class="w-full py-4 grid place-items-center animate__animated animate__fadeIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-slash w-6 h-6 text-gray-300 dark:text-neutral-800 animate__animated animate__rotateIn">
+                        <path d="M22 2 2 22"></path>
+                    </svg>
+                </div>
+                <!-- Divider -->
+            </div>
+
+            <section class="mb-4 flex flex-col md:flex-row items-center animate__animated animate__fadeInUp">
+                <div class="md:w-1/2 p-4 order-2 md:order-1">
+                    <h2 class="text-2xl font-semibold animate__animated animate__fadeInUp">Introduction</h2>
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 animate__animated animate__fadeIn text-white">
+                            <div class="terminal-prompt">
+                                Introduction@<span style="color: #33CCFF;">Project</span>:~$
+                                <span class="cursor">|</span>
+                            </div>
+                            <div class="text-lg space-y-2">
+                                <p>
+                                    Trackmania-RL is a reinforcement learning project that trains an AI agent to drive autonomously in the racing game Trackmania.
+                                    The agent learns to navigate tracks as fast as possible purely from gameplay experience — no hard-coded rules, just trial, error, and reward.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+
+            <section class="mb-4 flex flex-col md:flex-row items-center animate__animated animate__fadeInUp">
+                <div class="md:w-1/2 p-4 order-2 md:order-1">
+                    <h2 class="text-2xl font-semibold animate__animated animate__fadeInUp">Key Features</h2>
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 animate__animated animate__fadeIn text-white">
+                            <div class="terminal-prompt">
+                                Features@<span style="color: #33CCFF;">TrackmaniaRL</span>:~$
+                                <span class="cursor">|</span>
+                            </div>
+                            <div class="text-lg">
+                                <p>Autonomous AI agent trained via reinforcement learning</p>
+                                <p>Custom reward shaping based on speed and track progress</p>
+                                <p>Real-time game interaction via screen capture and input simulation</p>
+                                <p>Support for multiple track configurations</p>
+                                <p>Training progress visualisation and logging</p>
+                                <p>Modular architecture for easy experimentation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+
+            <section class="mb-12 flex flex-col md:flex-row items-center animate__animated animate__fadeInUp">
+                <div class="md:w-1/2 p-4 animate__animated animate__fadeIn">
+                    <h2 class="text-2xl font-semibold animate__animated animate__fadeInUp">How It Works</h2>
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 text-white rounded-lg shadow-lg">
+                            <div class="terminal-prompt">
+                                Algorithm@<span style="color: #33CCFF;">RL</span>:~$
+                                <span class="cursor">|</span>
+                            </div>
+                            <div class="text-lg space-y-2">
+                                <p>1. The agent observes the game state (screen pixels or structured data)</p>
+                                <p>2. A neural network policy selects a steering/acceleration action</p>
+                                <p>3. The game executes the action and returns the next state</p>
+                                <p>4. A reward signal is computed from speed, deviation, and progress</p>
+                                <p>5. The agent updates its policy using a reinforcement learning algorithm (PPO / SAC)</p>
+                                <p>6. This loop repeats thousands of times until the agent masters the track</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+
+            <section class="mb-12 flex flex-col md:flex-row items-center animate__animated animate__fadeInUp">
+                <div class="md:w-1/2 p-4">
+                    <h2 class="text-2xl font-semibold animate__animated animate__zoomIn">Getting Started</h2>
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 text-white rounded-lg shadow-lg">
+                            <div class="terminal-prompt">
+                                Setup@<span style="color: #33CCFF;">Local</span>:~$
+                                <span class="cursor">|</span>
+                            </div>
+                            <div class="text-lg space-y-1">
+                                <p># Clone the repository</p>
+                                <p>git clone https://github.com/melodingo/Trackmania-RL</p>
+                                <p>cd Trackmania-RL</p>
+                                <p></p>
+                                <p># Install dependencies</p>
+                                <p>pip install -r requirements.txt</p>
+                                <p></p>
+                                <p># Start training</p>
+                                <p>python train.py</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+
+            <section class="mb-4 flex flex-col md:flex-row items-center animate__animated animate__fadeInUp">
+                <div class="md:w-1/2 p-4 order-2 md:order-1">
+                    <h2 class="text-2xl font-semibold animate__animated animate__fadeInUp">Technical Implementation</h2>
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 animate__animated animate__fadeIn text-white">
+                            <div class="terminal-prompt">
+                                Tech@<span style="color: #33CCFF;">Stack</span>:~$
+                                <span class="cursor">|</span>
+                            </div>
+                            <p class="text-lg">Language - Python 3</p>
+                            <p class="text-lg">RL Framework - Stable-Baselines3 (PPO / SAC)</p>
+                            <p class="text-lg">Neural Network - PyTorch</p>
+                            <p class="text-lg">Game Interface - tminterface / screen capture</p>
+                            <p class="text-lg">Logging - TensorBoard for training metrics</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="w-full py-4 grid place-items-center animate__animated animate__fadeIn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-slash w-6 h-6 text-gray-300 dark:text-neutral-800 animate__animated animate__rotateIn">
+                    <path d="M22 2 2 22"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div id="imageLightbox" class="lightbox-overlay hidden" role="dialog" aria-modal="true" aria-label="Image preview">
+            <button id="lightboxPrev" class="lightbox-nav lightbox-nav-prev" aria-label="Previous image">&#10094;</button>
+            <button id="lightboxNext" class="lightbox-nav lightbox-nav-next" aria-label="Next image">&#10095;</button>
+            <button id="lightboxClose" class="lightbox-close" aria-label="Close image preview">&times;</button>
+            <img id="lightboxImage" class="lightbox-image" src="" alt="">
+        </div>
+    </body>
+</html>
