@@ -1712,8 +1712,31 @@ body,html {
 .technology-icon_fade-in-right__TGeMO {
     opacity: 0;
     transform: translateX(-100%);
-    animation: technology-icon_fadeInRight__j6uzx .45s ease-out forwards;
+    animation: technology-icon_fadeInRight__j6uzx 1s ease-in-out forwards;
     cursor: default
+}
+
+.technology-fast-tooltip {
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    padding: .2rem .45rem;
+    border-radius: .35rem;
+    background: rgb(24 24 27 / .95);
+    color: #fff;
+    font-size: .7rem;
+    line-height: 1;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(2px);
+    transition: opacity .04s ease-out, transform .04s ease-out
+}
+
+.technology-fast-tooltip.is-visible {
+    opacity: 1;
+    transform: translateY(0)
 }
 
 .contact-me-button_button__6aGNI {

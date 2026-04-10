@@ -54,6 +54,45 @@
                         updateTheme('light');
                     }
                 });
+
+                // Fast tooltip for technology icons (replaces delayed native title tooltip)
+                var techIcons = document.querySelectorAll('[data-tech-tooltip]');
+                if (techIcons.length > 0) {
+                    var tooltip = document.createElement('div');
+                    tooltip.className = 'technology-fast-tooltip';
+                    document.body.appendChild(tooltip);
+
+                    var activeIcon = null;
+
+                    function moveTooltip(event) {
+                        if (!activeIcon) {
+                            return;
+                        }
+
+                        tooltip.style.left = event.clientX + 12 + 'px';
+                        tooltip.style.top = event.clientY - 12 + 'px';
+                    }
+
+                    function showTooltip(icon, event) {
+                        activeIcon = icon;
+                        tooltip.textContent = icon.getAttribute('data-tech-tooltip') || '';
+                        tooltip.classList.add('is-visible');
+                        moveTooltip(event);
+                    }
+
+                    function hideTooltip() {
+                        activeIcon = null;
+                        tooltip.classList.remove('is-visible');
+                    }
+
+                    techIcons.forEach(function(icon) {
+                        icon.addEventListener('mouseenter', function(event) {
+                            showTooltip(icon, event);
+                        });
+                        icon.addEventListener('mousemove', moveTooltip);
+                        icon.addEventListener('mouseleave', hideTooltip);
+                    });
+                }
             });
         </script>
         <style jsx="1" global="1">
@@ -239,34 +278,34 @@
                 <div class="grid place-items-center grid-flow-row gap-1 pt-10 md:pt-20">
                     <span class="text-zinc-500 dark:text-zinc-400 !delay-300 page_fade-in-left__3pzND">technologies I&#x27;m learning</span>
                     <div class="p-2 flex place-items-start gap-1 md:gap-2 max-w-[100vw] overflow-x-scroll technologies_technologies-container__ouFUi">
-                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" title="HTML">
+                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" data-tech-tooltip="HTML" aria-label="HTML">
                             <img alt="html" loading="lazy" decoding="async" data-nimg="fill" src="assets/html.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
                         </div>
-                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" title="CSS">
+                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" data-tech-tooltip="CSS" aria-label="CSS">
                             <img alt="css" loading="lazy" decoding="async" data-nimg="fill" src="assets/css.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
                         </div>
-                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" title="Java.">
+                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" data-tech-tooltip="Java" aria-label="Java">
                             <img alt="Java" loading="lazy" decoding="async" data-nimg="fill" src="assets/java.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
                         </div>
-                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" title="Python">
+                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" data-tech-tooltip="Python" aria-label="Python">
                             <img alt="Python" loading="lazy" decoding="async" data-nimg="fill" src="assets/python.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
                         </div>
-                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" title="C#">
+                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" data-tech-tooltip="C#" aria-label="C#">
                             <img alt="C#" loading="lazy" decoding="async" data-nimg="fill" src="assets/C sharp.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
                         </div>   
-                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" title="SQL">
+                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" data-tech-tooltip="SQL" aria-label="SQL">
                             <img alt="Sql" loading="lazy" decoding="async" data-nimg="fill" src="assets/sql.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
                         </div>
-                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" title="MongoDB">
+                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" data-tech-tooltip="MongoDB" aria-label="MongoDB">
                             <img alt="MongoDB" loading="lazy" decoding="async" data-nimg="fill" src="assets/mongodb.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
                         </div>
-                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" title="PHP">
+                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" data-tech-tooltip="PHP" aria-label="PHP">
                             <img alt="php" loading="lazy" decoding="async" data-nimg="fill" src="assets/php.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
                         </div>
-                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" title="JavaScript">
+                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" data-tech-tooltip="JavaScript" aria-label="JavaScript">
                             <img alt="JavaScript" loading="lazy" decoding="async" data-nimg="fill" src="assets/javascript.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
                         </div>        
-                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" title="Tailwind CSS">
+                        <div class="w-8 h-8 relative cursor-pointer !aspect-square technology-icon_fade-in-right__TGeMO" data-state="closed" style="animation-delay: 600ms;" data-tech-tooltip="Tailwind CSS" aria-label="Tailwind CSS">
                             <img alt="Tailwind" loading="lazy" decoding="async" data-nimg="fill" src="assets/tailwind.svg" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
                         </div>                    
                     </div>
