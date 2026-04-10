@@ -1712,7 +1712,8 @@ body,html {
 .technology-icon_fade-in-right__TGeMO {
     opacity: 0;
     transform: translateX(-100%);
-    animation: technology-icon_fadeInRight__j6uzx 1s ease-in-out forwards
+    animation: technology-icon_fadeInRight__j6uzx .45s ease-out forwards;
+    cursor: default
 }
 
 .contact-me-button_button__6aGNI {
