@@ -233,27 +233,32 @@ body.projects-page {
     width: 100%;
     max-width: 37.5rem;
     height: auto;
-    overflow: visible;
+    overflow: hidden;
+    border-radius: 0.55rem;
 }
 
 .img-container2 {
     width: 100%;
     max-width: 25rem;
     height: auto;
-    overflow: visible;
+    overflow: hidden;
+    border-radius: 0.55rem;
 }
 
 .img-container img {
     width: 100%;
     height: auto;
     object-fit: contain;
+    display: block;
+    border-radius: inherit;
 }
 
 .img-container2 img {
     width: 100%;
     height: auto;
     object-fit: contain;
-    border-radius: 8px; 
+    display: block;
+    border-radius: inherit;
 }
 
 .about-journey-image.img-container {
@@ -368,7 +373,7 @@ body.projects-page {
     height: auto;
     max-width: min(95vw, 1400px);
     max-height: 90vh;
-    border-radius: 0.5rem;
+    border-radius: 0.55rem;
     box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.45);
 }
 
