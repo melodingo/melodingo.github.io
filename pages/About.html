@@ -352,10 +352,14 @@
                                         <div class="circle yellow"></div>
                                         <div class="circle green"></div>
                                     </div>
+                                    <div class="terminal-title">secret-terminal</div>
                                 </div>
                                 <div class="terminal-body">
-                                    <div id="terminalInput" contenteditable="true" placeholder="Type your command..."></div>
                                     <div id="terminalOutput"></div>
+                                    <div class="terminal-input-row">
+                                        <span class="terminal-input-prefix">~$</span>
+                                        <div id="terminalInput" contenteditable="true" aria-label="Terminal input"></div>
+                                    </div>
                                 </div>
                             </div>                                                                                     
                         </div>            
@@ -562,7 +566,7 @@
             <section class="about-journey-section mb-4 flex flex-col md:flex-row items-center animate__animated animate__fadeInUp">
                 <div class="about-journey-image md:w-1/2 mt-4 md:mt-0 md:mr-4 img-container animate__animated animate__fadeIn relative">
                     <!-- Carousel -->
-                    <div class="carousel relative learning-journey-frame">
+                    <div class="carousel relative">
                         <div class="carousel-image active">
                             <img src="/assets/TeslaCoil.jpeg" alt="Tesla Coil" data-description="Tesla coil project build and final setup." class="rounded-lg shadow-lg">
                         </div>

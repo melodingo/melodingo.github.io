@@ -627,18 +627,22 @@ body {
     position: fixed;
     top: 20%;
     left: 20%;
-    width: 600px;
-    height: 400px;
+    width: min(700px, calc(100vw - 2rem));
+    height: min(460px, calc(100vh - 2rem));
     background-color: #2b2b2b;
     color: #d1d5da;
-    border-radius: 6px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    border: 1px solid #3a3a3a;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
     z-index: 9999;
     font-family: 'Courier New', Courier, monospace;
     resize: both;
     overflow: hidden;
-    display: flex;
     flex-direction: column;
+}
+
+.terminal-window.is-open {
+    display: flex;
 }
 
 .terminal-header {
@@ -649,12 +653,19 @@ body {
     cursor: move;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
+    user-select: none;
 }
 
 .terminal-header .traffic-lights {
     display: flex;
     gap: 6px;
-    margin-right: auto;
+    margin-right: 10px;
+}
+
+.terminal-title {
+    color: #9ca3af;
+    font-size: 12px;
+    letter-spacing: .02em;
 }
 
 .traffic-lights .circle {
@@ -678,48 +689,1042 @@ body {
 
 .terminal-body {
     display: flex;
-    flex-direction: column; /* Normal column layout, input above output */
-    padding: 15px;
+    flex-direction: column;
+    padding: 12px;
+    gap: 10px;
     flex-grow: 1;
+    overflow: hidden;
 }
 
 #terminalOutput {
     background-color: #1e1e1e;
     padding: 10px;
     border-radius: 4px;
-    min-height: 200px;
+    min-height: 0;
     border: 1px solid #3e3e3e;
     font-size: 14px;
     white-space: pre-wrap;
+    line-height: 1.4;
     flex-grow: 1;
     overflow-y: auto; /* Make output scrollable */
 }
 
-#terminalInput {
-    width: 100%;
-    background-color: #1e1e1e;
-    border: none;
-    color: #fff;
-    padding-left: 30px; /* Space for the prompt */
-    padding-top: 8px;
-    padding-bottom: 8px;
-    font-family: 'Courier New', Courier, monospace;
-    outline: none;
-    white-space: nowrap;
-    word-wrap: normal;
-    font-size: 14px;
-    line-height: 20px;
-    min-height: 30px;
-    resize: none;
-    position: relative;
+.terminal-line {
+    margin-bottom: 0.35rem;
 }
 
-#terminalInput::before {
-    content: "~$ ";
-    color: #00ca4e; /* Green color for the prompt */
+.terminal-line-command {
+    color: #7dd3fc;
+}
+
+.terminal-line-system {
+    color: #86efac;
+}
+
+.terminal-spinner {
+    color: #22d3ee;
+    font-weight: 700;
+    min-width: 2.5ch;
+    display: inline-block;
+}
+
+.terminal-matrix {
+    color: #22c55e;
+    text-shadow: 0 0 6px rgba(34, 197, 94, 0.55);
+    letter-spacing: 0.03em;
+    font-size: 0.82rem;
+}
+
+.terminal-cinematic {
+    border: 1px solid #334155;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #0b1220, #0f172a 55%, #111827);
+    padding: 10px;
+    margin: 0.4rem 0;
+}
+
+.terminal-cinematic-title {
+    color: #93c5fd;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+}
+
+.terminal-cinematic-status {
+    color: #cbd5e1;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.terminal-cinematic-bar-wrap {
+    width: 100%;
+    height: 12px;
+    border-radius: 999px;
+    background: #0f172a;
+    border: 1px solid #334155;
+    overflow: hidden;
+}
+
+.terminal-cinematic-bar {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #22d3ee, #38bdf8, #60a5fa);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.65);
+    transition: width 0.08s linear;
+}
+
+.terminal-cinematic-percent {
+    display: block;
+    margin-top: 0.4rem;
+    color: #67e8f9;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.terminal-neon {
+    color: #f0abfc;
+    font-size: 1.05rem;
+    letter-spacing: 0.18em;
+    text-shadow: 0 0 10px rgba(236, 72, 153, 0.55), 0 0 18px rgba(168, 85, 247, 0.4);
+}
+
+.terminal-spinner-hero {
+    text-align: center;
+}
+
+.terminal-spinner-large {
+    font-size: 3.4rem;
+    line-height: 1;
+    min-width: 1ch;
+    margin: 0.25rem 0 0.5rem;
+    color: #67e8f9;
+    text-shadow: 0 0 14px rgba(34, 211, 238, 0.5);
+}
+
+.terminal-blackhole {
+    overflow: hidden;
+}
+
+.terminal-blackhole-scene {
+    position: relative;
+    height: 170px;
+    margin: 0.3rem 0 0.55rem;
+    border-radius: 10px;
+    background: radial-gradient(circle at center, #0a0f1a 0%, #05070d 55%, #020307 100%);
+    border: 1px solid #1f2937;
+    overflow: hidden;
+}
+
+.terminal-blackhole-core {
     position: absolute;
+    left: 50%;
     top: 50%;
-    left: 5px;
-    transform: translateY(-50%);
-    font-weight: bold;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, #0b0f19 0%, #000 72%);
+    box-shadow: 0 0 24px rgba(59, 130, 246, 0.35);
+    z-index: 4;
+}
+
+.terminal-blackhole-ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid transparent;
+}
+
+.terminal-blackhole-ring.ring-a {
+    width: 130px;
+    height: 130px;
+    border-top-color: #60a5fa;
+    border-right-color: #22d3ee;
+    animation: blackholeSpin 2.3s linear infinite;
+}
+
+.terminal-blackhole-ring.ring-b {
+    width: 92px;
+    height: 92px;
+    border-bottom-color: #a78bfa;
+    border-left-color: #f472b6;
+    animation: blackholeSpinReverse 1.8s linear infinite;
+}
+
+.terminal-blackhole-particles {
+    position: absolute;
+    inset: 0;
+}
+
+.terminal-blackhole-particle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #93c5fd;
+    opacity: 0.85;
+    transform: rotate(calc(var(--i) * 20deg)) translateY(-70px);
+    animation: blackholeFall 1.9s ease-in infinite;
+    animation-delay: calc(var(--i) * 0.06s);
+}
+
+@keyframes blackholeSpin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes blackholeSpinReverse {
+    from { transform: translate(-50%, -50%) rotate(360deg); }
+    to { transform: translate(-50%, -50%) rotate(0deg); }
+}
+
+@keyframes blackholeFall {
+    0% {
+        opacity: 0;
+        transform: rotate(calc(var(--i) * 20deg)) translateY(-78px) scale(1);
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: rotate(calc(var(--i) * 20deg + 220deg)) translateY(-10px) scale(0.35);
+    }
+}
+
+body.page-blackhole-active {
+    overflow: hidden;
+    cursor: none;
+}
+
+body.page-blackhole-active,
+body.page-blackhole-active * {
+    perspective: 1200px;
+}
+
+body.page-blackhole-shake {
+    animation: blackholeShake 1.6s infinite;
+    animation-timing-function: linear;
+}
+
+body.page-blackhole-arming {
+    overflow: hidden;
+}
+
+.page-blackhole-text-cluster {
+    display: inline;
+}
+
+.page-blackhole-letter {
+    display: inline-block;
+    transform-origin: center center;
+    will-change: transform, opacity, filter;
+    backface-visibility: hidden;
+    animation: pageSuckIn var(--bh-speed, 4.8s) cubic-bezier(0.12, 0.82, 0.08, 1) forwards;
+    animation-delay: var(--bh-delay, 0ms);
+}
+
+.page-blackhole-letter::selection {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.page-blackhole-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 260ms ease;
+    overflow: hidden;
+    --bh-glow: 1;
+    --bh-crack-scale: 0.12;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.18) 0%, rgba(2, 6, 23, 0.88) 34%, rgba(0, 0, 0, 0.98) 66%, #000 100%),
+        radial-gradient(circle at 50% 50%, rgba(96, 165, 250, 0.14) 0%, rgba(255, 255, 255, 0.06) 12%, rgba(14, 165, 233, 0.08) 18%, rgba(0, 0, 0, 0) 46%),
+        repeating-radial-gradient(circle at 50% 50%, rgba(148, 163, 184, 0.12) 0 1px, rgba(0, 0, 0, 0) 1px 21px);
+    backdrop-filter: blur(1.5px) saturate(1.15);
+}
+
+.page-blackhole-overlay::before,
+.page-blackhole-overlay::after {
+    content: '';
+    position: absolute;
+    inset: -12%;
+    background: radial-gradient(circle at 50% 50%, rgba(125, 211, 252, 0.12), rgba(0, 0, 0, 0) 42%);
+    mix-blend-mode: screen;
+    opacity: 0.75;
+    animation: blackholeLens 8s ease-in-out infinite;
+}
+
+.page-blackhole-overlay::after {
+    inset: -20%;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(244, 114, 182, 0.06) 0%, rgba(59, 130, 246, 0.16) 26%, rgba(0, 0, 0, 0) 54%),
+        conic-gradient(from 90deg, rgba(96, 165, 250, 0) 0deg, rgba(96, 165, 250, 0.35) 70deg, rgba(168, 85, 247, 0.65) 115deg, rgba(244, 114, 182, 0.35) 160deg, rgba(96, 165, 250, 0) 260deg, rgba(96, 165, 250, 0.28) 320deg, rgba(96, 165, 250, 0) 360deg);
+    filter: blur(14px) saturate(1.5);
+    opacity: 0.88;
+    animation-duration: 12s;
+    animation-direction: reverse;
+}
+
+.page-blackhole-overlay.is-live {
+    opacity: 1;
+}
+
+.page-blackhole-overlay.is-swallowed {
+    opacity: 1;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.98) 0 40%, rgba(0, 0, 0, 1) 62%, #000 100%),
+        radial-gradient(circle at 50% 50%, rgba(96, 165, 250, 0.09) 0%, rgba(0, 0, 0, 0) 54%);
+}
+
+.page-blackhole-starfield {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.85) 0 1px, rgba(0, 0, 0, 0) 1px 100%),
+        radial-gradient(circle at 80% 16%, rgba(191, 219, 254, 0.9) 0 1px, rgba(0, 0, 0, 0) 1px 100%),
+        radial-gradient(circle at 22% 78%, rgba(255, 255, 255, 0.72) 0 1px, rgba(0, 0, 0, 0) 1px 100%),
+        radial-gradient(circle at 70% 72%, rgba(147, 197, 253, 0.72) 0 1px, rgba(0, 0, 0, 0) 1px 100%),
+        radial-gradient(circle at 52% 52%, rgba(255, 255, 255, 0.55) 0 1px, rgba(0, 0, 0, 0) 1px 100%);
+    background-size: 280px 280px, 340px 340px, 420px 420px, 500px 500px, 620px 620px;
+    opacity: 0.5;
+    filter: blur(0.2px);
+    animation: blackholeStarflow 22s linear infinite;
+}
+
+.page-blackhole-scene {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(62vmin, 820px);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%) scale(var(--bh-lens-scale, 0.05));
+    filter: drop-shadow(0 0 50px rgba(248, 250, 252, 0.36)) drop-shadow(0 0 120px rgba(56, 189, 248, 0.28));
+    transform-origin: center center;
+}
+
+.page-blackhole-crack {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 3.5%;
+    height: 3.5%;
+    transform: translate(-50%, -50%) scale(var(--bh-crack-scale, 0.04));
+    opacity: 0.95;
+    filter: blur(0.2px) drop-shadow(0 0 10px rgba(255, 255, 255, 0.24));
+    mix-blend-mode: screen;
+}
+
+.page-blackhole-crack::before,
+.page-blackhole-crack::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+    transform-origin: top center;
+}
+
+.page-blackhole-crack::before {
+    width: 1.5px;
+    height: 11vmin;
+    transform: translate(-50%, -50%) rotate(13deg);
+    clip-path: polygon(48% 0, 56% 6%, 49% 17%, 61% 28%, 45% 40%, 58% 54%, 43% 67%, 56% 80%, 46% 100%, 40% 100%, 52% 79%, 36% 67%, 48% 53%, 35% 40%, 50% 27%, 42% 17%, 52% 6%);
+    box-shadow: 0 0 24px rgba(255, 255, 255, 0.42);
+}
+
+.page-blackhole-crack::after {
+    width: 1px;
+    height: 8vmin;
+    transform: translate(-50%, -50%) rotate(-20deg);
+    clip-path: polygon(48% 0, 54% 8%, 49% 18%, 57% 28%, 44% 39%, 55% 53%, 41% 66%, 53% 80%, 47% 100%, 42% 100%, 50% 80%, 35% 66%, 46% 52%, 35% 39%, 48% 27%, 40% 17%, 50% 7%);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.35);
+}
+
+.page-blackhole-horizon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 108%;
+    height: 9%;
+    transform: translate(-50%, -50%) scaleX(1);
+    background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.06) 18%, rgba(255, 244, 223, 0.92) 32%, rgba(255, 255, 255, 1) 50%, rgba(255, 244, 223, 0.92) 68%, rgba(255, 255, 255, 0.06) 82%, rgba(0, 0, 0, 0) 100%),
+        radial-gradient(circle at center, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.16) 28%, rgba(0, 0, 0, 0) 72%);
+    filter: blur(8px) saturate(1.2);
+    mix-blend-mode: screen;
+    opacity: 0.7;
+    animation: blackholeHorizon 6.5s ease-in-out infinite;
+}
+
+.page-blackhole-halo {
+    position: absolute;
+    inset: 12%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 40%, rgba(255, 255, 255, 0.14) 48%, rgba(245, 158, 11, 0.16) 54%, rgba(0, 0, 0, 0) 67%);
+    filter: blur(16px);
+    mix-blend-mode: screen;
+    transform: scale(var(--bh-pulse, 1));
+    animation: blackholePulse 6s ease-in-out infinite;
+}
+
+.page-blackhole-disk {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 116%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(var(--bh-disk-scale, 0.14)) rotate(12deg);
+    background:
+        conic-gradient(from 135deg,
+            rgba(0, 0, 0, 0) 0deg,
+            rgba(255, 255, 255, 0.02) 12deg,
+            rgba(255, 255, 255, 0.13) 24deg,
+            rgba(255, 232, 196, 0.76) 48deg,
+            rgba(255, 255, 255, 1) 58deg,
+            rgba(255, 240, 214, 0.84) 70deg,
+            rgba(227, 242, 255, 0.35) 86deg,
+            rgba(255, 255, 255, 0.92) 112deg,
+            rgba(255, 232, 196, 0.72) 138deg,
+            rgba(255, 255, 255, 0.18) 156deg,
+            rgba(0, 0, 0, 0) 180deg,
+            rgba(255, 255, 255, 0.16) 208deg,
+            rgba(255, 232, 196, 0.7) 238deg,
+            rgba(255, 255, 255, 0.96) 294deg,
+            rgba(255, 244, 220, 0.86) 320deg,
+            rgba(0, 0, 0, 0) 360deg);
+    filter: blur(18px) saturate(1.12) contrast(1.04);
+    mix-blend-mode: screen;
+    opacity: 0.96;
+    animation: blackholeDisk 10s linear infinite;
+}
+
+.page-blackhole-core {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 12%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(var(--bh-lens-scale, 0.18));
+    background: radial-gradient(circle, #090c12 0%, #000 56%, #000 100%);
+    box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.92),
+        0 0 54px rgba(255, 255, 255, 0.18),
+        0 0 120px rgba(56, 189, 248, 0.16);
+}
+
+.page-blackhole-core::before {
+    content: '';
+    position: absolute;
+    inset: -46%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0 10%, rgba(255, 255, 255, 0.08) 14%, rgba(0, 0, 0, 0) 42%);
+    filter: blur(20px);
+    opacity: 0.78;
+}
+
+.page-blackhole-core::after {
+    content: '';
+    position: absolute;
+    inset: 26%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.38), rgba(0, 0, 0, 0) 70%);
+    filter: blur(2px);
+    opacity: 0.92;
+}
+
+.page-blackhole-ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid transparent;
+    mix-blend-mode: screen;
+}
+
+.page-blackhole-ring.ring-a {
+    width: 66%;
+    aspect-ratio: 1;
+    border-top-color: rgba(255, 247, 224, 1);
+    border-right-color: rgba(255, 239, 205, 0.92);
+    border-bottom-color: rgba(255, 255, 255, 0.32);
+    animation: blackholeSpin 9.8s linear infinite;
+}
+
+.page-blackhole-ring.ring-b {
+    width: 46%;
+    aspect-ratio: 1;
+    border-top-color: rgba(255, 255, 255, 0.58);
+    border-left-color: rgba(255, 238, 197, 0.95);
+    border-bottom-color: rgba(255, 255, 255, 0.4);
+    animation: blackholeSpinReverse 7.1s linear infinite;
+}
+
+.page-blackhole-caption {
+    position: absolute;
+    left: 50%;
+    bottom: 7%;
+    transform: translateX(-50%);
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 0.38em;
+    color: rgba(248, 250, 252, 0.9);
+    font-size: clamp(0.66rem, 1.8vmin, 0.9rem);
+    text-shadow: 0 0 20px rgba(96, 165, 250, 0.35);
+}
+
+.blackhole-target {
+    transform-origin: center center;
+    will-change: transform, opacity, filter;
+    backface-visibility: hidden;
+    animation: pageSuckIn var(--bh-speed, 3.2s) cubic-bezier(0.14, 0.78, 0.08, 1) forwards;
+    animation-delay: var(--bh-delay, 0ms);
+    pointer-events: none !important;
+}
+
+.blackhole-letter-target {
+    display: inline-block;
+    transform-origin: center center;
+    will-change: transform, opacity, filter;
+    backface-visibility: hidden;
+    animation: pageSuckIn var(--bh-speed, 4.8s) cubic-bezier(0.12, 0.82, 0.08, 1) forwards;
+    animation-delay: var(--bh-delay, 0ms);
+    pointer-events: none !important;
+}
+
+.blackhole-target * {
+    pointer-events: none !important;
+}
+
+.page-blackhole-arming .page-blackhole-crack {
+    opacity: 1;
+}
+
+.page-blackhole-arming-complete .page-blackhole-crack {
+    opacity: 0.85;
+}
+
+.page-blackhole-ring-blast .page-blackhole-ring.ring-a {
+    animation-duration: 4.6s;
+}
+
+.page-blackhole-ring-blast .page-blackhole-ring.ring-b {
+    animation-duration: 3.1s;
+}
+
+body.page-blackhole-void .blackhole-target {
+    visibility: hidden !important;
+}
+
+body.page-blackhole-void .blackhole-letter-target {
+    visibility: hidden !important;
+}
+
+body.page-blackhole-swallowed .page-blackhole-overlay {
+    background:
+        radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.98) 0 38%, rgba(0, 0, 0, 1) 60%, #000 100%),
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.06) 0%, rgba(0, 0, 0, 0) 54%);
+}
+
+body.page-blackhole-swallowed .page-blackhole-scene {
+    transform: translate(-50%, -50%) scale(2.2);
+}
+
+body.page-blackhole-swallowed .page-blackhole-crack {
+    opacity: 0;
+}
+
+@keyframes pageSuckIn {
+    0% {
+        transform: translate3d(0, 0, 0) scale(var(--bh-scale, 1)) rotate(0deg);
+        opacity: 1;
+        filter: blur(0px) saturate(1.06);
+    }
+    28% {
+        opacity: 1;
+    }
+    62% {
+        filter: blur(2px) saturate(1.08);
+    }
+    100% {
+        transform: translate3d(var(--bh-x), var(--bh-y), 0) scale(0.01) rotate(720deg);
+        opacity: 0;
+        filter: blur(18px) saturate(0.55);
+    }
+}
+
+@keyframes blackholePulse {
+    0%, 100% {
+        transform: scale(0.96);
+        opacity: 0.82;
+    }
+    50% {
+        transform: scale(1.04);
+        opacity: 1;
+    }
+}
+
+@keyframes blackholeDisk {
+    from {
+        transform: translate(-50%, -50%) scale(var(--bh-disk-scale, 0.85)) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) scale(var(--bh-disk-scale, 0.85)) rotate(360deg);
+    }
+}
+
+@keyframes blackholeHorizon {
+    0%, 100% {
+        transform: translate(-50%, -50%) scaleX(0.96);
+        opacity: 0.58;
+    }
+    50% {
+        transform: translate(-50%, -50%) scaleX(1.03);
+        opacity: 0.82;
+    }
+}
+
+@keyframes blackholeLens {
+    0%, 100% {
+        transform: scale(0.96) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.02) rotate(6deg);
+    }
+}
+
+@keyframes blackholeStarflow {
+    from {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+        transform: translate3d(-28px, 18px, 0) scale(1.03);
+    }
+}
+
+@keyframes blackholeShake {
+    0% {
+        transform: translate3d(calc(var(--bh-shake, 0.18) * 0.5px), calc(var(--bh-shake, 0.18) * -0.3px), 0) rotate(0deg);
+    }
+    20% {
+        transform: translate3d(calc(var(--bh-shake, 0.18) * -0.8px), calc(var(--bh-shake, 0.18) * 0.6px), 0) rotate(-0.08deg);
+    }
+    40% {
+        transform: translate3d(calc(var(--bh-shake, 0.18) * 0.7px), calc(var(--bh-shake, 0.18) * 0.9px), 0) rotate(0.1deg);
+    }
+    60% {
+        transform: translate3d(calc(var(--bh-shake, 0.18) * -1.1px), calc(var(--bh-shake, 0.18) * -0.4px), 0) rotate(-0.12deg);
+    }
+    80% {
+        transform: translate3d(calc(var(--bh-shake, 0.18) * 0.4px), calc(var(--bh-shake, 0.18) * -1.1px), 0) rotate(0.08deg);
+    }
+    100% {
+        transform: translate3d(calc(var(--bh-shake, 0.18) * -0.3px), calc(var(--bh-shake, 0.18) * 0.4px), 0) rotate(0deg);
+    }
+}
+
+#terminalInput {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #fff;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+    outline: none;
+    white-space: pre;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 20px;
+    min-height: 20px;
+    resize: none;
+    flex: 1;
+}
+
+#terminalInput:focus {
+    border-color: transparent;
+}
+
+@media (max-width: 640px) {
+    .terminal-window {
+        top: 0.75rem;
+        left: 0.75rem;
+        width: calc(100vw - 1.5rem);
+        height: calc(100vh - 1.5rem);
+        resize: none;
+    }
+}
+
+.terminal-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #1e1e1e;
+    border: 1px solid #3e3e3e;
+    border-radius: 4px;
+    padding: 8px 10px;
+}
+
+.terminal-input-prefix {
+    color: #00ca4e;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* Blackhole v3 (raytracing-inspired look, lightweight CSS composition) */
+body.bhv2-active {
+    overflow: hidden;
+}
+
+.bhv2-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 420ms ease;
+    background: radial-gradient(circle at 50% 50%, rgba(10, 10, 10, 0.2) 0%, rgba(5, 5, 5, 0.9) 38%, #000 100%);
+}
+
+.bhv2-overlay.is-live {
+    opacity: 1;
+}
+
+.bhv2-noise {
+    position: absolute;
+    inset: 0;
+    opacity: 0.14;
+    background:
+        radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.9) 0 1px, transparent 1px),
+        radial-gradient(circle at 70% 32%, rgba(255, 255, 255, 0.8) 0 1px, transparent 1px),
+        radial-gradient(circle at 28% 76%, rgba(255, 255, 255, 0.9) 0 1px, transparent 1px),
+        radial-gradient(circle at 86% 82%, rgba(255, 255, 255, 0.8) 0 1px, transparent 1px);
+    background-size: 280px 280px, 340px 340px, 420px 420px, 520px 520px;
+    animation: bhv2Drift 26s linear infinite;
+}
+
+.bhv2-tear {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 2px;
+    height: 42px;
+    transform: translate(-50%, -50%) scaleY(0.18);
+    opacity: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(210, 210, 210, 0.65), rgba(255, 255, 255, 0));
+    box-shadow: 0 0 4px rgba(220, 220, 220, 0.18);
+}
+
+.bhv2-overlay.is-live .bhv2-tear {
+    opacity: 0.82;
+}
+
+.bhv2-overlay.tear-open .bhv2-tear {
+    animation: bhv2TearOpen 4.8s cubic-bezier(0.2, 0.8, 0.15, 1) forwards;
+}
+
+.bhv2-hole {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(48vmin, 560px);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%) scale(0.04);
+    opacity: 0;
+    transition: transform 8s cubic-bezier(0.16, 0.86, 0.15, 1), opacity 1s ease;
+    filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.08));
+}
+
+.bhv2-overlay.hole-live .bhv2-hole {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.bhv2-shadow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 24%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, #030303 0%, #000 70%, #000 100%);
+    box-shadow: 0 0 0 1px rgba(190, 190, 190, 0.08);
+    z-index: 5;
+}
+
+.bhv2-photon-ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 33%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 1.4px solid rgba(232, 232, 232, 0.38);
+    box-shadow: 0 0 12px rgba(225, 225, 225, 0.12);
+    z-index: 4;
+}
+
+.bhv2-lens-arc {
+    position: absolute;
+    left: 50%;
+    width: 142%;
+    height: 18%;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(205, 205, 205, 0.1) 22%, rgba(236, 236, 236, 0.54) 50%, rgba(205, 205, 205, 0.1) 78%, rgba(0, 0, 0, 0) 100%);
+    filter: blur(3px);
+    z-index: 3;
+}
+
+.bhv2-lens-arc.arc-top {
+    top: 39%;
+    opacity: 0.68;
+}
+
+.bhv2-lens-arc.arc-bottom {
+    top: 56.5%;
+    opacity: 0.34;
+}
+
+.bhv2-disk-flow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 142%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%) rotate(10deg);
+    border-radius: 50%;
+    background:
+        conic-gradient(from 95deg,
+            rgba(0, 0, 0, 0) 0deg,
+            rgba(215, 215, 215, 0.05) 24deg,
+            rgba(240, 240, 240, 0.56) 66deg,
+            rgba(235, 235, 235, 0.18) 104deg,
+            rgba(0, 0, 0, 0) 180deg,
+            rgba(220, 220, 220, 0.13) 240deg,
+            rgba(238, 238, 238, 0.42) 305deg,
+            rgba(0, 0, 0, 0) 360deg);
+    filter: blur(11px);
+    opacity: 0.86;
+    animation: bhv2DiskSpin 15s linear infinite;
+    z-index: 2;
+}
+
+.bhv2-disk-noise {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 132%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%) rotate(8deg);
+    border-radius: 50%;
+    background:
+        repeating-conic-gradient(from 0deg,
+            rgba(255, 255, 255, 0.07) 0deg 3deg,
+            rgba(0, 0, 0, 0) 3deg 9deg,
+            rgba(255, 255, 255, 0.03) 9deg 14deg,
+            rgba(0, 0, 0, 0) 14deg 22deg);
+    mask-image: radial-gradient(circle, transparent 0 19%, #000 26% 72%, transparent 82%);
+    -webkit-mask-image: radial-gradient(circle, transparent 0 19%, #000 26% 72%, transparent 82%);
+    opacity: 0.28;
+    filter: blur(0.8px);
+    animation: bhv2Turbulence 7.4s linear infinite;
+    z-index: 2;
+}
+
+.bhv2-glyph-layer {
+    position: absolute;
+    inset: 0;
+}
+
+.bhv2-glyph {
+    position: fixed;
+    left: 0;
+    top: 0;
+    color: rgba(245, 245, 245, 0.96);
+    font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+    font-size: clamp(0.72rem, 1.35vw, 1.05rem);
+    line-height: 1;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    will-change: transform, opacity, filter;
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.12);
+}
+
+.bhv2-target {
+    will-change: transform, opacity, filter;
+}
+
+body.bhv2-suck .bhv2-glyph {
+    animation: bhv2GlyphIn var(--bhv2-gdur, 11000ms) cubic-bezier(0.2, 0.78, 0.08, 1) forwards;
+    animation-delay: var(--bhv2-gdelay, 0ms);
+}
+
+body.bhv2-suck .bhv2-target {
+    animation: bhv2TargetPull var(--bhv2-dur, 15000ms) cubic-bezier(0.2, 0.8, 0.08, 1) forwards;
+    animation-delay: var(--bhv2-delay, 0ms);
+}
+
+.bhv2-overlay.void-live {
+    background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.98) 0%, rgba(0, 0, 0, 1) 56%, #000 100%);
+}
+
+.bhv2-overlay.void-live .bhv2-hole {
+    transform: translate(-50%, -50%) scale(1.16);
+}
+
+.bhv2-overlay.cinematic-end .bhv2-hole {
+    transform: translate(-50%, -50%) scale(1.3);
+    animation: bhv2HeroPush 9s cubic-bezier(0.16, 0.82, 0.18, 1) forwards;
+}
+
+.bhv2-overlay.cinematic-end .bhv2-disk-flow {
+    filter: blur(12px) brightness(1.08);
+    animation-duration: 11s;
+}
+
+.bhv2-overlay.cinematic-end .bhv2-lens-arc.arc-top {
+    opacity: 0.82;
+}
+
+.bhv2-overlay.cinematic-end .bhv2-lens-arc.arc-bottom {
+    opacity: 0.42;
+}
+
+.bhv2-overlay.cinematic-end .bhv2-noise {
+    opacity: 0.09;
+}
+
+@keyframes bhv2TearOpen {
+    0% {
+        transform: translate(-50%, -50%) scaleY(0.18);
+    }
+    34% {
+        transform: translate(-50%, -50%) scaleY(1.2);
+    }
+    100% {
+        transform: translate(-50%, -50%) scaleY(0.82);
+    }
+}
+
+@keyframes bhv2DiskSpin {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@keyframes bhv2Turbulence {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(-360deg);
+    }
+}
+
+@keyframes bhv2HeroPush {
+    0% {
+        transform: translate(-50%, -50%) scale(1.24);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.56);
+    }
+}
+
+@keyframes bhv2GlyphIn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translate3d(0, 0, 0) rotate(0deg) scale(1);
+        filter: blur(0);
+    }
+    12% {
+        opacity: 0.95;
+    }
+    72% {
+        opacity: 0.95;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translate3d(var(--bhv2-x), var(--bhv2-y), 0) rotate(var(--bhv2-spin, 360deg)) scale(0.1);
+        filter: blur(6px);
+    }
+}
+
+@keyframes bhv2TargetPull {
+    0% {
+        transform: translate3d(0, 0, 0) scale(1);
+        opacity: 1;
+        filter: blur(0);
+    }
+    58% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(var(--bhv2-x), var(--bhv2-y), 0) scale(0.16);
+        opacity: 0;
+        filter: blur(6px);
+    }
+}
+
+@keyframes bhv2Drift {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        transform: translate3d(-20px, 14px, 0);
+    }
+}
+
+/* Canvas-driven blackhole pass: replaces layered CSS internals */
+.bhv2-hole {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    transform: none;
+    filter: none;
+}
+
+.bhv2-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.bhv2-shadow,
+.bhv2-photon-ring,
+.bhv2-lens-arc,
+.bhv2-disk-flow,
+.bhv2-disk-noise {
+    display: none !important;
+}
+
+.bhv2-overlay.void-live .bhv2-hole {
+    transform: none;
+}
+
+.bhv2-overlay.hole-live .bhv2-hole {
+    transform: none;
+    opacity: 1;
+}
+
+.bhv2-overlay.cinematic-end .bhv2-hole {
+    transform: none;
+    animation: none;
 }
