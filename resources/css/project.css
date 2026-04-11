@@ -249,6 +249,73 @@ body.projects-page {
     margin-right: auto;
 }
 
+@media (max-width: 767px) {
+    body.project-detail-page .content-wrapper section {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+
+    body.project-detail-page .content-wrapper section > [class*="md:w-1/2"] {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    body.project-detail-page .content-wrapper section .img-container,
+    body.project-detail-page .content-wrapper section .img-container2,
+    body.project-detail-page .content-wrapper section .about-journey-image {
+        order: -1;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 0 0.5rem 0 !important;
+    }
+
+    body.project-detail-page .content-wrapper section img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+/* About page journey section: reliable mobile stacking + larger image */
+.about-journey-section {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+}
+
+.about-journey-section .about-journey-image,
+.about-journey-section .about-journey-text {
+    width: 100%;
+    max-width: 100%;
+}
+
+.about-journey-section .about-journey-image {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+@media (min-width: 768px) {
+    .about-journey-section {
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .about-journey-section .about-journey-image {
+        width: 46%;
+        max-width: 31rem;
+        margin-left: auto;
+        margin-right: 0;
+    }
+
+    .about-journey-section .about-journey-text {
+        width: 54%;
+    }
+}
+
 .zoomable-image {
     cursor: zoom-in;
     transition: transform 0.2s ease;
