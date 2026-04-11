@@ -143,15 +143,28 @@ body.projects-page {
 /*TEMP */
 .cursor {
     display: inline-block;
-    animation: blink 1s step-end infinite;
+    opacity: 1;
+    animation: blink-soft 1.4s step-end 4;
 }
 
-@keyframes blink {
+@keyframes blink-soft {
     0%, 100% {
-        opacity: 1; /* Fully visible */
+        opacity: 1;
     }
     50% {
-        opacity: 0; /* Hidden */
+        opacity: 0;
+    }
+}
+
+.terminal-container:hover .cursor,
+.terminal-container:focus-within .cursor {
+    animation-iteration-count: infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cursor {
+        animation: none;
+        opacity: 1;
     }
 }
 
