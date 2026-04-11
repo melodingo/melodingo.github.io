@@ -783,6 +783,124 @@ document.addEventListener('DOMContentLoaded', function () {
         pageBlackholeFrame = window.requestAnimationFrame(render);
     }
 
+    var blackholeIntelCards = [
+        {
+            title: 'Event Horizon',
+            body: 'A black hole is so dense that at the event horizon, escape velocity exceeds the speed of light, so light cannot escape.',
+            sourceLabel: 'NASA - Black Hole Basics',
+            sourceUrl: 'https://science.nasa.gov/universe/black-holes/'
+        },
+        {
+            title: 'First Direct Image (M87*)',
+            body: 'In 2019, the Event Horizon Telescope released the first black hole image: M87*, about 55 million light-years away, with a mass of about 6.5 billion Suns.',
+            sourceLabel: 'EHT Press Release, Apr 10 2019',
+            sourceUrl: 'https://eventhorizontelescope.org/press-release-april-10-2019-astronomers-capture-first-image-black-hole',
+            imageUrl: 'https://eventhorizontelescope.org/sites/g/files/omnuum3116/files/styles/hwp_1_1__1920x1920_scale/public/eht/files/20190410-78m-800x466.png?itok=J3ZgEDyD',
+            imageAlt: 'Event Horizon Telescope image of M87 star black hole shadow and bright ring'
+        },
+        {
+            title: 'Our Galactic Black Hole (Sgr A*)',
+            body: 'In 2022, EHT released the first image of Sagittarius A* at the Milky Way center. It is about 4 million solar masses and about 27,000 light-years away.',
+            sourceLabel: 'ESO/EHT Press Release, May 12 2022',
+            sourceUrl: 'https://www.eso.org/public/news/eso2208-eht-mw/',
+            imageUrl: 'https://cdn.eso.org/images/screen/eso2208-eht-mwa.jpg',
+            imageAlt: 'First image of Sagittarius A star at the center of the Milky Way'
+        },
+        {
+            title: 'How We Detect Them',
+            body: 'Black holes are inferred through effects on nearby matter: glowing accretion disks, star orbits near galactic centers, gravitational lensing, and gravitational waves.',
+            sourceLabel: 'NASA - Finding Black Holes',
+            sourceUrl: 'https://science.nasa.gov/universe/black-holes/'
+        },
+        {
+            title: 'Gravitational Waves',
+            body: 'LIGO reported the first direct gravitational-wave detection (GW150914) in 2015 from a binary black hole merger, opening gravitational-wave astronomy.',
+            sourceLabel: 'LIGO Press Release, GW150914',
+            sourceUrl: 'https://www.ligo.caltech.edu/page/press-release-gw150914'
+        }
+    ];
+
+    function mountBlackholeIntelWindows(overlay) {
+        if (!overlay) {
+            return;
+        }
+
+        var orbit = document.createElement('div');
+        orbit.className = 'bhv2-intel-orbit';
+
+        var total = blackholeIntelCards.length;
+        for (var i = 0; i < total; i += 1) {
+            var card = blackholeIntelCards[i];
+            var article = document.createElement('article');
+            article.className = 'bhv2-intel-card';
+            article.style.setProperty('--bhv2-angle', String(Math.round((360 / total) * i)) + 'deg');
+            article.style.setProperty('--bhv2-stagger', String(i * 90) + 'ms');
+
+            var heading = document.createElement('h4');
+            heading.className = 'bhv2-intel-title';
+            heading.textContent = card.title;
+
+            var reveal = document.createElement('div');
+            reveal.className = 'bhv2-intel-reveal';
+
+            if (card.imageUrl) {
+                var imageWrap = document.createElement('div');
+                imageWrap.className = 'bhv2-intel-image-wrap';
+
+                var image = document.createElement('img');
+                image.className = 'bhv2-intel-image';
+                image.src = card.imageUrl;
+                image.alt = card.imageAlt || (card.title + ' reference image');
+                image.loading = 'lazy';
+                image.decoding = 'async';
+                image.referrerPolicy = 'no-referrer';
+                image.addEventListener('error', function () {
+                    if (this && this.parentElement) {
+                        this.parentElement.style.display = 'none';
+                    }
+                });
+
+                imageWrap.appendChild(image);
+                reveal.appendChild(imageWrap);
+            }
+
+            var text = document.createElement('p');
+            text.className = 'bhv2-intel-body';
+            text.textContent = card.body;
+
+            var source = document.createElement('a');
+            source.className = 'bhv2-intel-source';
+            source.href = card.sourceUrl;
+            source.target = '_blank';
+            source.rel = 'noopener noreferrer';
+            source.textContent = 'Source: ' + card.sourceLabel;
+
+            article.appendChild(heading);
+            reveal.appendChild(text);
+            reveal.appendChild(source);
+            article.appendChild(reveal);
+            orbit.appendChild(article);
+        }
+
+        overlay.appendChild(orbit);
+    }
+
+    function resolveAboutPageUrl() {
+        var existingAboutLink = document.querySelector('a[href*="About.html"], a[href*="about.html"]');
+        if (existingAboutLink && existingAboutLink.href) {
+            return existingAboutLink.href;
+        }
+
+        var path = (window.location.pathname || '').toLowerCase();
+        if (path.indexOf('/pages/projects/') !== -1) {
+            return '../About.html';
+        }
+        if (path.indexOf('/pages/') !== -1) {
+            return 'About.html';
+        }
+        return 'pages/About.html';
+    }
+
     function runPageBlackhole() {
         if (pageBlackholeActive || document.body.classList.contains('bhv2-active')) {
             appendLine('Blackhole already active. Use "restore" or press Escape.', 'terminal-line terminal-line-system');
@@ -809,12 +927,20 @@ document.addEventListener('DOMContentLoaded', function () {
         pageBlackholeOverlay.innerHTML = [
             '<div class="bhv2-noise"></div>',
             '<div class="bhv2-tear"></div>',
+            '<a class="bhv2-back-btn" href="#" aria-label="Back to About page">Back to About</a>',
             '<div class="bhv2-hole">',
             '<canvas class="bhv2-canvas" aria-hidden="true"></canvas>',
             '</div>',
             '<div class="bhv2-glyph-layer"></div>'
         ].join('');
         document.body.appendChild(pageBlackholeOverlay);
+
+        var backBtn = pageBlackholeOverlay.querySelector('.bhv2-back-btn');
+        if (backBtn) {
+            backBtn.href = resolveAboutPageUrl();
+        }
+
+        mountBlackholeIntelWindows(pageBlackholeOverlay);
 
         startBlackholeCanvasRenderer(pageBlackholeOverlay.querySelector('.bhv2-canvas'));
 
@@ -883,7 +1009,8 @@ document.addEventListener('DOMContentLoaded', function () {
         scheduleBlackholeTimer(function () {
             if (pageBlackholeOverlay) {
                 pageBlackholeOverlay.classList.add('cinematic-end');
-                appendLine('Final approach. Hold this shot.', 'terminal-line terminal-line-system');
+                pageBlackholeOverlay.classList.add('intel-live');
+                appendLine('Final approach. Scientific readouts online.', 'terminal-line terminal-line-system');
             }
         }, 31800);
     }

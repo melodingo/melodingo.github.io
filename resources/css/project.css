@@ -1387,7 +1387,7 @@ body.bhv2-active {
     position: fixed;
     inset: 0;
     z-index: 2147483000;
-    pointer-events: none;
+    pointer-events: auto;
     opacity: 0;
     transition: opacity 420ms ease;
     background: radial-gradient(circle at 50% 50%, rgba(10, 10, 10, 0.2) 0%, rgba(5, 5, 5, 0.9) 38%, #000 100%);
@@ -1400,6 +1400,7 @@ body.bhv2-active {
 .bhv2-noise {
     position: absolute;
     inset: 0;
+    pointer-events: none;
     opacity: 0.14;
     background:
         radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.9) 0 1px, transparent 1px),
@@ -1418,6 +1419,7 @@ body.bhv2-active {
     height: 42px;
     transform: translate(-50%, -50%) scaleY(0.18);
     opacity: 0;
+    pointer-events: none;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(210, 210, 210, 0.65), rgba(255, 255, 255, 0));
     box-shadow: 0 0 4px rgba(220, 220, 220, 0.18);
 }
@@ -1438,6 +1440,7 @@ body.bhv2-active {
     aspect-ratio: 1;
     transform: translate(-50%, -50%) scale(0.04);
     opacity: 0;
+    pointer-events: none;
     transition: transform 8s cubic-bezier(0.16, 0.86, 0.15, 1), opacity 1s ease;
     filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.08));
 }
@@ -1545,6 +1548,7 @@ body.bhv2-active {
 .bhv2-glyph-layer {
     position: absolute;
     inset: 0;
+    pointer-events: none;
 }
 
 .bhv2-glyph {
@@ -1603,6 +1607,267 @@ body.bhv2-suck .bhv2-target {
 
 .bhv2-overlay.cinematic-end .bhv2-noise {
     opacity: 0.09;
+}
+
+.bhv2-back-btn {
+    position: absolute;
+    top: clamp(0.75rem, 2.2vmin, 1.25rem);
+    right: clamp(0.75rem, 2.2vmin, 1.25rem);
+    z-index: 12;
+    color: rgba(230, 236, 252, 0.95);
+    text-decoration: none;
+    font-family: 'IBM Plex Mono', 'Courier New', Courier, monospace;
+    font-size: clamp(0.66rem, 0.95vw, 0.78rem);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.48rem 0.66rem;
+    border-radius: 9px;
+    border: 1px solid rgba(220, 226, 247, 0.35);
+    background: linear-gradient(140deg, rgba(12, 17, 24, 0.78), rgba(8, 12, 17, 0.4));
+    backdrop-filter: blur(3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 220ms ease, transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+    pointer-events: none;
+}
+
+.bhv2-overlay.intel-live .bhv2-back-btn {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.bhv2-back-btn:hover {
+    border-color: rgba(235, 241, 255, 0.74);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.48), 0 0 14px rgba(188, 210, 250, 0.18);
+}
+
+.bhv2-intel-orbit {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 8;
+    --bhv2-orbit: clamp(150px, 25vmin, 290px);
+}
+
+.bhv2-intel-card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: clamp(170px, 18vw, 230px);
+    min-height: 56px;
+    height: 56px;
+    max-height: 56px;
+    transform:
+        translate(-50%, -50%)
+        rotate(var(--bhv2-angle))
+        translateX(var(--bhv2-orbit))
+        rotate(calc(-1 * var(--bhv2-angle)))
+        scale(0.88);
+    transform-origin: center center;
+    opacity: 0;
+    padding: 0.78rem 0.88rem 0.68rem;
+    border-radius: 14px;
+    border: 1px solid rgba(222, 226, 243, 0.28);
+    background:
+        linear-gradient(150deg, rgba(8, 12, 18, 0.72), rgba(8, 11, 16, 0.4)),
+        radial-gradient(circle at 20% 12%, rgba(163, 190, 255, 0.22), rgba(0, 0, 0, 0) 62%);
+    box-shadow:
+        0 16px 42px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px) saturate(1.05);
+    pointer-events: auto;
+    overflow: clip;
+    transition: transform 300ms ease, border-color 220ms ease, box-shadow 220ms ease, background 220ms ease;
+}
+
+.bhv2-overlay.intel-live .bhv2-intel-card {
+    animation: bhv2IntelIn 850ms cubic-bezier(0.2, 0.78, 0.12, 1) forwards;
+    animation-delay: var(--bhv2-stagger, 0ms);
+}
+
+.bhv2-intel-card:hover,
+.bhv2-intel-card:focus-within {
+    height: auto;
+    max-height: none;
+    transform:
+        translate(-50%, -50%)
+        rotate(var(--bhv2-angle))
+        translateX(calc(var(--bhv2-orbit) + 10px))
+        rotate(calc(-1 * var(--bhv2-angle)))
+        scale(1.23);
+    border-color: rgba(235, 240, 255, 0.62);
+    background:
+        linear-gradient(150deg, rgba(12, 16, 23, 0.92), rgba(10, 15, 22, 0.72)),
+        radial-gradient(circle at 20% 12%, rgba(190, 215, 255, 0.3), rgba(0, 0, 0, 0) 62%);
+    box-shadow:
+        0 20px 52px rgba(0, 0, 0, 0.6),
+        0 0 24px rgba(188, 211, 255, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.13);
+    z-index: 15;
+}
+
+.bhv2-intel-title {
+    margin: 0 0 0.45rem;
+    color: #edf2ff;
+    font-family: 'Space Grotesk', 'Segoe UI', Tahoma, sans-serif;
+    font-size: clamp(0.82rem, 1.12vw, 0.98rem);
+    line-height: 1.24;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 700;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.bhv2-intel-reveal {
+    margin-top: 0.1rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity 220ms ease, transform 220ms ease, visibility 220ms ease;
+}
+
+.bhv2-intel-image-wrap {
+    margin: 0 0 0.5rem;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(218, 227, 255, 0.3);
+    background: rgba(0, 0, 0, 0.22);
+}
+
+.bhv2-intel-image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 8.6;
+    object-fit: cover;
+    filter: saturate(1.05) contrast(1.02);
+}
+
+.bhv2-intel-body {
+    margin: 0;
+    color: rgba(229, 232, 246, 0.92);
+    font-family: 'IBM Plex Sans', 'Segoe UI', Tahoma, sans-serif;
+    font-size: clamp(0.66rem, 0.95vw, 0.8rem);
+    line-height: 1.42;
+}
+
+.bhv2-intel-source {
+    display: inline-block;
+    margin-top: 0.58rem;
+    color: rgba(176, 204, 255, 0.96);
+    font-family: 'IBM Plex Mono', 'Courier New', Courier, monospace;
+    font-size: clamp(0.58rem, 0.78vw, 0.68rem);
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(176, 204, 255, 0.46);
+    pointer-events: none;
+}
+
+.bhv2-intel-source:hover {
+    color: #d8e7ff;
+    border-bottom-color: rgba(216, 231, 255, 0.8);
+}
+
+.bhv2-intel-card:hover .bhv2-intel-reveal,
+.bhv2-intel-card:focus-within .bhv2-intel-reveal {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.bhv2-intel-card:hover .bhv2-intel-body,
+.bhv2-intel-card:focus-within .bhv2-intel-body,
+.bhv2-intel-card:hover .bhv2-intel-source,
+.bhv2-intel-card:focus-within .bhv2-intel-source {
+    pointer-events: auto;
+}
+
+.bhv2-intel-card:hover .bhv2-intel-source,
+.bhv2-intel-card:focus-within .bhv2-intel-source {
+    pointer-events: auto;
+}
+
+@keyframes bhv2IntelIn {
+    0% {
+        opacity: 0;
+        transform:
+            translate(-50%, -50%)
+            rotate(var(--bhv2-angle))
+            translateX(calc(var(--bhv2-orbit) - 20px))
+            rotate(calc(-1 * var(--bhv2-angle)))
+            scale(0.72);
+    }
+    100% {
+        opacity: 1;
+        transform:
+            translate(-50%, -50%)
+            rotate(var(--bhv2-angle))
+            translateX(var(--bhv2-orbit))
+            rotate(calc(-1 * var(--bhv2-angle)))
+            scale(0.88);
+    }
+}
+
+@media (max-width: 900px) {
+    .bhv2-intel-orbit {
+        --bhv2-orbit: clamp(120px, 28vmin, 210px);
+    }
+
+    .bhv2-intel-card {
+        width: clamp(152px, 34vw, 188px);
+    }
+
+    .bhv2-intel-card:hover,
+    .bhv2-intel-card:focus-within {
+        transform:
+            translate(-50%, -50%)
+            rotate(var(--bhv2-angle))
+            translateX(calc(var(--bhv2-orbit) + 8px))
+            rotate(calc(-1 * var(--bhv2-angle)))
+            scale(1.15);
+    }
+}
+
+@media (max-width: 680px) {
+    .bhv2-back-btn {
+        top: 0.65rem;
+        right: 0.65rem;
+    }
+
+    .bhv2-intel-orbit {
+        display: grid;
+        align-content: end;
+        justify-items: center;
+        gap: 0.5rem;
+        padding: 0 0.7rem 1rem;
+        --bhv2-orbit: 0px;
+    }
+
+    .bhv2-intel-card,
+    .bhv2-intel-card:hover,
+    .bhv2-intel-card:focus-within {
+        position: static;
+        width: 100%;
+        max-width: 22rem;
+        height: auto;
+        max-height: none;
+        transform: none;
+        min-height: 0;
+        scale: 1;
+    }
+
+    .bhv2-intel-reveal,
+    .bhv2-intel-body,
+    .bhv2-intel-source {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        pointer-events: auto;
+    }
 }
 
 @keyframes bhv2TearOpen {
