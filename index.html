@@ -55,6 +55,21 @@
                     }
                 });
 
+                // Speed up the 3 home action buttons after first visit to avoid repeated long waits.
+                var quickActionButtons = document.querySelectorAll('.home-quick-action');
+                var hasSeenHomeActions = localStorage.getItem('homeQuickActionsSeen') === '1';
+
+                if (hasSeenHomeActions) {
+                    quickActionButtons.forEach(function(button, index) {
+                        button.style.animationDelay = (320 + (index * 140)) + 'ms';
+                        button.style.animationDuration = '700ms';
+                    });
+                }
+
+                if (quickActionButtons.length > 0) {
+                    localStorage.setItem('homeQuickActionsSeen', '1');
+                }
+
             });
         </script>
         <style jsx="1" global="1">
@@ -193,7 +208,7 @@
                     </span>
                 </div>
                 <div class="grid grid-cols-[max-content_max-content] gap-2">
-                    <div class="pt-2 z-10 page_bouncing-animation___os1T" style="animation-delay:1000ms">
+                    <div class="pt-2 z-10 page_bouncing-animation___os1T home-quick-action" style="animation-delay:1000ms">
                         <a class="contact-me-button_button__6aGNI" data-state="closed" href ="/pages/contactme.html">
                             <div class="text-white grid grid-cols-[max-content_max-content] place-items-center gap-1 bg-emerald-500 hover:bg-emerald-700 duration-300 ease-in-out p-2 rounded-md">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right w-4 h-4 contact-me-button_arrow__rPMRA">
@@ -203,7 +218,7 @@
                             </div>
                         </a>
                     </div>
-                    <div class="pt-2 z-10 page_bouncing-animation___os1T" style="animation-delay:1200ms">
+                    <div class="pt-2 z-10 page_bouncing-animation___os1T home-quick-action" style="animation-delay:1200ms">
                         <a class="projects-button_button__jfbEv" data-state="closed" href="/pages/projects/projects.html">
                             <div class="text-white grid grid-cols-[max-content_max-content] place-items-center gap-1 bg-pink-500 hover:bg-pink-700 duration-300 ease-in-out p-2 rounded-md">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-webhook w-4 h-4 projects-button_icon__OfzUe">
@@ -216,7 +231,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="pt-2 z-[5] page_bouncing-animation___os1T" style="animation-delay:1400ms">
+                <div class="pt-2 z-[5] page_bouncing-animation___os1T home-quick-action" style="animation-delay:1400ms">
                     <a class="other-button_button__3a_Ta" data-state="closed" href="/pages/About.html">
                         <div class="text-white grid grid-cols-[max-content_max-content] place-items-center gap-1 bg-sky-500 hover:bg-sky-700 duration-300 ease-in-out p-2 rounded-md">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-boxes w-4 h-4 other-button_boxes__ah_Hp">
