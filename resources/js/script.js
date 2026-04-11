@@ -35,6 +35,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var pageBlackholeTextWrappers = [];
     var pageBlackholeActive = false;
     var pageBlackholeRenderActive = false;
+    var blackholeLauncher = null;
+    var blackholeLauncherRevealTimer = null;
 
     function placeCaretAtEnd(el) {
         var range = document.createRange();
@@ -139,6 +141,25 @@ document.addEventListener('DOMContentLoaded', function () {
             window.cancelAnimationFrame(pageBlackholeFrame);
             pageBlackholeFrame = null;
         }
+    }
+
+    function scheduleLauncherReveal(delayMs) {
+        if (!blackholeLauncher) {
+            return;
+        }
+
+        if (blackholeLauncherRevealTimer !== null) {
+            window.clearTimeout(blackholeLauncherRevealTimer);
+            blackholeLauncherRevealTimer = null;
+        }
+
+        blackholeLauncher.classList.remove('is-hidden');
+        blackholeLauncherRevealTimer = window.setTimeout(function () {
+            if (!blackholeLauncher || pageBlackholeActive) {
+                return;
+            }
+            blackholeLauncher.classList.add('is-visible');
+        }, Math.max(0, delayMs || 0));
     }
 
     function isBlackholeExcludedElement(element) {
@@ -901,10 +922,41 @@ document.addEventListener('DOMContentLoaded', function () {
         return 'pages/About.html';
     }
 
+    function mountBlackholeLauncher() {
+        if (blackholeLauncher) {
+            return;
+        }
+
+        var launcher = document.createElement('button');
+        launcher.type = 'button';
+        launcher.className = 'bhv2-launcher';
+        launcher.setAttribute('aria-label', 'Trigger black hole effect');
+        launcher.innerHTML = [
+            '<span class="bhv2-launcher-dot" aria-hidden="true"></span>',
+            '<span class="bhv2-launcher-label">Distortion</span>'
+        ].join('');
+
+        launcher.addEventListener('click', function () {
+            if (pageBlackholeActive) {
+                return;
+            }
+            runPageBlackhole();
+        });
+
+        document.body.appendChild(launcher);
+        blackholeLauncher = launcher;
+        scheduleLauncherReveal(9000);
+    }
+
     function runPageBlackhole() {
         if (pageBlackholeActive || document.body.classList.contains('bhv2-active')) {
             appendLine('Blackhole already active. Use "restore" or press Escape.', 'terminal-line terminal-line-system');
             return;
+        }
+
+        if (blackholeLauncher) {
+            blackholeLauncher.classList.remove('is-visible');
+            blackholeLauncher.classList.add('is-hidden');
         }
 
         pageBlackholeActive = true;
@@ -1045,6 +1097,8 @@ document.addEventListener('DOMContentLoaded', function () {
         pageBlackholeOverlay = null;
         pageBlackholeActive = false;
 
+        scheduleLauncherReveal(500);
+
         appendLine('Reality restored.', 'terminal-line terminal-line-system');
     }
 
@@ -1165,6 +1219,8 @@ document.addEventListener('DOMContentLoaded', function () {
             focusInput();
         }
     });
+
+    mountBlackholeLauncher();
 
     if (header) {
         header.addEventListener('mousedown', function (event) {

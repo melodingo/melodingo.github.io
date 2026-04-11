@@ -1383,6 +1383,88 @@ body.bhv2-active {
     overflow: hidden;
 }
 
+.bhv2-launcher {
+    position: fixed;
+    right: clamp(0.7rem, 2.4vmin, 1.2rem);
+    bottom: clamp(0.7rem, 2.4vmin, 1.2rem);
+    z-index: 2147482000;
+    border: 1px solid rgba(211, 220, 246, 0.24);
+    border-radius: 999px;
+    background: linear-gradient(150deg, rgba(8, 12, 18, 0.68), rgba(8, 10, 16, 0.38));
+    color: rgba(230, 237, 255, 0.95);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    padding: 0.34rem 0.4rem;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+    pointer-events: none;
+    transition: opacity 240ms ease, transform 240ms ease, border-color 220ms ease, box-shadow 220ms ease, gap 220ms ease;
+}
+
+.bhv2-launcher.is-visible {
+    opacity: 0.72;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.bhv2-launcher.is-hidden {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+    pointer-events: none;
+}
+
+.bhv2-launcher:hover,
+.bhv2-launcher:focus-visible {
+    opacity: 1;
+    gap: 0.42rem;
+    border-color: rgba(228, 236, 255, 0.58);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.58), 0 0 14px rgba(190, 210, 255, 0.2);
+}
+
+.bhv2-launcher:focus-visible {
+    outline: 2px solid rgba(213, 226, 255, 0.66);
+    outline-offset: 2px;
+}
+
+.bhv2-launcher-dot {
+    width: 0.62rem;
+    height: 0.62rem;
+    border-radius: 50%;
+    display: inline-block;
+    background: radial-gradient(circle at 35% 35%, rgba(244, 248, 255, 1), rgba(179, 199, 242, 0.95) 48%, rgba(80, 112, 190, 0.5) 100%);
+    box-shadow: 0 0 8px rgba(194, 215, 255, 0.66), 0 0 16px rgba(126, 156, 236, 0.36);
+    animation: bhv2LauncherPulse 2.9s ease-in-out infinite;
+}
+
+.bhv2-launcher-label {
+    width: 0;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: 'IBM Plex Mono', 'Courier New', Courier, monospace;
+    font-size: 0.69rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: max-width 240ms ease, opacity 200ms ease;
+}
+
+.bhv2-launcher:hover .bhv2-launcher-label,
+.bhv2-launcher:focus-visible .bhv2-launcher-label {
+    width: auto;
+    max-width: 8rem;
+    opacity: 0.96;
+}
+
+body.bhv2-active .bhv2-launcher {
+    opacity: 0;
+    pointer-events: none;
+}
+
 .bhv2-overlay {
     position: fixed;
     inset: 0;
@@ -1879,6 +1961,17 @@ body.bhv2-suck .bhv2-target {
     }
     100% {
         transform: translate(-50%, -50%) scaleY(0.82);
+    }
+}
+
+@keyframes bhv2LauncherPulse {
+    0%, 100% {
+        transform: scale(0.92);
+        box-shadow: 0 0 8px rgba(194, 215, 255, 0.66), 0 0 16px rgba(126, 156, 236, 0.36);
+    }
+    50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 12px rgba(214, 227, 255, 0.86), 0 0 22px rgba(132, 167, 255, 0.52);
     }
 }
 
