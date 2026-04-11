@@ -260,12 +260,13 @@ body.projects-page {
     body.project-detail-page .content-wrapper section > [class*="md:w-1/2"] {
         width: 100% !important;
         max-width: 100% !important;
+        order: 1;
     }
 
     body.project-detail-page .content-wrapper section .img-container,
     body.project-detail-page .content-wrapper section .img-container2,
     body.project-detail-page .content-wrapper section .about-journey-image {
-        order: -1;
+        order: 2;
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 0 0.5rem 0 !important;
@@ -295,6 +296,16 @@ body.projects-page {
     max-width: 100%;
     margin-left: 0;
     margin-right: 0;
+}
+
+@media (max-width: 767px) {
+    .about-journey-section .about-journey-text {
+        order: 1;
+    }
+
+    .about-journey-section .about-journey-image {
+        order: 2;
+    }
 }
 
 @media (min-width: 768px) {
