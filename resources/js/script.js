@@ -585,6 +585,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         pageBlackholeRenderActive = true;
+        var scaleState = 0.12;
 
         function syncCanvasSize() {
             var ratio = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
@@ -611,16 +612,26 @@ document.addEventListener('DOMContentLoaded', function () {
             var cx = w * 0.5;
             var cy = h * 0.5;
             var t = now * 0.001;
-            var baseScale = 0.22;
+            var targetScale = 0.12;
+            if (pageBlackholeOverlay && pageBlackholeOverlay.classList.contains('is-live')) {
+                targetScale = 0.24;
+            }
+            if (pageBlackholeOverlay && pageBlackholeOverlay.classList.contains('tear-open')) {
+                targetScale = 0.46;
+            }
             if (pageBlackholeOverlay && pageBlackholeOverlay.classList.contains('hole-live')) {
-                baseScale = 1;
+                targetScale = 1;
             }
             if (pageBlackholeOverlay && pageBlackholeOverlay.classList.contains('void-live')) {
-                baseScale = 1.08;
+                targetScale = 1.08;
             }
             if (pageBlackholeOverlay && pageBlackholeOverlay.classList.contains('cinematic-end')) {
-                baseScale = 1.24;
+                targetScale = 1.24;
             }
+
+            // Ease between intro phases so the hole grows in rather than popping.
+            scaleState += (targetScale - scaleState) * 0.05;
+            var baseScale = scaleState;
 
             var outerR = Math.min(w, h) * 0.31 * baseScale;
             var ringR = Math.min(w, h) * 0.095 * baseScale;
@@ -979,6 +990,10 @@ document.addEventListener('DOMContentLoaded', function () {
         pageBlackholeOverlay.innerHTML = [
             '<div class="bhv2-noise"></div>',
             '<div class="bhv2-tear"></div>',
+            '<div class="bhv2-forming-shell" aria-hidden="true">',
+            '<span class="bhv2-forming-ring"></span>',
+            '<span class="bhv2-forming-core"></span>',
+            '</div>',
             '<a class="bhv2-back-btn" href="#" aria-label="Back to About page">Back to About</a>',
             '<div class="bhv2-hole">',
             '<canvas class="bhv2-canvas" aria-hidden="true"></canvas>',
@@ -1035,6 +1050,12 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             pageBlackholeOverlay.classList.add('is-live');
         });
+
+        scheduleBlackholeTimer(function () {
+            if (pageBlackholeOverlay) {
+                pageBlackholeOverlay.classList.add('forming-live');
+            }
+        }, 160);
 
         scheduleBlackholeTimer(function () {
             if (pageBlackholeOverlay) {

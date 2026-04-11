@@ -1405,10 +1405,41 @@ body.bhv2-active {
     transition: opacity 240ms ease, transform 240ms ease, border-color 220ms ease, box-shadow 220ms ease, gap 220ms ease;
 }
 
+.bhv2-launcher::before,
+.bhv2-launcher::after {
+    content: '';
+    position: absolute;
+    inset: -0.4rem;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.bhv2-launcher::before {
+    background:
+        radial-gradient(circle at 50% 50%, rgba(214, 227, 255, 0.16) 0 22%, rgba(0, 0, 0, 0) 48%),
+        conic-gradient(from 90deg, rgba(255, 255, 255, 0) 0deg, rgba(196, 214, 255, 0.22) 80deg, rgba(255, 255, 255, 0) 150deg, rgba(159, 188, 255, 0.18) 235deg, rgba(255, 255, 255, 0) 360deg);
+    filter: blur(7px);
+    transform: scale(0.92);
+}
+
+.bhv2-launcher::after {
+    inset: -0.2rem;
+    border: 1px solid rgba(209, 224, 255, 0.16);
+    box-shadow: 0 0 0 1px rgba(190, 210, 255, 0.08) inset;
+    transform: scale(1.02);
+}
+
 .bhv2-launcher.is-visible {
     opacity: 0.72;
     transform: translateY(0) scale(1);
     pointer-events: auto;
+}
+
+.bhv2-launcher.is-visible::before,
+.bhv2-launcher.is-visible::after {
+    opacity: 1;
 }
 
 .bhv2-launcher.is-hidden {
@@ -1423,6 +1454,17 @@ body.bhv2-active {
     gap: 0.42rem;
     border-color: rgba(228, 236, 255, 0.58);
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.58), 0 0 14px rgba(190, 210, 255, 0.2);
+}
+
+.bhv2-launcher:hover::before,
+.bhv2-launcher:focus-visible::before {
+    opacity: 1;
+    transform: scale(1.04);
+}
+
+.bhv2-launcher:hover::after,
+.bhv2-launcher:focus-visible::after {
+    opacity: 1;
 }
 
 .bhv2-launcher:focus-visible {
@@ -1465,6 +1507,43 @@ body.bhv2-active .bhv2-launcher {
     pointer-events: none;
 }
 
+@media (max-width: 680px) {
+    .bhv2-launcher {
+        right: 0.7rem;
+        bottom: 0.7rem;
+        padding: 0.3rem 0.35rem;
+        max-width: 2.4rem;
+        max-height: 2.4rem;
+        border-radius: 999px;
+    }
+
+    .bhv2-launcher.is-visible {
+        opacity: 0.78;
+    }
+
+    .bhv2-launcher:hover,
+    .bhv2-launcher:focus-visible {
+        gap: 0.28rem;
+        max-width: 7.2rem;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.54), 0 0 12px rgba(190, 210, 255, 0.18);
+    }
+
+    .bhv2-launcher-dot {
+        width: 0.52rem;
+        height: 0.52rem;
+    }
+
+    .bhv2-launcher-label {
+        font-size: 0.6rem;
+        letter-spacing: 0.04em;
+    }
+
+    .bhv2-launcher:hover .bhv2-launcher-label,
+    .bhv2-launcher:focus-visible .bhv2-launcher-label {
+        max-width: 5.6rem;
+    }
+}
+
 .bhv2-overlay {
     position: fixed;
     inset: 0;
@@ -1491,6 +1570,61 @@ body.bhv2-active .bhv2-launcher {
         radial-gradient(circle at 86% 82%, rgba(255, 255, 255, 0.8) 0 1px, transparent 1px);
     background-size: 280px 280px, 340px 340px, 420px 420px, 520px 520px;
     animation: bhv2Drift 26s linear infinite;
+}
+
+.bhv2-forming-shell {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(42vmin, 480px);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%) scale(0.12);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+    transition: transform 1800ms cubic-bezier(0.18, 0.82, 0.16, 1), opacity 500ms ease;
+}
+
+.bhv2-overlay.forming-live .bhv2-forming-shell {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.bhv2-forming-ring {
+    position: absolute;
+    inset: 6%;
+    border-radius: 50%;
+    border: 1px solid rgba(236, 244, 255, 0.16);
+    box-shadow:
+        0 0 18px rgba(186, 209, 255, 0.14),
+        inset 0 0 18px rgba(255, 255, 255, 0.05);
+    background:
+        conic-gradient(from 130deg,
+            rgba(0, 0, 0, 0) 0deg,
+            rgba(255, 255, 255, 0.02) 12deg,
+            rgba(225, 233, 248, 0.22) 42deg,
+            rgba(255, 255, 255, 0.08) 72deg,
+            rgba(0, 0, 0, 0) 120deg,
+            rgba(255, 255, 255, 0.14) 184deg,
+            rgba(0, 0, 0, 0) 260deg,
+            rgba(232, 239, 252, 0.16) 300deg,
+            rgba(0, 0, 0, 0) 360deg);
+    filter: blur(8px) saturate(1.15);
+    opacity: 0.95;
+    animation: bhv2ShellSpin 8.5s linear infinite;
+}
+
+.bhv2-forming-core {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 18%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%) scale(0.18);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(20, 24, 36, 0.9) 0%, rgba(0, 0, 0, 1) 75%);
+    box-shadow: 0 0 26px rgba(255, 255, 255, 0.06);
+    opacity: 0.82;
 }
 
 .bhv2-tear {
@@ -1523,13 +1657,26 @@ body.bhv2-active .bhv2-launcher {
     transform: translate(-50%, -50%) scale(0.04);
     opacity: 0;
     pointer-events: none;
-    transition: transform 8s cubic-bezier(0.16, 0.86, 0.15, 1), opacity 1s ease;
+    transition: transform 8s cubic-bezier(0.16, 0.86, 0.15, 1), opacity 1600ms cubic-bezier(0.2, 0.8, 0.18, 1);
     filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.08));
+}
+
+.bhv2-overlay.is-live .bhv2-hole {
+    opacity: 0;
+}
+
+.bhv2-overlay.tear-open .bhv2-hole {
+    opacity: 0.08;
 }
 
 .bhv2-overlay.hole-live .bhv2-hole {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
+}
+
+.bhv2-overlay.hole-live .bhv2-forming-shell {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.18);
 }
 
 .bhv2-shadow {
@@ -2043,6 +2190,15 @@ body.bhv2-suck .bhv2-target {
     }
     to {
         transform: translate3d(-20px, 14px, 0);
+    }
+}
+
+@keyframes bhv2ShellSpin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
     }
 }
 
