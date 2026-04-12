@@ -1,0 +1,591 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Samuel Stucki</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+        <link rel="Stylesheet" href="/dist/style.css">
+        <link rel="Stylesheet" href="/resources/css/project.css">
+        <link rel="stylesheet" href="/resources/css/style.css">
+        <script src="/resources/js/main.js" async=""></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    </head>
+    <body class="project-detail-page bg-neutral-200 dark:bg-neutral-900 min-h-screen" dir="ltr">
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Function to update theme
+                function updateTheme(theme) {
+                    var d = document.documentElement;
+                    var c = d.classList;
+
+                    if (theme === 'light') {
+                        c.remove('dark');
+                        c.add('light');
+                        d.style.colorScheme = 'light';
+                        localStorage.setItem('theme', 'light');
+                        console.log('Switched to light mode');
+                    } else if (theme === 'dark') {
+                        c.remove('light');
+                        c.add('dark');
+                        d.style.colorScheme = 'dark';
+                        localStorage.setItem('theme', 'dark');
+                        console.log('Switched to dark mode');
+                    }
+                }
+
+                // Initial theme setup
+                (function() {
+                    var storedTheme = localStorage.getItem('theme');
+                    if (storedTheme) {
+                        updateTheme(storedTheme);
+                    } else {
+                        // Default to dark if no theme is set
+                        updateTheme('dark');
+                    }
+                })();
+
+                // Event listener for the button
+                document.getElementById('themeToggleBtn').addEventListener('click', function() {
+                    var currentTheme = localStorage.getItem('theme');
+                    if (currentTheme === 'light') {
+                        updateTheme('dark');
+                    } else {
+                        updateTheme('light');
+                    }
+                });
+
+                let currentSlide = 0;
+                const slides = document.querySelectorAll('.carousel-image');
+                const slideIndicator = document.getElementById('slideIndicator'); // Get the slide indicator element
+
+                function showSlide(index) {
+                    slides.forEach((slide, i) => {
+                        slide.classList.toggle('active', i === index);
+                    });
+                    updateSlideIndicator(); // Update the slide indicator when showing a slide
+                }
+
+                function changeSlide(direction) {
+                    currentSlide = (currentSlide + direction + slides.length) % slides.length;
+                    showSlide(currentSlide);
+                }
+
+                function updateSlideIndicator() {
+                    // Update the slide indicator with current and total slide count
+                    slideIndicator.textContent = `Slide ${currentSlide + 1} of ${slides.length}`;
+                }
+
+                showSlide(currentSlide); // Initialize the first slide as active
+                updateSlideIndicator(); // Initialize the slide indicator
+
+                // Event listeners for buttons
+                document.querySelector('.prev').addEventListener('click', () => changeSlide(-1));
+                document.querySelector('.next').addEventListener('click', () => changeSlide(1));
+
+                // Click-to-zoom gallery for project screenshots.
+                const zoomableImages = Array.from(document.querySelectorAll('.img-container img, .img-container2 img, .carousel-image img'));
+                const lightbox = document.getElementById('imageLightbox');
+                const lightboxImage = document.getElementById('lightboxImage');
+                const lightboxClose = document.getElementById('lightboxClose');
+                const lightboxPrev = document.getElementById('lightboxPrev');
+                const lightboxNext = document.getElementById('lightboxNext');
+                let activeImageIndex = -1;
+
+                function openLightboxAt(index) {
+                    if (index < 0 || index >= zoomableImages.length) {
+                        return;
+                    }
+
+                    activeImageIndex = index;
+                    const selectedImage = zoomableImages[activeImageIndex];
+                    lightboxImage.src = selectedImage.src;
+                    lightboxImage.alt = selectedImage.alt || 'Enlarged project image';
+                    lightbox.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                }
+
+                function showNextImage(step) {
+                    if (zoomableImages.length === 0) {
+                        return;
+                    }
+
+                    const nextIndex = (activeImageIndex + step + zoomableImages.length) % zoomableImages.length;
+                    openLightboxAt(nextIndex);
+                }
+
+                zoomableImages.forEach((img, index) => {
+                    img.classList.add('zoomable-image');
+                    img.addEventListener('click', () => {
+                        openLightboxAt(index);
+                    });
+                });
+
+                function closeLightbox() {
+                    lightbox.classList.add('hidden');
+                    lightboxImage.src = '';
+                    activeImageIndex = -1;
+                    document.body.style.overflow = '';
+                }
+
+                lightboxClose.addEventListener('click', closeLightbox);
+                lightboxPrev.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    showNextImage(-1);
+                });
+                lightboxNext.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    showNextImage(1);
+                });
+                lightbox.addEventListener('click', (event) => {
+                    if (event.target === lightbox) {
+                        closeLightbox();
+                    }
+                });
+
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+                        closeLightbox();
+                    }
+
+                    if (!lightbox.classList.contains('hidden') && event.key === 'ArrowLeft') {
+                        showNextImage(-1);
+                    }
+
+                    if (!lightbox.classList.contains('hidden') && event.key === 'ArrowRight') {
+                        showNextImage(1);
+                    }
+                });
+            });
+
+            window.addEventListener('load', function() {
+                window.scrollTo(0, 0);
+            });
+        </script>
+        <style jsx="1" global="1">
+            #nprogress {
+                pointer-events: none;
+            }
+
+            #nprogress .bar {
+                background: #14b8a6;
+                position: fixed;
+                z-index: 9999;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 3px;
+            }
+
+            #nprogress .peg {
+                display: block;
+                position: absolute;
+                right: 0px;
+                width: 100px;
+                height: 100%;
+                box-shadow: 0 0 10px #14b8a6, 0 0 5px #14b8a6;
+                opacity: 1;
+                -webkit-transform: rotate(3deg) translate(0px, -4px);
+                -ms-transform: rotate(3deg) translate(0px, -4px);
+                transform: rotate(3deg) translate(0px, -4px);
+            }
+
+            #nprogress .spinner {
+                display: block;
+                position: fixed;
+                z-index: 1031;
+                top: 15px;
+                right: 15px;
+            }
+
+            #nprogress .spinner-icon {
+                width: 18px;
+                height: 18px;
+                box-sizing: border-box;
+                border: solid 2px transparent;
+                border-top-color: #14b8a6;
+                border-left-color: #14b8a6;
+                border-radius: 50%;
+                -webkit-animation: nprogresss-spinner 400ms linear infinite;
+                animation: nprogress-spinner 400ms linear infinite;
+            }
+
+            .nprogress-custom-parent {
+                overflow: hidden;
+                position: relative;
+            }
+
+            .nprogress-custom-parent #nprogress .spinner, .nprogress-custom-parent #nprogress .bar {
+                position: absolute;
+            }
+
+            @-webkit-keyframes nprogress-spinner {
+                0% {
+                    -webkit-transform: rotate(0deg);
+                }
+
+                100% {
+                    -webkit-transform: rotate(360deg);
+                }
+            }
+
+            @keyframes nprogress-spinner {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+        
+        <nav class="fixed z-[3] w-full top-0 ease-in-out bg-neutral-200 dark:bg-neutral-900">
+            <div class="py-2 px-2 md:px-4 grid grid-cols-[1fr_auto_1fr] w-full">
+                <div class="w-max">
+                    <a href="/pages/projects/projects.html">
+                        <div class="hidden md:grid grid-cols-[max-content_max-content] gap-1 text-blue-500 hover:text-blue-700 duration-300 ease-in-out place-items-center cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left w-4 h-4">
+                                <path d="m15 18-6-6 6-6"></path>
+                            </svg>
+                            <span>Projects</span>
+                        </div>
+                        <div class="grid md:hidden text-blue-500 hover:text-blue-700 duration-300 ease-in-out place-items-center cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left w-4 h-4">
+                                <path d="m15 18-6-6 6-6"></path>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Center Section: Text -->
+                <div class="grid grid-cols-[repeat(3,max-content)] place-items-center font-semibold">
+                    <span class="text-sky-500">~</span>
+                    <span class="text-orange-500">/</span>
+                    <p class="text-orange-500 max-w-40 md:max-w-none truncate overflow-hidden">AI City Planner</p>
+                </div>
+                <div class="container3 mx-auto">
+                    <div class="ml-selected">
+                        <div>
+                            <div class="text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white duration-200 ease-in-out cursor-pointer" 
+                                 type="button" 
+                                 id="themeToggleBtn" 
+                                 aria-haspopup="menu" 
+                                 aria-expanded="false" 
+                                 data-state="closed">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun-moon w-6 h-6">
+                                    <path d="M12 8a2.83 2.83 0 0 0 4 4 4 4 0 1 1-4-4"></path>
+                                    <path d="M12 2v2"></path>
+                                    <path d="M12 20v2"></path>
+                                    <path d="m4.9 4.9 1.4 1.4"></path>
+                                    <path d="m17.7 17.7 1.4 1.4"></path>
+                                    <path d="M2 12h2"></path>
+                                    <path d="M20 12h2"></path>
+                                    <path d="m6.3 17.7-1.4 1.4"></path>
+                                    <path d="m19.1 4.9-1.4 1.4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-zinc-300 dark:bg-border rounded-xl w-full h-[1px] transition-all duration-500 mx-auto">
+            </div>
+        </nav>
+
+
+        <div class="content-wrapper p-4 mt-16">
+            <div class=" mt-16">
+                <a href="#AICityPlanner" id="AICityPlanner">
+                    <span class="font-semibold text-lg">AI City Planner</span>
+                </a>
+                <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px mb-2"></div>
+                <div class="grid sm:grid-cols-[auto_max-content] gap-2">
+                    <div>
+                        <div class="grid grid-flow-col w-max gap-1">
+                            <div class="h-6 relative aspect-square" data-state="closed">
+                                <img alt="html" loading="lazy" decoding="async" data-nimg="fill" src="/assets/html.svg" data-tech-tooltip="html" aria-label="html" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
+                            </div>
+                            <div class="h-6 relative aspect-square" data-state="closed">
+                                <img alt="css" loading="lazy" decoding="async" data-nimg="fill" src="/assets/css.svg" data-tech-tooltip="css" aria-label="css" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
+                            </div>
+                            <div class="h-6 relative aspect-square" data-state="closed">
+                                <img alt="javascript" loading="lazy" decoding="async" data-nimg="fill" src="/assets/javascript.svg" data-tech-tooltip="javascript" aria-label="javascript" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
+                            </div>
+                            <div class="h-6 relative aspect-square" data-state="closed">
+                                <img alt="python" loading="lazy" decoding="async" data-nimg="fill" src="/assets/python.svg" data-tech-tooltip="python" aria-label="python" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-auto grid grid-flow-col gap-4 w-max">
+                        <div class="grid grid-cols-[max-content_max-content] place-items-center gap-1 text-blue-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-monitor-play w-4 h-4">
+                                <path d="M10 7.5 15 10l-5 2.5z"></path>
+                                <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                                <path d="M12 17v4"></path>
+                                <path d="M8 21h8"></path>
+                            </svg>
+                            <span>Demo runs locally</span>
+                        </div>
+                        <div class="grid grid-cols-[max-content_max-content] place-items-center gap-1 text-zinc-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lock w-4 h-4">
+                                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <span>Private repository</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Divider -->
+               <div class="w-full py-4 grid place-items-center animate__animated animate__fadeIn"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-slash w-6 h-6 text-gray-300 dark:text-neutral-800 animate__animated animate__rotateIn">
+                        <path d="M22 2 2 22"></path>
+                    </svg>
+                </div>
+                 <!-- Divider -->
+            </div>
+
+            <section class="mb-4 flex flex-col md:flex-row items-center animate__animated animate__fadeInUp">
+                <div class="md:w-1/2 p-4 order-2 md:order-1">
+                    <h2 class="text-2xl font-semibold animate__animated animate__fadeInUp">Overview</h2> 
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 animate__animated animate__fadeIn text-white">
+                            <div class="terminal-prompt">
+                                Overview@<span style="color: #33CCFF;">City</span>:~$ 
+                                <span class="cursor">|</span>
+                            </div>
+                            <div class="text-lg space-y-2">
+                                <p>
+                                    This project started as "can I generate a city that doesn't feel fake?" and turned into a traffic sandbox I kept rebuilding.
+                                    Every run makes a new layout, then cars route through it so I can see where the network works and where it falls apart.
+                                </p> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+
+            
+            <section class="mb-4 flex flex-col md:flex-row items-center animate__animated animate__fadeInUp">
+                <div class="md:w-1/2 p-4 order-2 md:order-1">
+                    <h2 class="text-2xl font-semibold animate__animated animate__fadeInUp">What It Does</h2> 
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 animate__animated animate__fadeIn text-white">
+                            <div class="terminal-prompt">
+                                Features@<span style="color: #33CCFF;">Sandbox</span>:~$ 
+                                <span class="cursor">|</span>
+                            </div>
+                            <div class="text-lg">
+                                <p>Generates a full city in passes: zones, parks, roads, cleanup, then buildings</p>
+                                <p>Uses road classes (local, arterial, highway) so traffic has actual structure</p>
+                                <p>Runs A* routing for cars and tracks congestion while the sim is live</p>
+                                <p>Includes speed, pause, zoom, pan, and one-click "new city" regen</p>
+                                <p>Shows useful HUD stats instead of just visuals: active cars, arrivals, stops, trip time</p>
+                                <p>Has a separate Python side for experiments and environment-style testing</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 md:mt-0 md:ml-4 order-1 md:order-2 img-container mt-4 animate__animated animate__fadeIn">
+                    <img src="/assets/city-planner/5.0.png" alt="City Planner features screenshot" class="rounded-lg shadow-lg">
+                </div>                              
+            </section>
+        
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+        
+
+            <section class="mb-12 flex flex-col md:flex-row items-center animate__animated animate__fadeInUp">
+                <div class="md:w-1/2 mt-4 md:mt-0 md:mr-4 img-container animate__animated animate__fadeIn">
+                    <img src="/assets/city-planner/4.0.png" alt="City Planner architecture screenshot" class="rounded-lg shadow-lg">
+                </div>
+                <div class="md:w-1/2 p-4 animate__animated animate__fadeIn">
+                    <h2 class="text-2xl font-semibold animate__animated animate__fadeInUp">How It Is Built</h2>
+                    
+                    <!-- Terminal container with navigation bar -->
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 text-white rounded-lg shadow-lg">
+                            <div class="terminal-prompt">
+                                Build@<span style="color: #33CCFF;">Modules</span>:~$ 
+                                <span class="cursor">|</span>
+                            </div>
+                            <p class="text-lg">I split this into two paths on purpose: browser for fast iteration, Python for cleaner simulation experiments.</p>
+                            <p class="text-lg">city_visual.html is the interactive playground with rendering + controls.</p>
+                            <p class="text-lg">grid.py and traffic_sim.py handle map structure, routing logic, occupancy checks, and metrics.</p>
+                            <p class="text-lg">environment.py and visualize.py are the bridge toward testing and RL-style workflows.</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </section> 
+            
+            
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+            
+            
+            <section class="mb-12 flex flex-col md:flex-row items-center animate_animated animate__fadeInUp">
+                <div class="md:w-1/2 p-4 order-2 md:order-1 animate__animated animate__fadeIn">
+                    <h2 class="text-2xl font-semibold animate__animated animate__zoomIn">How To Run It</h2>
+                    
+                    <!-- Terminal container with navigation bar -->
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 text-white rounded-lg shadow-lg">
+                            <div class="terminal-prompt">
+                                Run@<span style="color: #33CCFF;">Quickstart</span>:~$ 
+                                <span class="cursor">|</span>
+                            </div>
+                            <div class="text-lg space-y-2">
+                                <p>1. Open city_visual.html and let it generate a fresh map.</p>
+                                <p>2. Move around with zoom + pan and watch where jams form.</p>
+                                <p>3. Hit New City a few times to compare different road topologies.</p>
+                                <p>4. If you want Python mode, run main.py (visual/headless/envtest).</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="md:w-1/2 mt-4 md:mt-0 md:ml-4 order-1 md:order-2 img-container animate__animated animate__fadeIn">
+                    <img src="/assets/city-planner/2.0_initial-browser-city.png" alt="City Planner getting started screenshot" class="rounded-lg shadow-lg">
+                </div>
+            </section>
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+            
+
+            <section class="mb-12 flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mt-4 md:mt-0 md:mr-4 img-container animate__animated animate__fadeIn relative">
+                    <!-- Carousel for cool display lol -->
+                    <div class="carousel">
+                        <div class="carousel-image active">
+                            <img src="/assets/city-planner/1.0.png" alt="City Planner slide 1" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="carousel-image">
+                            <img src="/assets/city-planner/2.0_initial-browser-city.png" alt="City Planner slide 2" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="carousel-image">
+                            <img src="/assets/city-planner/3.0_big-visual-changes.png" alt="City Planner slide 3" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="carousel-image">
+                            <img src="/assets/city-planner/3.1.png" alt="City Planner slide 4" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="carousel-image">
+                            <img src="/assets/city-planner/3.2_visual-polish.png" alt="City Planner slide 5" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="carousel-image">
+                            <img src="/assets/city-planner/3.3.png" alt="City Planner slide 6" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="carousel-image">
+                            <img src="/assets/city-planner/4.0.png" alt="City Planner slide 7" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="carousel-image">
+                            <img src="/assets/city-planner/5.0.png" alt="City Planner slide 8" class="rounded-lg shadow-lg">
+                        </div>
+                        <button class="prev absolute top-1/2 left-2 transform -translate-y-1/2 z-20" onclick="changeSlide(-1)">&#10094;</button>
+                        <button class="next absolute top-1/2 right-2 transform -translate-y-1/2 z-20" onclick="changeSlide(1)">&#10095;</button>
+                        <div id="slideIndicator" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20"></div>
+                    </div>
+                </div>
+                
+
+                <div class="md:w-1/2 p-4 animate__animated animate__fadeIn">
+                    <h2 class="text-2xl font-semibold animate__animated animate__fadeInUp">Build Timeline</h2>
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 text-white rounded-lg shadow-lg animate__animated animate__fadeIn">
+                            <div class="terminal-prompt">
+                                Changelog@<span style="color: #33CCFF;">Versions</span>:~$
+                                <span class="cursor">|</span>
+                            </div>
+                            <p class="text-lg">You can see the project shift from "basic moving dots" to a proper city sim.</p>
+                            <p class="text-lg">Early versions proved the loop worked, but road layouts were messy.</p>
+                            <p class="text-lg">Middle versions fixed hierarchy and readability so traffic patterns made sense.</p>
+                            <p class="text-lg">Latest versions focused on controls, polish, and making the generator less repetitive.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+            
+
+            <section class="mb-4 flex flex-col md:flex-row items-center animate__animated animate__fadeInUp">
+                <div class="md:w-1/2 p-4 order-2 md:order-1">
+                    <h2 class="text-2xl font-semibold animate__animated animate__fadeinUp">Takeaways</h2> 
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 animate__animated animate__fadeIn text-white">
+                            <div class="terminal-prompt">
+                                Notes@<span style="color: #33CCFF;">After Build</span>:~$ 
+                                <span class="cursor">|</span>
+                            </div>
+
+                            <p class="text-lg">
+                                Biggest lesson from this one: drawing roads is easy, keeping a city network believable is the hard part.
+                                Most of the time went into connectivity, intersections, and cleaning up awkward generation outputs.
+                            </p>
+                            <p class="text-lg">Next step is to unify the browser and Python logic so both modes behave the same.</p>
+                            <p class="text-lg">After that: better lane behavior, tighter zoning rules, and repeatable benchmark maps.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <div class="w-full py-4 grid place-items-center animate__animated animate__fadeIn"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-slash w-6 h-6 text-gray-300 dark:text-neutral-800 animate__animated animate__rotateIn">
+                    <path d="M22 2 2 22"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div id="imageLightbox" class="lightbox-overlay hidden" role="dialog" aria-modal="true" aria-label="Image preview">
+            <button id="lightboxPrev" class="lightbox-nav lightbox-nav-prev" aria-label="Previous image">&#10094;</button>
+            <button id="lightboxNext" class="lightbox-nav lightbox-nav-next" aria-label="Next image">&#10095;</button>
+            <button id="lightboxClose" class="lightbox-close" aria-label="Close image preview">&times;</button>
+            <img id="lightboxImage" class="lightbox-image" src="" alt="">
+        </div>
+    </body>
+</html>
