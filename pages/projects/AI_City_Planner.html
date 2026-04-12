@@ -59,6 +59,7 @@
                 let currentSlide = 0;
                 const slides = document.querySelectorAll('.carousel-image');
                 const slideIndicator = document.getElementById('slideIndicator'); // Get the slide indicator element
+                const versionIndicator = document.getElementById('versionIndicator');
 
                 function showSlide(index) {
                     slides.forEach((slide, i) => {
@@ -75,6 +76,12 @@
                 function updateSlideIndicator() {
                     // Update the slide indicator with current and total slide count
                     slideIndicator.textContent = `Slide ${currentSlide + 1} of ${slides.length}`;
+
+                    if (versionIndicator && slides[currentSlide]) {
+                        const activeImage = slides[currentSlide].querySelector('img');
+                        const versionLabel = activeImage?.dataset?.version || `Version ${currentSlide + 1}`;
+                        versionIndicator.textContent = versionLabel;
+                    }
                 }
 
                 showSlide(currentSlide); // Initialize the first slide as active
@@ -88,6 +95,7 @@
                 const zoomableImages = Array.from(document.querySelectorAll('.img-container img, .img-container2 img, .carousel-image img'));
                 const lightbox = document.getElementById('imageLightbox');
                 const lightboxImage = document.getElementById('lightboxImage');
+                const lightboxCaption = document.getElementById('lightboxCaption');
                 const lightboxClose = document.getElementById('lightboxClose');
                 const lightboxPrev = document.getElementById('lightboxPrev');
                 const lightboxNext = document.getElementById('lightboxNext');
@@ -102,6 +110,9 @@
                     const selectedImage = zoomableImages[activeImageIndex];
                     lightboxImage.src = selectedImage.src;
                     lightboxImage.alt = selectedImage.alt || 'Enlarged project image';
+                    if (lightboxCaption) {
+                        lightboxCaption.textContent = selectedImage.dataset.version || selectedImage.alt || '';
+                    }
                     lightbox.classList.remove('hidden');
                     document.body.style.overflow = 'hidden';
                 }
@@ -125,6 +136,9 @@
                 function closeLightbox() {
                     lightbox.classList.add('hidden');
                     lightboxImage.src = '';
+                    if (lightboxCaption) {
+                        lightboxCaption.textContent = '';
+                    }
                     activeImageIndex = -1;
                     document.body.style.overflow = '';
                 }
@@ -752,33 +766,34 @@
                     <!-- Carousel for cool display lol -->
                     <div class="carousel">
                         <div class="carousel-image active">
-                            <img src="/assets/city-planner/1.0.png" alt="City Planner slide 1" class="rounded-lg shadow-lg">
+                            <img src="/assets/city-planner/1.0.png" alt="City Planner slide 1" data-version="Version 1.0" class="rounded-lg shadow-lg">
                         </div>
                         <div class="carousel-image">
-                            <img src="/assets/city-planner/2.0_initial-browser-city.png" alt="City Planner slide 2" class="rounded-lg shadow-lg">
+                            <img src="/assets/city-planner/2.0_initial-browser-city.png" alt="City Planner slide 2" data-version="Version 2.0" class="rounded-lg shadow-lg">
                         </div>
                         <div class="carousel-image">
-                            <img src="/assets/city-planner/3.0_big-visual-changes.png" alt="City Planner slide 3" class="rounded-lg shadow-lg">
+                            <img src="/assets/city-planner/3.0_big-visual-changes.png" alt="City Planner slide 3" data-version="Version 3.0" class="rounded-lg shadow-lg">
                         </div>
                         <div class="carousel-image">
-                            <img src="/assets/city-planner/3.1.png" alt="City Planner slide 4" class="rounded-lg shadow-lg">
+                            <img src="/assets/city-planner/3.1.png" alt="City Planner slide 4" data-version="Version 3.1" class="rounded-lg shadow-lg">
                         </div>
                         <div class="carousel-image">
-                            <img src="/assets/city-planner/3.2_visual-polish.png" alt="City Planner slide 5" class="rounded-lg shadow-lg">
+                            <img src="/assets/city-planner/3.2_visual-polish.png" alt="City Planner slide 5" data-version="Version 3.2" class="rounded-lg shadow-lg">
                         </div>
                         <div class="carousel-image">
-                            <img src="/assets/city-planner/3.3.png" alt="City Planner slide 6" class="rounded-lg shadow-lg">
+                            <img src="/assets/city-planner/3.3.png" alt="City Planner slide 6" data-version="Version 3.3" class="rounded-lg shadow-lg">
                         </div>
                         <div class="carousel-image">
-                            <img src="/assets/city-planner/4.0.png" alt="City Planner slide 7" class="rounded-lg shadow-lg">
+                            <img src="/assets/city-planner/4.0.png" alt="City Planner slide 7" data-version="Version 4.0" class="rounded-lg shadow-lg">
                         </div>
                         <div class="carousel-image">
-                            <img src="/assets/city-planner/5.0.png" alt="City Planner slide 8" class="rounded-lg shadow-lg">
+                            <img src="/assets/city-planner/5.0.png" alt="City Planner slide 8" data-version="Version 5.0" class="rounded-lg shadow-lg">
                         </div>
                         <button class="prev absolute top-1/2 left-2 transform -translate-y-1/2 z-20" onclick="changeSlide(-1)">&#10094;</button>
                         <button class="next absolute top-1/2 right-2 transform -translate-y-1/2 z-20" onclick="changeSlide(1)">&#10095;</button>
                         <div id="slideIndicator" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20"></div>
                     </div>
+                    <p id="versionIndicator" class="text-sm text-zinc-500 dark:text-zinc-400 text-center mt-2">Version 1.0</p>
                 </div>
                 
 
@@ -851,6 +866,7 @@
             <button id="lightboxNext" class="lightbox-nav lightbox-nav-next" aria-label="Next image">&#10095;</button>
             <button id="lightboxClose" class="lightbox-close" aria-label="Close image preview">&times;</button>
             <img id="lightboxImage" class="lightbox-image" src="" alt="">
+            <p id="lightboxCaption" class="lightbox-caption" aria-live="polite"></p>
         </div>
     </body>
 </html>
