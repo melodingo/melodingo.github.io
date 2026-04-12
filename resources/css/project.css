@@ -48,6 +48,11 @@ body.projects-page {
     transition: 0.4s ease-out;
 }
 
+/* Slightly raise private-repo footer rows versus default mt-20 card spacing */
+.project-private-repo-offset {
+    margin-top: 3.75rem !important;
+}
+
 @media (max-width: 1023px) {
     .projects-main {
         padding: calc(8rem + env(safe-area-inset-top, 0px)) 0.5rem 1rem;
