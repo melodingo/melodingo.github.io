@@ -157,6 +157,188 @@
                         showNextImage(1);
                     }
                 });
+
+                const cityflowRoot = document.getElementById('Cityflow');
+                if (cityflowRoot && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    const overlay = document.createElement('div');
+                    overlay.className = 'cityflow-road-overlay';
+
+                    const canvas = document.createElement('canvas');
+                    canvas.className = 'cityflow-road-canvas';
+
+                    const car = document.createElement('span');
+                    car.className = 'cityflow-road-car';
+
+                    overlay.appendChild(canvas);
+                    overlay.appendChild(car);
+                    document.body.insertBefore(overlay, document.body.firstChild);
+
+                    const ctx = canvas.getContext('2d');
+                    if (!ctx) {
+                        overlay.remove();
+                        return;
+                    }
+
+                    let width = 0;
+                    let height = 0;
+                    let rafId = null;
+
+                    function resizeCanvas() {
+                        const dpr = Math.max(1, window.devicePixelRatio || 1);
+                        width = window.innerWidth;
+                        height = window.innerHeight;
+                        canvas.width = Math.floor(width * dpr);
+                        canvas.height = Math.floor(height * dpr);
+                        canvas.style.width = `${width}px`;
+                        canvas.style.height = `${height}px`;
+                        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                    }
+
+                    function randomInt(min, max) {
+                        return Math.floor(Math.random() * (max - min + 1)) + min;
+                    }
+
+                    function randomEdgePoint() {
+                        const margin = 80;
+                        const edge = randomInt(0, 3);
+
+                        if (edge === 0) {
+                            return { x: -margin, y: Math.random() * height };
+                        }
+                        if (edge === 1) {
+                            return { x: width + margin, y: Math.random() * height };
+                        }
+                        if (edge === 2) {
+                            return { x: Math.random() * width, y: -margin };
+                        }
+                        return { x: Math.random() * width, y: height + margin };
+                    }
+
+                    function pointOnCurve(path, t) {
+                        const mt = 1 - t;
+                        const x = mt * mt * mt * path.p0.x
+                            + 3 * mt * mt * t * path.p1.x
+                            + 3 * mt * t * t * path.p2.x
+                            + t * t * t * path.p3.x;
+                        const y = mt * mt * mt * path.p0.y
+                            + 3 * mt * mt * t * path.p1.y
+                            + 3 * mt * t * t * path.p2.y
+                            + t * t * t * path.p3.y;
+                        return { x, y };
+                    }
+
+                    function tangentOnCurve(path, t) {
+                        const mt = 1 - t;
+                        const dx = 3 * mt * mt * (path.p1.x - path.p0.x)
+                            + 6 * mt * t * (path.p2.x - path.p1.x)
+                            + 3 * t * t * (path.p3.x - path.p2.x);
+                        const dy = 3 * mt * mt * (path.p1.y - path.p0.y)
+                            + 6 * mt * t * (path.p2.y - path.p1.y)
+                            + 3 * t * t * (path.p3.y - path.p2.y);
+                        return { dx, dy };
+                    }
+
+                    function drawPath(path, progress, alpha) {
+                        const samples = 90;
+                        const maxSegment = Math.max(1, Math.floor(samples * progress));
+                        const isDark = document.documentElement.classList.contains('dark');
+                        const strokeOpacity = (isDark ? 0.34 : 0.2) * alpha;
+                        const shadowOpacity = (isDark ? 0.2 : 0.1) * alpha;
+
+                        ctx.lineCap = 'round';
+                        ctx.lineJoin = 'round';
+                        ctx.lineWidth = 2;
+                        ctx.strokeStyle = isDark
+                            ? `rgba(71, 85, 105, ${strokeOpacity})`
+                            : `rgba(100, 116, 139, ${strokeOpacity})`;
+                        ctx.shadowColor = isDark
+                            ? `rgba(30, 41, 59, ${shadowOpacity})`
+                            : `rgba(148, 163, 184, ${shadowOpacity})`;
+                        ctx.shadowBlur = 6;
+
+                        ctx.beginPath();
+                        for (let i = 0; i <= maxSegment; i++) {
+                            const t = i / samples;
+                            const p = pointOnCurve(path, t);
+                            if (i === 0) {
+                                ctx.moveTo(p.x, p.y);
+                            } else {
+                                ctx.lineTo(p.x, p.y);
+                            }
+                        }
+                        ctx.stroke();
+                        ctx.shadowBlur = 0;
+                    }
+
+                    function makePath() {
+                        const start = randomEdgePoint();
+                        let end = randomEdgePoint();
+                        while (Math.abs(end.x - start.x) < width * 0.35 && Math.abs(end.y - start.y) < height * 0.35) {
+                            end = randomEdgePoint();
+                        }
+
+                        return {
+                            p0: start,
+                            p1: {
+                                x: width * (0.18 + Math.random() * 0.64),
+                                y: height * (0.12 + Math.random() * 0.76)
+                            },
+                            p2: {
+                                x: width * (0.18 + Math.random() * 0.64),
+                                y: height * (0.12 + Math.random() * 0.76)
+                            },
+                            p3: end
+                        };
+                    }
+
+                    function runRoute(path) {
+                        const drawDuration = 3000 + Math.random() * 2200;
+                        const driveDuration = 6200 + Math.random() * 3600;
+                        const fadeDuration = 1400;
+                        const cycleDuration = drawDuration + driveDuration + fadeDuration;
+                        const startTime = performance.now();
+
+                        function frame(now) {
+                            const elapsed = now - startTime;
+                            const drawProgress = Math.min(1, elapsed / drawDuration);
+
+                            ctx.clearRect(0, 0, width, height);
+
+                            if (elapsed < drawDuration) {
+                                car.style.opacity = '0';
+                                drawPath(path, drawProgress, 1);
+                            } else if (elapsed < drawDuration + driveDuration) {
+                                const driveT = (elapsed - drawDuration) / driveDuration;
+                                drawPath(path, 1, 1);
+
+                                const p = pointOnCurve(path, driveT);
+                                const tangent = tangentOnCurve(path, driveT);
+                                const angle = Math.atan2(tangent.dy, tangent.dx) * (180 / Math.PI);
+
+                                car.style.opacity = '0.62';
+                                car.style.transform = `translate(${p.x - 11}px, ${p.y - 6}px) rotate(${angle}deg)`;
+                            } else if (elapsed < cycleDuration) {
+                                const fadeT = (elapsed - drawDuration - driveDuration) / fadeDuration;
+                                const alpha = 1 - fadeT;
+                                car.style.opacity = '0';
+                                drawPath(path, 1, Math.max(0, alpha));
+                            } else {
+                                car.style.opacity = '0';
+                                rafId = null;
+                                setTimeout(() => runRoute(makePath()), 5200 + Math.random() * 3600);
+                                return;
+                            }
+
+                            rafId = requestAnimationFrame(frame);
+                        }
+
+                        rafId = requestAnimationFrame(frame);
+                    }
+
+                    resizeCanvas();
+                    setTimeout(() => runRoute(makePath()), 2600);
+                    window.addEventListener('resize', resizeCanvas);
+                }
             });
 
             window.addEventListener('load', function() {
@@ -237,6 +419,83 @@
 
                 100% {
                     transform: rotate(360deg);
+                }
+            }
+
+            .cityflow-road-overlay {
+                position: fixed;
+                inset: 0;
+                pointer-events: none;
+                z-index: 0;
+                overflow: hidden;
+            }
+
+            .cityflow-road-canvas {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            .cityflow-road-car {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 24px;
+                height: 9px;
+                opacity: 0;
+                border-radius: 999px;
+                background: linear-gradient(90deg, rgba(100, 116, 139, 0.72) 0%, rgba(71, 85, 105, 0.65) 100%);
+                border: 1px solid rgba(148, 163, 184, 0.14);
+                box-shadow: 0 1px 6px rgba(15, 23, 42, 0.28);
+                filter: saturate(0.55);
+                mix-blend-mode: soft-light;
+                transform-origin: center;
+            }
+
+            html.light .cityflow-road-car {
+                background: linear-gradient(90deg, rgba(71, 85, 105, 0.42) 0%, rgba(51, 65, 85, 0.38) 100%);
+                border-color: rgba(100, 116, 139, 0.2);
+                box-shadow: 0 1px 5px rgba(148, 163, 184, 0.28);
+                mix-blend-mode: multiply;
+                filter: saturate(0.45);
+            }
+
+            .cityflow-road-car::before {
+                content: "";
+                position: absolute;
+                top: 2px;
+                left: 7px;
+                width: 9px;
+                height: 3px;
+                border-radius: 999px;
+                background: linear-gradient(90deg, rgba(226, 232, 240, 0.4), rgba(148, 163, 184, 0.12));
+            }
+
+            html.light .cityflow-road-car::before {
+                background: linear-gradient(90deg, rgba(226, 232, 240, 0.28), rgba(148, 163, 184, 0.08));
+            }
+
+            .cityflow-road-car::after {
+                content: "";
+                position: absolute;
+                right: -6px;
+                top: 3px;
+                width: 6px;
+                height: 2px;
+                border-radius: 999px;
+                background: linear-gradient(90deg, rgba(248, 250, 252, 0.22), rgba(248, 250, 252, 0));
+            }
+
+            .project-detail-page nav,
+            .project-detail-page .content-wrapper {
+                position: relative;
+                z-index: 2;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .cityflow-road-overlay {
+                    display: none;
                 }
             }
         </style>
@@ -373,6 +632,9 @@
                                 <p>
                                     This project started as "can I generate a city that doesn't feel fake?" and turned into a traffic sandbox I kept rebuilding.
                                     Every run makes a new layout, then cars route through it so I can see where the network works and where it falls apart.
+                                </p>
+                                <p>
+                                    The point is less about making a pretty map and more about having a planning toy that reacts like a real city when the roads change.
                                 </p> 
                             </div>
                         </div>
