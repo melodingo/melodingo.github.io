@@ -172,6 +172,56 @@
                     }
                 });
 
+                const beforeAfterSlider = document.getElementById('beforeAfterSlider');
+                const beforeAfterRange = document.getElementById('beforeAfterRange');
+                const beforeAfterReveal = document.getElementById('beforeAfterReveal');
+                const beforeAfterDivider = document.getElementById('beforeAfterDivider');
+
+                if (beforeAfterSlider && beforeAfterRange && beforeAfterReveal && beforeAfterDivider) {
+                    let isDraggingBeforeAfter = false;
+
+                    function updateBeforeAfter(value) {
+                        const progress = Math.min(100, Math.max(0, Number(value)));
+                        beforeAfterReveal.style.clipPath = `inset(0 ${100 - progress}% 0 0)`;
+                        beforeAfterDivider.style.left = `${progress}%`;
+                        beforeAfterRange.value = String(progress);
+                    }
+
+                    function updateBeforeAfterFromPointer(clientX) {
+                        const rect = beforeAfterSlider.getBoundingClientRect();
+                        const ratio = (clientX - rect.left) / Math.max(rect.width, 1);
+                        updateBeforeAfter(Math.round(ratio * 100));
+                    }
+
+                    beforeAfterRange.addEventListener('input', (event) => {
+                        updateBeforeAfter(event.target.value);
+                    });
+
+                    beforeAfterSlider.addEventListener('pointerdown', (event) => {
+                        isDraggingBeforeAfter = true;
+                        beforeAfterSlider.setPointerCapture(event.pointerId);
+                        updateBeforeAfterFromPointer(event.clientX);
+                    });
+
+                    beforeAfterSlider.addEventListener('pointermove', (event) => {
+                        if (!isDraggingBeforeAfter) {
+                            return;
+                        }
+                        updateBeforeAfterFromPointer(event.clientX);
+                    });
+
+                    beforeAfterSlider.addEventListener('pointerup', (event) => {
+                        isDraggingBeforeAfter = false;
+                        beforeAfterSlider.releasePointerCapture(event.pointerId);
+                    });
+
+                    beforeAfterSlider.addEventListener('pointercancel', () => {
+                        isDraggingBeforeAfter = false;
+                    });
+
+                    updateBeforeAfter(beforeAfterRange.value);
+                }
+
                 const cityflowRoot = document.getElementById('Cityflow');
                 if (cityflowRoot && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                     const overlay = document.createElement('div');
@@ -512,6 +562,127 @@
                     display: none;
                 }
             }
+
+            .before-after-shell {
+                border-radius: 12px;
+                border: 1px solid rgba(100, 116, 139, 0.35);
+                background: rgba(15, 23, 42, 0.58);
+                overflow: hidden;
+            }
+
+            html.light .before-after-shell {
+                background: rgba(226, 232, 240, 0.55);
+                border-color: rgba(148, 163, 184, 0.55);
+            }
+
+            .before-after-slider {
+                position: relative;
+                width: 100%;
+                height: clamp(280px, 40vw, 470px);
+                overflow: hidden;
+                touch-action: none;
+                user-select: none;
+            }
+
+            .before-after-image {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                background: rgba(15, 23, 42, 0.2);
+                pointer-events: none;
+            }
+
+            .before-after-reveal {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                overflow: hidden;
+                clip-path: inset(0 50% 0 0);
+            }
+
+            .before-after-divider {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                width: 2px;
+                height: 100%;
+                transform: translateX(-50%);
+                background: rgba(248, 250, 252, 0.9);
+                box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.3);
+                pointer-events: none;
+            }
+
+            .before-after-handle {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 42px;
+                height: 42px;
+                border-radius: 999px;
+                border: 2px solid rgba(15, 23, 42, 0.75);
+                background: rgba(248, 250, 252, 0.95);
+                color: rgba(15, 23, 42, 0.95);
+                display: grid;
+                place-items: center;
+                font-size: 15px;
+                font-weight: 700;
+                letter-spacing: -1px;
+            }
+
+            .before-after-range {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                cursor: ew-resize;
+            }
+
+            .before-after-label {
+                position: absolute;
+                top: 12px;
+                font-size: 11px;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: rgba(248, 250, 252, 0.92);
+                padding: 6px 10px;
+                border-radius: 999px;
+                background: rgba(15, 23, 42, 0.58);
+            }
+
+            .before-after-label-left {
+                left: 12px;
+            }
+
+            .before-after-label-right {
+                right: 12px;
+            }
+
+            .before-after-meta {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                padding: 12px;
+                border-top: 1px solid rgba(100, 116, 139, 0.3);
+                color: rgb(148, 163, 184);
+                font-size: 12px;
+            }
+
+            html.light .before-after-meta {
+                border-top-color: rgba(148, 163, 184, 0.5);
+                color: rgb(71, 85, 105);
+            }
+
+            .before-after-meta strong {
+                color: rgb(226, 232, 240);
+            }
+
+            html.light .before-after-meta strong {
+                color: rgb(30, 41, 59);
+            }
         </style>
         
         <nav class="fixed z-[3] w-full top-0 ease-in-out bg-neutral-200 dark:bg-neutral-900">
@@ -789,6 +960,15 @@
                         <div class="carousel-image">
                             <img src="/assets/city-planner/5.0.png" alt="City Planner slide 8" data-version="Version 5.0" class="rounded-lg shadow-lg">
                         </div>
+                        <div class="carousel-image">
+                            <img src="/assets/city-planner/6.0.png" alt="City Planner slide 9" data-version="Version 6.0" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="carousel-image">
+                            <img src="/assets/city-planner/6.5_Zoning.png" alt="City Planner slide 10" data-version="Version 6.5 - Zoning" class="rounded-lg shadow-lg">
+                        </div>
+                        <div class="carousel-image">
+                            <img src="/assets/city-planner/6.5_Improved-Buildings-and-Zones.png" alt="City Planner slide 11" data-version="Version 6.5 - Buildings" class="rounded-lg shadow-lg">
+                        </div>
                         <button class="prev absolute top-1/2 left-2 transform -translate-y-1/2 z-20" onclick="changeSlide(-1)">&#10094;</button>
                         <button class="next absolute top-1/2 right-2 transform -translate-y-1/2 z-20" onclick="changeSlide(1)">&#10095;</button>
                         <div id="slideIndicator" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20"></div>
@@ -819,6 +999,121 @@
                 </div>
             </section>
             
+
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+            
+
+            <section class="mb-12 animate__animated animate__fadeInUp">
+                <h2 class="text-2xl font-semibold mb-6 animate__animated animate__fadeInUp">Version History</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Version 6.5 -->
+                    <div class="bg-gradient-to-br from-cyan-900 to-cyan-800 dark:from-cyan-950 dark:to-cyan-900 p-6 rounded-lg border border-cyan-700 shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-bold text-cyan-100">Version 6.5</h3>
+                            <span class="text-xs bg-cyan-500/30 px-2 py-1 rounded text-cyan-300">Latest</span>
+                        </div>
+                        <p class="text-cyan-200 text-sm leading-relaxed">
+                            Zoning visibility and district identity expansion. Added bottom-left zoning toggle with colorful zone-boundary outlines. Zone legend panel, organic zone shapes, and multiple special buildings per zone (landmarks, civic blocks, apartments, villas, plants) for improved visual variety and traffic hotspots.
+                        </p>
+                    </div>
+
+                    <!-- Version 6.4 -->
+                    <div class="bg-gradient-to-br from-teal-900 to-teal-800 dark:from-teal-950 dark:to-teal-900 p-6 rounded-lg border border-teal-700 shadow-lg hover:shadow-xl transition-shadow">
+                        <h3 class="text-lg font-bold text-teal-100 mb-2">Version 6.4</h3>
+                        <p class="text-teal-200 text-sm leading-relaxed">
+                            Traffic flow and density balancing pass. Fixed intersection deadlock behavior with relaxed entry gating while preserving collision safety. Reworked spawn behavior into demand-driven multi-spawn ticks with active-car cap of 500 for stable performance.
+                        </p>
+                    </div>
+
+                    <!-- Version 6.3 -->
+                    <div class="bg-gradient-to-br from-blue-900 to-blue-800 dark:from-blue-950 dark:to-blue-900 p-6 rounded-lg border border-blue-700 shadow-lg hover:shadow-xl transition-shadow">
+                        <h3 class="text-lg font-bold text-blue-100 mb-2">Version 6.3</h3>
+                        <p class="text-blue-200 text-sm leading-relaxed">
+                            Rendering and simulation performance merge. Optimized rendering pipeline with static offscreen caches. Replaced linear-scan A* with binary-heap priority queue. Removed per-tick full car sorting and added precomputed signal-intersection cache for faster traffic-light updates.
+                        </p>
+                    </div>
+
+                    <!-- Version 6.2 -->
+                    <div class="bg-gradient-to-br from-indigo-900 to-indigo-800 dark:from-indigo-950 dark:to-indigo-900 p-6 rounded-lg border border-indigo-700 shadow-lg hover:shadow-xl transition-shadow">
+                        <h3 class="text-lg font-bold text-indigo-100 mb-2">Version 6.2</h3>
+                        <p class="text-indigo-200 text-sm leading-relaxed">
+                            Highway spacing stability pass. Updated highway generation to enforce dominant-axis corridor separation more reliably. Fixed near-parallel highway segments and improved motorway access control through better ramp point pruning.
+                        </p>
+                    </div>
+
+                    <!-- Version 6.0 -->
+                    <div class="bg-gradient-to-br from-violet-900 to-violet-800 dark:from-violet-950 dark:to-violet-900 p-6 rounded-lg border border-violet-700 shadow-lg hover:shadow-xl transition-shadow">
+                        <h3 class="text-lg font-bold text-violet-100 mb-2">Version 6.0</h3>
+                        <p class="text-violet-200 text-sm leading-relaxed">
+                            Editor and traffic AI upgrades. Added in-app city editor with paint tools for roads, zoning, and land edits. Exposed `window.cityEditor` API for scripted city changes. Merged stronger car recovery behavior and reworked road generation into a cleaner layered pipeline with increased city-shape variation.
+                        </p>
+                    </div>
+
+                    <!-- Version 5.0 -->
+                    <div class="bg-gradient-to-br from-emerald-900 to-emerald-800 dark:from-emerald-950 dark:to-emerald-900 p-6 rounded-lg border border-emerald-700 shadow-lg hover:shadow-xl transition-shadow">
+                        <h3 class="text-lg font-bold text-emerald-100 mb-2">Version 5.0</h3>
+                        <p class="text-emerald-200 text-sm leading-relaxed">
+                            Full rework of browser simulation. Heavily refactored generation pipeline with layered approach. Highways, arterials, and local roads reorganized into realistic hierarchy. Building placement and city cleanup logic pushed further for more believable layouts.
+                        </p>
+                    </div>
+
+
+
+
+                </div>
+            </section>
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+            
+
+            <section class="mb-12 animate__animated animate__fadeInUp">
+                <h2 class="text-2xl font-semibold mb-6 animate__animated animate__fadeInUp">Project Stats</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="rounded-lg border border-slate-700 bg-slate-800/50 p-4 text-center">
+                        <div class="text-3xl font-bold text-blue-400 mb-1">6.5</div>
+                        <div class="text-xs text-slate-400 uppercase tracking-wide">Current</div>
+                    </div>
+                    <div class="rounded-lg border border-slate-700 bg-slate-800/50 p-4 text-center">
+                        <div class="text-3xl font-bold text-green-400 mb-1">12</div>
+                        <div class="text-xs text-slate-400 uppercase tracking-wide">Releases</div>
+                    </div>
+                    <div class="rounded-lg border border-slate-700 bg-slate-800/50 p-4 text-center">
+                        <div class="text-3xl font-bold text-purple-400 mb-1">4</div>
+                        <div class="text-xs text-slate-400 uppercase tracking-wide">Languages</div>
+                    </div>
+                    <div class="rounded-lg border border-slate-700 bg-slate-800/50 p-4 text-center">
+                        <div class="text-3xl font-bold text-amber-400 mb-1">WIP</div>
+                        <div class="text-xs text-slate-400 uppercase tracking-wide">Status</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->
+            
+
+            <section class="mb-12 animate__animated animate__fadeInUp">
+                <h2 class="text-2xl font-semibold mb-4">Before vs After</h2>
+                <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-4">Drag the slider to compare Version 5.0 with Version 6.5 (improved buildings and zones).</p>
+                <div class="before-after-shell">
+                    <div id="beforeAfterSlider" class="before-after-slider" aria-label="Compare Version 5.0 and Version 6.5">
+                        <img src="/assets/city-planner/6.5_Improved-Buildings-and-Zones.png" alt="Version 6.5 improved buildings and zones snapshot" class="before-after-image">
+                        <div id="beforeAfterReveal" class="before-after-reveal">
+                            <img src="/assets/city-planner/5.0.png" alt="Version 5.0 city planner snapshot" class="before-after-image">
+                        </div>
+                        <div id="beforeAfterDivider" class="before-after-divider">
+                            <span class="before-after-handle">&lt;&gt;</span>
+                        </div>
+                        <span class="before-after-label before-after-label-left">V5.0</span>
+                        <span class="before-after-label before-after-label-right">V6.5</span>
+                        <input id="beforeAfterRange" class="before-after-range" type="range" min="0" max="100" value="50" aria-label="Before and after comparison slider">
+                    </div>
+                    <div class="before-after-meta">
+                        <div><strong>Before:</strong> Structured simulation baseline with layered road hierarchy.</div>
+                        <div><strong>After:</strong> District identity expansion with richer building diversity and zone behavior.</div>
+                    </div>
+                </div>
+            </section>
 
 
             <div class="bg-gray-300 dark:bg-border rounded-xl w-full h-px my-4 animate__animated animate__fadeIn animate__delay-1s"></div> <!-- Divider Line -->

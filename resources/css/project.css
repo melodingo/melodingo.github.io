@@ -479,13 +479,13 @@ body {
 .carousel {
     position: relative; /* Keep the carousel relative */
     width: 100%;
-    height: auto;
-    overflow: visible;
+    height: clamp(260px, 34vw, 440px);
+    overflow: hidden;
 }
 
 .carousel-image {
     width: 100%; /* Full width for images */
-    height: auto;
+    height: 100%;
     display: none; /* Hide all images by default */
 }
 
@@ -495,7 +495,7 @@ body {
 
 .carousel-image img {
     width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: contain;
 }
 
