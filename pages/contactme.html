@@ -11,7 +11,7 @@
         <script src="/resources/js/main.js" async=""></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     </head>
-    <body class="bg-neutral-200 dark:bg-neutral-900 min-h-screen" dir="ltr">
+    <body class="contact-page bg-neutral-200 dark:bg-neutral-900 min-h-screen" dir="ltr">
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Function to update theme
@@ -56,12 +56,16 @@
                 });
             });
 
-            // Select the element
-            const typingElement = document.getElementById('contact-method');
+            document.addEventListener('DOMContentLoaded', function() {
+                const typingElement = document.getElementById('contact-method');
+                if (!typingElement) {
+                    return;
+                }
 
-            // When the animation ends, add the 'finished' class to stop blinking
-            typingElement.addEventListener('animationend', () => {
-                typingElement.classList.add('finished');
+                // When the animation ends, add the finished class to stop blinking.
+                typingElement.addEventListener('animationend', () => {
+                    typingElement.classList.add('finished');
+                });
             });
         </script>
         <style jsx="1" global="1">
@@ -140,9 +144,69 @@
                     transform: rotate(360deg);
                 }
             }
+
+            .contact-page .contact-terminal-container {
+                width: min(92vw, 600px);
+            }
+
+            .contact-page .contact-nav-row {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+                align-items: center;
+                width: 100%;
+            }
+
+            .contact-page .contact-nav-center {
+                min-width: 0;
+            }
+
+            .contact-page .contact-nav-right {
+                display: flex;
+                justify-content: flex-end;
+                min-width: 0;
+            }
+
+            @media (max-width: 767px) {
+                .contact-page .contact-nav-row {
+                    grid-template-columns: auto 1fr auto;
+                    column-gap: 0.5rem;
+                }
+
+                .contact-page .contact-nav-center {
+                    overflow: hidden;
+                }
+
+                .contact-page .contact-nav-center p {
+                    max-width: 100%;
+                }
+
+                .contact-page main {
+                    padding: 5.5rem 1rem 1rem;
+                    align-items: flex-start;
+                }
+
+                .contact-page .contact-terminal-container {
+                    width: 100%;
+                    max-width: 100%;
+                }
+
+                .contact-page .terminal-button-container {
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 0.75rem;
+                    padding: 0.75rem 0;
+                }
+
+                .contact-page .typing-animation {
+                    white-space: normal;
+                    width: 100%;
+                    animation: none;
+                    border-right: none;
+                }
+            }
         </style>
         <nav class="fixed z-[3] w-full top-0 ease-in-out bg-neutral-200 dark:bg-neutral-900">
-            <div class="py-2 px-2 md:px-4 grid grid-cols-[1fr_auto_1fr] w-full">
+            <div class="py-2 px-2 md:px-4 contact-nav-row">
                 <div class="w-max">
                     <a href="/">
                         <div class="hidden md:grid grid-cols-[max-content_max-content] gap-1 text-blue-500 hover:text-blue-700 duration-300 ease-in-out place-items-center cursor-pointer">
@@ -158,12 +222,12 @@
                         </div>
                     </a>
                 </div>
-                <div class="grid grid-cols-[repeat(3,max-content)] place-items-center font-semibold">
+                <div class="contact-nav-center grid grid-cols-[repeat(3,max-content)] place-items-center font-semibold">
                     <span class="text-sky-500">~</span>
                     <span class="text-orange-500">/</span>
                     <p class="text-orange-500 max-w-40 md:max-w-none truncate overflow-hidden">Contact me</p>
                 </div>
-                <div class="container2 mx-auto">
+                <div class="contact-nav-right">
                     <div class="ml-selected">
                         <div>
                             <div class="text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white duration-200 ease-in-out cursor-pointer" 
