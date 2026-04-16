@@ -1007,12 +1007,20 @@
             <section class="mb-12 animate__animated animate__fadeInUp">
                 <h2 class="text-2xl font-semibold mb-6 animate__animated animate__fadeInUp">Version History</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Version 7 -->
+                    <div class="bg-gradient-to-br from-rose-900 to-orange-900 dark:from-rose-950 dark:to-orange-950 p-6 rounded-lg border border-rose-700 shadow-lg hover:shadow-xl transition-shadow md:col-span-2">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-bold text-rose-100">Version 7</h3>
+                            <span class="text-xs bg-rose-500/30 px-2 py-1 rounded text-rose-200">Latest</span>
+                        </div>
+                        <p class="text-rose-200 text-sm leading-relaxed">
+                            External RL bridge and browser AI decoupling. Moved training out of the HTML runtime into Python modules, added a local bridge server for train/stop/status/apply control, and wired apply flow so the browser can send map state to Python and restore optimized layouts.
+                        </p>
+                    </div>
+
                     <!-- Version 6.5 -->
                     <div class="bg-gradient-to-br from-cyan-900 to-cyan-800 dark:from-cyan-950 dark:to-cyan-900 p-6 rounded-lg border border-cyan-700 shadow-lg hover:shadow-xl transition-shadow">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="text-lg font-bold text-cyan-100">Version 6.5</h3>
-                            <span class="text-xs bg-cyan-500/30 px-2 py-1 rounded text-cyan-300">Latest</span>
-                        </div>
+                        <h3 class="text-lg font-bold text-cyan-100 mb-2">Version 6.5</h3>
                         <p class="text-cyan-200 text-sm leading-relaxed">
                             Zoning visibility and district identity expansion. Added bottom-left zoning toggle with colorful zone-boundary outlines. Zone legend panel, organic zone shapes, and multiple special buildings per zone (landmarks, civic blocks, apartments, villas, plants) for improved visual variety and traffic hotspots.
                         </p>
@@ -1071,12 +1079,12 @@
                 <h2 class="text-2xl font-semibold mb-6 animate__animated animate__fadeInUp">Project Stats</h2>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <div class="rounded-lg border border-slate-700 bg-slate-800/50 p-4 text-center">
-                        <div class="text-3xl font-bold text-blue-400 mb-1">6.5</div>
+                        <div class="text-3xl font-bold text-blue-400 mb-1">7</div>
                         <div class="text-xs text-slate-400 uppercase tracking-wide">Current</div>
                     </div>
                     <div class="rounded-lg border border-slate-700 bg-slate-800/50 p-4 text-center">
                         <div class="text-3xl font-bold text-green-400 mb-1">12</div>
-                        <div class="text-xs text-slate-400 uppercase tracking-wide">Releases</div>
+                        <div class="text-xs text-slate-400 uppercase tracking-wide">Major Versions</div>
                     </div>
                     <div class="rounded-lg border border-slate-700 bg-slate-800/50 p-4 text-center">
                         <div class="text-3xl font-bold text-purple-400 mb-1">4</div>
