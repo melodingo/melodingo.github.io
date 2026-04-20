@@ -874,7 +874,6 @@
                 </div>
                 <div class="md:w-1/2 p-4 animate__animated animate__fadeIn">
                     <h2 class="text-2xl font-semibold animate__animated animate__fadeInUp">How It Is Built</h2>
-                    
                     <!-- Terminal container with navigation bar -->
                     <div class="terminal-container">
                         <div class="terminal-bar">
@@ -887,13 +886,9 @@
                                 Build@<span style="color: #33CCFF;">Modules</span>:~$ 
                                 <span class="cursor">|</span>
                             </div>
-                            <p class="text-lg">I split this into two paths on purpose: browser for fast iteration, Python for cleaner simulation experiments.</p>
-                            <p class="text-lg">city_visual.html is the interactive playground with rendering + controls.</p>
-                            <p class="text-lg">grid.py and traffic_sim.py handle map structure, routing logic, occupancy checks, and metrics.</p>
-                            <p class="text-lg">environment.py and visualize.py are the bridge toward testing and RL-style workflows.</p>
+                            <p class="text-lg">Built with a browser simulator for city generation and a Python backend for experiments and AI. See the README for technical details.</p>
                         </div>
                     </div>
-                    
                 </div>
             </section> 
             
@@ -904,7 +899,6 @@
             <section class="mb-12 flex flex-col md:flex-row items-center animate_animated animate__fadeInUp">
                 <div class="md:w-1/2 p-4 order-2 md:order-1 animate__animated animate__fadeIn">
                     <h2 class="text-2xl font-semibold animate__animated animate__zoomIn">How To Run It</h2>
-                    
                     <!-- Terminal container with navigation bar -->
                     <div class="terminal-container">
                         <div class="terminal-bar">
@@ -918,14 +912,12 @@
                                 <span class="cursor">|</span>
                             </div>
                             <div class="text-lg space-y-2">
-                                <p>1. Open city_visual.html and let it generate a fresh map.</p>
-                                <p>2. Move around with zoom + pan and watch where jams form.</p>
-                                <p>3. Hit New City a few times to compare different road topologies.</p>
-                                <p>4. If you want Python mode, run main.py (visual/headless/envtest).</p>
+                                <p>• Open <code>city_visual.html</code> in your browser to play with city layouts and traffic.</p>
+                                <p>• For experiments or AI, run the Python scripts (see README for commands).</p>
+                                <p>• To use browser AI features, start the Python bridge server first.</p>
                             </div>
                         </div>
                     </div>
-                    
                 </div>
                 <div class="md:w-1/2 mt-4 md:mt-0 md:ml-4 order-1 md:order-2 img-container animate__animated animate__fadeIn">
                     <img src="/assets/city-planner/2.0_initial-browser-city.png" alt="City Planner getting started screenshot" class="rounded-lg shadow-lg">
