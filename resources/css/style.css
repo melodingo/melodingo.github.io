@@ -1745,6 +1745,370 @@ body,html {
     outline: none;
 }
 
+/* Terminal window styling used by the About page login modal and other terminal panels. */
+.terminal-container {
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #1e1e1e;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 1200px;
+    transition: transform 0.3s ease;
+}
+
+.terminal-bar {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background-color: #333;
+    border-bottom: 1px solid #444;
+}
+
+.terminal-bar .circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    display: inline-block;
+}
+
+.terminal-bar .easter-egg {
+    text-decoration: none;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+}
+
+.terminal-bar .red {
+    background-color: #ff5f56;
+}
+
+.terminal-bar .yellow {
+    background-color: #ffbd2e;
+}
+
+.terminal-bar .green {
+    background-color: #27c93f;
+}
+
+.cursor {
+    display: inline-block;
+    opacity: 1;
+    animation: blink-soft 1.4s step-end 4;
+}
+
+@keyframes blink-soft {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+.terminal-container:hover .cursor,
+.terminal-container:focus-within .cursor {
+    animation-iteration-count: infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cursor {
+        animation: none;
+        opacity: 1;
+    }
+}
+
+.terminal-prompt {
+    font-family: 'Courier New', Courier, monospace;
+    color: #00ff00;
+    font-size: 1rem;
+    line-height: 1.4;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+}
+
+.cmd-prompt {
+    padding: 16px;
+    font-family: 'Courier New', Courier, monospace;
+    color: #d4d4d4;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.cmd-prompt p {
+    position: relative;
+    padding-left: 20px;
+    margin: 0 0 0.5rem;
+}
+
+.cmd-prompt p::before {
+    content: "> ";
+    position: absolute;
+    left: 0;
+    color: #00ff00;
+    font-weight: bold;
+}
+
+.cmd-prompt ol,
+.cmd-prompt ul {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.cmd-prompt li {
+    margin-bottom: 0.3rem;
+}
+
+/* About page login modal */
+.about-login-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(2, 6, 23, 0.78);
+    backdrop-filter: blur(10px);
+}
+
+.about-login-overlay {
+    position: absolute;
+    inset: 0;
+}
+
+.about-login-window {
+    position: relative;
+    z-index: 61;
+    width: 100%;
+    max-width: 24rem;
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    border-radius: 0.875rem;
+    background: rgba(2, 6, 23, 0.92);
+    color: #fff;
+    box-shadow: 0 24px 48px rgba(8, 15, 32, 0.45);
+}
+
+.about-login-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem 0.6rem;
+    background: #333;
+    border-bottom: 1px solid #444;
+}
+
+.about-login-bar .about-login-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 9999px;
+    display: inline-block;
+}
+
+.about-login-dot-button {
+    appearance: none;
+    -webkit-appearance: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.about-login-dot--red {
+    background-color: #ff5f56;
+}
+
+.about-login-dot--yellow {
+    background-color: #ffbd2e;
+}
+
+.about-login-dot--green {
+    background-color: #27c93f;
+}
+
+.about-login-body {
+    padding: 1rem;
+    font-family: 'Courier New', Courier, monospace;
+    color: #d4d4d4;
+    line-height: 1.4;
+}
+
+.about-login-prompt {
+    font-family: 'Courier New', Courier, monospace;
+    color: #00ff00;
+    font-size: 1rem;
+    line-height: 1.4;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.about-login-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.about-login-kicker {
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: #94a3b8;
+}
+
+.about-login-title {
+    margin-top: 0.25rem;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #fff;
+}
+
+.about-login-close {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border-radius: 0.5rem;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 0.05);
+    color: #e2e8f0;
+    font-size: 1rem;
+    line-height: 1;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.about-login-close:hover {
+    background: rgb(255 255 255 / 0.1);
+}
+
+.about-login-form {
+    margin-top: 0.75rem;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.about-login-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #cbd5e1;
+}
+
+.about-login-input,
+.about-login-button,
+.about-login-link {
+    width: 100%;
+    border-radius: 0.625rem;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.about-login-input {
+    border: 1px solid rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 0.05);
+    padding: 0.75rem 0.875rem;
+    color: #fff;
+    outline: none;
+}
+
+.about-login-input::placeholder {
+    color: #64748b;
+}
+
+.about-login-input:focus {
+    border-color: rgb(255 255 255 / 0.2);
+    background: rgb(255 255 255 / 0.08);
+}
+
+.about-login-button {
+    border: 1px solid rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 0.1);
+    padding: 0.75rem 1rem;
+    color: #fff;
+    font-weight: 500;
+}
+
+.about-login-button:hover {
+    background: rgb(255 255 255 / 0.15);
+}
+
+.about-login-status {
+    font-size: 0.875rem;
+    color: #94a3b8;
+}
+
+.about-login-status--error {
+    color: #fda4af;
+}
+
+.about-login-status--success {
+    color: #86efac;
+}
+
+.about-login-panel {
+    margin-top: 1rem;
+    border-radius: 0.625rem;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 0.05);
+    padding: 0.75rem;
+    color: #e2e8f0;
+}
+
+.about-login-panel-title {
+    margin-top: 0.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.about-login-panel-copy {
+    margin-top: 0.25rem;
+    color: #cbd5e1;
+}
+
+.about-login-actions {
+    margin-top: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.about-login-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 0;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 0.1);
+    padding: 0.5rem 0.85rem;
+    color: #fff;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.about-login-link--download {
+    background: #fff;
+    color: #020617;
+}
+
+.about-login-link:hover {
+    background: rgb(255 255 255 / 0.15);
+}
+
+.about-login-link--download:hover {
+    background: #f8fafc;
+}
+
+.about-login-footnote {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
 
 /* Main Container */
 .note-container {

@@ -105,7 +105,7 @@
                     lightboxImage.src = selectedImage.src;
                     lightboxImage.alt = selectedImage.alt || 'Enlarged project image';
                     lightboxCaption.textContent = selectedImage.dataset.description || selectedImage.alt || '';
-                    lightbox.classList.remove('hidden');
+                    lightbox.style.display = 'grid';
                     document.body.style.overflow = 'hidden';
                 }
 
@@ -126,7 +126,7 @@
                 });
 
                 function closeLightbox() {
-                    lightbox.classList.add('hidden');
+                    lightbox.style.display = 'none';
                     lightboxImage.src = '';
                     lightboxCaption.textContent = '';
                     activeImageIndex = -1;
@@ -161,10 +161,61 @@
                         showNextImage(1);
                     }
                 });
-            });
 
-            window.addEventListener('load', function() {
-                window.scrollTo(0, 0);
+                const documentsLauncher = document.getElementById('documentsLauncher');
+                const documentsModal = document.getElementById('documentsModal');
+                const documentsOverlay = document.getElementById('documentsOverlay');
+                const documentsClose = document.getElementById('documentsClose');
+                const documentsForm = document.getElementById('documentsForm');
+                const documentsStatus = document.getElementById('documentsStatus');
+                const documentsAccessPanel = document.getElementById('documentsAccessPanel');
+                const documentDownloadLink = document.getElementById('documentDownloadLink');
+                const documentPasswordInput = document.getElementById('documentPassword');
+                const DOCUMENT_PASSWORD = 'IMS26';
+                const DOCUMENT_REDIRECT_URL = 'https://drive.google.com/file/d/1svnVL00x-u2wL-FahBXvRxX9JhoreqyJ/view?usp=sharing';
+
+                function openDocumentsModal() {
+                    documentsModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                    documentsStatus.textContent = 'Enter the password "IMS26" to unlock the file redirect.';
+                    documentsStatus.className = 'text-sm text-slate-400';
+                    documentsAccessPanel.style.display = 'none';
+                    documentPasswordInput.value = '';
+                    documentPasswordInput.focus();
+                }
+
+                function closeDocumentsModal() {
+                    documentsModal.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+
+                documentsLauncher.addEventListener('click', openDocumentsModal);
+                documentsClose.addEventListener('click', closeDocumentsModal);
+                documentsOverlay.addEventListener('click', (event) => {
+                    if (event.target === documentsOverlay) {
+                        closeDocumentsModal();
+                    }
+                });
+
+                documentsForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+
+                    const enteredPassword = documentPasswordInput.value.trim();
+
+                    if (enteredPassword !== DOCUMENT_PASSWORD) {
+                        documentsStatus.textContent = 'Incorrect password.';
+                        documentsStatus.className = 'text-sm text-rose-300';
+                        documentsAccessPanel.style.display = 'none';
+                        return;
+                    }
+
+                    documentsStatus.textContent = 'Access granted.';
+                    documentsStatus.className = 'text-sm text-emerald-300';
+                    documentsAccessPanel.style.display = 'block';
+                    documentDownloadLink.href = DOCUMENT_REDIRECT_URL;
+                    documentDownloadLink.target = '_blank';
+                });
+
             });
         </script>
         <style jsx="1" global="1">
@@ -665,14 +716,91 @@
                     <path d="M22 2 2 22"></path>
                 </svg>
             </div>
+
+            <section class="mb-4 flex flex-col items-center animate__animated animate__fadeInUp">
+                <div class="w-full max-w-4xl p-4">
+                    <h2 class="text-2xl font-semibold animate__animated animate__fadeInUp">Documents</h2>
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <span class="circle red"></span>
+                            <span class="circle yellow"></span>
+                            <span class="circle green"></span>
+                        </div>
+                        <div class="cmd-prompt p-4 animate__animated animate__fadeIn text-white">
+                            <div class="terminal-prompt">
+                                Docs@<span style="color: #33CCFF;">AboutMe</span>:~$
+                                <span class="cursor">|</span>
+                            </div>
+                            <div class="mt-4 space-y-4">
+                                <button id="documentsLauncher" type="button" class="grid place-items-center rounded-[1.5rem] border border-cyan-300/30 bg-gradient-to-br from-cyan-400/20 via-slate-950/40 to-emerald-400/20 text-white shadow-2xl shadow-cyan-950/30 ring-1 ring-cyan-200/10 transition duration-300 hover:-translate-y-0.5 hover:border-cyan-200/60 hover:shadow-cyan-400/25" style="width: 92px; height: 92px; min-width: 92px; min-height: 92px;" aria-label="Open documents" title="Open documents">
+                                    <span class="grid place-items-center rounded-2xl bg-cyan-400/15 text-cyan-200 ring-1 ring-cyan-300/20" style="width: 72px; height: 72px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                            <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+                                            <path d="M15 18a3 3 0 1 1-6 0"></path>
+                                            <path d="M12 12v6"></path>
+                                            <path d="M4 6.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-5-7H6a2 2 0 0 0-2 2Z"></path>
+                                        </svg>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
 
-        <div id="imageLightbox" class="lightbox-overlay hidden" role="dialog" aria-modal="true" aria-label="Image preview">
+                <div id="imageLightbox" class="lightbox-overlay" style="display: none;" role="dialog" aria-modal="true" aria-label="Image preview">
             <button id="lightboxPrev" class="lightbox-nav lightbox-nav-prev" aria-label="Previous image">&#10094;</button>
             <button id="lightboxNext" class="lightbox-nav lightbox-nav-next" aria-label="Next image">&#10095;</button>
             <button id="lightboxClose" class="lightbox-close" aria-label="Close image preview">&times;</button>
             <img id="lightboxImage" class="lightbox-image" src="" alt="">
             <p id="lightboxCaption" class="lightbox-caption" aria-live="polite"></p>
+        </div>
+
+        <div id="documentsModal" class="about-login-modal" style="display: none;">
+            <div id="documentsOverlay" class="about-login-overlay"></div>
+            <div class="about-login-window">
+                    <div class="about-login-bar">
+                        <button id="documentsClose" type="button" class="about-login-dot about-login-dot--red about-login-dot-button" aria-label="Close documents dialog"></button>
+                        <span class="about-login-dot about-login-dot--yellow"></span>
+                        <span class="about-login-dot about-login-dot--green"></span>
+                    </div>
+
+                    <div class="about-login-body">
+                        <div class="about-login-prompt">
+                            Docs@<span style="color: #33CCFF;">AboutMe</span>:~$
+                            <span class="cursor">|</span>
+                        </div>
+
+                        <div class="about-login-header">
+                            <div>
+                                <p class="about-login-kicker">Documents vault</p>
+                                <h3 class="about-login-title">Private access</h3>
+                            </div>
+                        </div>
+
+                        <form id="documentsForm" class="about-login-form">
+                            <div>
+                                <label for="documentPassword" class="about-login-label">Password</label>
+                                <input id="documentPassword" name="documentPassword" type="password" placeholder="Enter password" class="about-login-input" required>
+                            </div>
+                            <button type="submit" class="about-login-button">
+                                Unlock documents
+                            </button>
+                            <p id="documentsStatus" class="about-login-status">Enter the password to unlock the file redirect.</p>
+                        </form>
+
+                        <div id="documentsAccessPanel" class="about-login-panel" style="display: none;">
+                            <p class="about-login-kicker">Unlocked</p>
+                            <h4 class="about-login-panel-title">Redirect ready</h4>
+                            <p class="about-login-panel-copy">Open the Drive page from here.</p>
+                            <div class="about-login-actions">
+                                <a id="documentDownloadLink" href="https://drive.google.com/file/d/1svnVL00x-u2wL-FahBXvRxX9JhoreqyJ/view?usp=sharing" target="_blank" rel="noopener" class="about-login-link about-login-link--download">Download file</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>
